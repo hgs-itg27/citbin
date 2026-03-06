@@ -88,3 +88,6 @@ Grundlage der Bewertung sind mehrere Kriterien:
 
 ## Feedbackgespräche
 Im Verlauf des Projekts finden **zwei Feedbacktage** statt, an denen der Projektstand sowie die individuelle Mitarbeit reflektiert werden.
+
+## Teamleistung
+Das Team erhält eine Gesamtbewertung. Diese wird innerhalb der Teammitglieder in einem vorgegeben Rahmen so verteilt, dass der Mittelwert der Teambewertung entspricht.
