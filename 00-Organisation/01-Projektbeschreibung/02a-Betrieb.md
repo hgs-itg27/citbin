@@ -32,10 +32,4 @@ Dein Schreiben sollte enthalten:
 - welche Fähigkeiten, Interessen oder Erfahrungen du mitbringst
 - warum du glaubst, dass du gut für diese Aufgabe geeignet bist
 
-Du kannst dabei zum Beispiel auf folgende Punkte eingehen:
-
-- warum dich Netzwerke oder Server interessieren
-- ob du schon Erfahrung mit IT-Systemen hast
-- warum du gerne technische Systeme betreibst
-
 **Empfohlener Umfang:** ca. 5–10 Sätze

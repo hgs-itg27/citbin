@@ -32,10 +32,4 @@ Dein Schreiben sollte enthalten:
 - welche Fähigkeiten, Interessen oder Erfahrungen du mitbringst
 - warum du glaubst, dass du gut für diese Aufgabe geeignet bist
 
-Du kannst dabei zum Beispiel auf folgende Punkte eingehen:
-
-- welche Programmiererfahrungen du hast
-- warum du gerne Software entwickelst
-- warum dich technische Probleme interessieren
-
 **Empfohlener Umfang:** ca. 5–10 Sätze
