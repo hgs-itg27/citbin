@@ -29,7 +29,7 @@
     "fs": "^0.0.1-security",
     "intl-messageformat": "^10.7.16",
     "leaflet": "^1.9.4",
-    "next": "15.3.1",
+    "next": "16.1.7",
     "next-client-cookies": "^2.0.1",
     "next-themes": "^0.4.6",
     "react": "19.1.0",
