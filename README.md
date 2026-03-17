@@ -74,6 +74,10 @@ flowchart LR
 
 ## Erste Schritte
 
+Eine **umfassende Einsteiger-Dokumentation** mit Erklärungen zu allen Technologien, einer Schritt-für-Schritt-Installationsanleitung und wichtigen Konzepten findest du hier:
+
+*   📖 **[Einsteiger-Dokumentation](docs/05-Gemeinsam/Einstieg.md)**
+
 Detaillierte Anweisungen zur Installation, Konfiguration und zum Starten der einzelnen Komponenten finden Sie in den jeweiligen README-Dateien:
 
 *   **Backend**: [apps/api/README.md](apps/api/README.md)
