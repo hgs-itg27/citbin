@@ -1,0 +1,16 @@
+{
+  "name": "citbin-docs",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@stritti/vitepress-plugin-openspec": "^0.5",
+    "vitepress": "^1.6.4"
+  }
+}
