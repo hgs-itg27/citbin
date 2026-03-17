@@ -62,8 +62,8 @@ Das Projekt besteht aus den folgenden Hauptkomponenten:
 flowchart LR
 
     sensor[Sensor] -->|LoRaWAN| gateway[Gateway]
-    gateway --> lns[LNS Network (Helium / IoT / TTS / …)]
-    lns --> chirpstack[ChirpStack LNS]
+    gateway --> lns["LNS Network - Helium / IoT / TTS"]
+    lns --> chirpstack["ChirpStack LNS"]
 
     chirpstack <-->|HTTP Integration| backend[Backend]
 
