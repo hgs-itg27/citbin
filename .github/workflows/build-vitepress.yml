@@ -1,0 +1,37 @@
+name: Build VitePress
+
+on:
+  push:
+    branches: [main, develop]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "docs/**"
+      - "package.json"
+      - ".github/workflows/build-vitepress.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "docs/**"
+      - "package.json"
+      - ".github/workflows/build-vitepress.yml"
+  workflow_dispatch:
+
+jobs:
+  vitepress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⛓️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: 🏗️ Install VitePress dependencies
+        run: npm install
+
+      - name: 🛠️ Build VitePress
+        run: npm run docs:build

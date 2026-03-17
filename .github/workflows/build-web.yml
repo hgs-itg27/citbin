@@ -1,0 +1,124 @@
+name: Build Web
+
+on:
+  push:
+    branches: [main, develop]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/build-web.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/build-web.yml"
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./apps/web
+
+    steps:
+      - name: 💾 Cache Next.js modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/apps/web/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('apps/web/package-lock.json') }}-${{ hashFiles('apps/web/**/*.js', 'apps/web/**/*.jsx', 'apps/web/**/*.ts', 'apps/web/**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('apps/web/package-lock.json') }}-
+            ${{ runner.os }}-nextjs-
+
+      - name: ⛓️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: ./apps/web/package-lock.json
+
+      - name: 🏗️ Install web dependencies
+        run: npm ci
+
+      - name: 🪄 Lint web
+        run: npm run lint
+
+      - name: 🛠️ Build web
+        run: npm run build
+
+  docker-build-web:
+    needs: [web]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+      actions: read
+
+    steps:
+      - name: ⛓️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🪟 Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-frontend
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=sha
+            latest
+          labels: |
+            org.opencontainers.image.title=CiBIN-frontend
+            org.opencontainers.image.description=Application for trash can management
+            org.opencontainers.image.version={{version}}
+            org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
+
+      - name: 🗝️ Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🛠️ Web - Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/web
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/web-docker-image.tar
+          build-args: |
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+
+      - name: 🚛 Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/web
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -1,0 +1,56 @@
+{
+    'deduplicationId': '25748c4d-2163-4200-bd6e-306d1fad6183', 
+    'time': '2025-04-30T08:23:08.114+00:00', 
+    'deviceInfo': {
+        'tenantId': 'eee2a3e8-53d9-4c81-b8f4-307e55a40880', 
+        'tenantName': 'citbin', 
+        'applicationId': 'd5e20971-9d4d-44ab-8b4b-5e20366510db', 
+        'applicationName': 'lehrer', 
+        'deviceProfileId': '6e098621-f856-4215-b36f-0b182f208623', 
+        'deviceProfileName': 'MIL-EM310-UDL', 
+        'deviceName': '6713E11251050005', 
+        'devEui': '24e124713e112510', 
+        'deviceClassEnabled': 'CLASS_A', 
+        'tags': {}
+    }, 
+    'devAddr': '780002c2', 
+    'adr': True, 
+    'dr': 5, 
+    'fCnt': 743, 
+    'fPort': 85, 
+    'confirmed': False, 
+    'data': 'AXVkA4JKAwQAAQ==', 
+    'object': {
+        'distance': 842.0, 
+        'tilt': 'tilt', 
+        'battery': 100.0
+    }, 
+    'rxInfo': [
+        {
+            'gatewayId': 'b169713f4c4d43a9', 'uplinkId': 31445, 
+            'gwTime': '2025-04-30T08:23:08.114+00:00', 'rssi': -20, 'snr': 13.8, 
+            'context': 'vu9SZw==', 
+            'metadata': {
+                'gateway_h3index': '8c1fa199b3831ff', 
+                'network': 'helium_iot', 
+                'gateway_name': 'nice-walnut-poodle', 
+                'gateway_id': '133Y9cixxuKdvRQJj3hT6ipvcFUpB8DJo5dCeCEfaE69vWTURwA', 
+                'gateway_long': '6.958608519605127', 
+                'regi': 'EU868', 
+                'gateway_lat': '50.920736523010184'
+            }, 'crcStatus': 
+            'CRC_OK'
+        }
+    ], 
+    'txInfo': {
+        'frequency': 867100000, 
+        'modulation': {
+            'lora': {
+                'bandwidth': 125000, 
+                'spreadingFactor': 7, 
+                'codeRate': 'CR_4_5'
+            }
+        }
+    }, 
+    'regionConfigId': 'eu868'
+}

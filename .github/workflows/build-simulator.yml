@@ -1,0 +1,113 @@
+name: Build Simulator
+
+on:
+  push:
+    branches: [main, develop]
+    tags:
+      - "v*.*.*"
+    paths:
+      - "apps/simulator/**"
+      - ".github/workflows/build-simulator.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "apps/simulator/**"
+      - ".github/workflows/build-simulator.yml"
+  workflow_dispatch:
+
+jobs:
+  simulator:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./apps/simulator
+
+    steps:
+      - name: ⛓️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: apps/simulator/requirements.txt
+
+      - name: 🏗️ Install simulator dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest httpx flake8
+
+      - name: 🪄 Lint simulator
+        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+  docker-build-simulator:
+    needs: [simulator]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+      actions: read
+
+    steps:
+      - name: ⛓️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🪟 Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-simulator
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=sha
+            latest
+          labels: |
+            org.opencontainers.image.title=CiBIN-simulator
+            org.opencontainers.image.description=Sensor Simulator for trash can management
+            org.opencontainers.image.version={{version}}
+            org.opencontainers.image.created={{date 'YYYY-MM-DDTHH:mm:ssZ'}}
+
+      - name: 🗝️ Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🛠️ Simulator - Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/simulator
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/simulator-docker-image.tar
+          build-args: |
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            VCS_REF=${{ github.sha }}
+            VERSION=${{ github.ref_name }}
+
+      - name: 🚛 Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./apps/simulator
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -1,0 +1,58 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    platform: linux/amd64
+    restart: always
+    ports:
+       - 9000:9000
+#       - 9443:9443
+    command: --http-enabled
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: citbin-postgres
+    restart: unless-stopped
+    platform: linux/amd64
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - ./postgresqldata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=citbin
+      - POSTGRES_PASSWORD=citbin2025!
+      - POSTGRES_DB=citbin
+      
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: chirpstack-mosquitto
+    restart: unless-stopped
+    platform: linux/amd64
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./configuration/mosquitto/config/:/mosquitto/config/
+  
+  simulator:
+    image: ghcr.io/hgs-itg26/mhgs-software-simulator:latest
+    container_name: mhgs-software-simulator
+    platform: linux/amd64
+    depends_on:
+      - mosquitto
+    environment:
+      - DEVICE_ID=eui-7066e1fffe00a9e2
+      - SLEEP_TIME=5
+      - BACKEND_API_URL=http://host.docker.internal:8000
+      - ./configuration/mosquitto/config/:/mosquitto/config/
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+  adminer:
+    image: adminer
+    platform: linux/amd64
+    restart: always
+    ports:
+      - 9001:8080

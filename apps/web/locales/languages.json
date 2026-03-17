@@ -1,0 +1,136 @@
+{
+  "startpage": {
+    "website_title": "Willkommen bei <cyan>CiT</cyan><green>BIN<green>",
+    "subtitle": "Das intelligente Müllentsorgungssystem.",
+    "top": {
+      "description": "Für Städte und Gemeinden, die ihre Abfallentsorgung <pink>optimieren</pink> möchten. <br>Mit <blue>CiTBIN</blue> gestalten Sie Ihre Abfallwirtschaft effizienter und schonen gleichzeitig die Umwelt durch bedarfsgesteuerte Leerungen."
+    },
+    "buttons": {
+      "documentation": "Dokumentation",
+      "github": "GitHub"
+    },
+    "stats": {
+      "bins_monitored": {
+        "title": "<blue>{count}+</blue> Behälter überwacht",
+        "description": "Unser System misst kontinuierlich die Füllstände von über {count} Abfallbehältern in Echtzeit und liefert wertvolle Daten für die Optimierung der Sammelrouten."
+      },
+      "trips_optimized": {
+        "title": "<green>{count}%</green> weniger Fahrten",
+        "description": "Durch intelligente Routenplanung basierend auf echten Füllständen reduzieren wir unnötige Fahrten um bis zu {count}%. Das spart Kosten, Zeit und reduziert CO2-Emissionen."
+      }
+    },
+    "schoolproject": {
+      "title": "Vom <red>Schulprojekt</red> zur Praxis",
+      "description": "CiTBIN startete als Schulprojekt der Klasse <orange>TG12/3</orange> der <orange>Hohentwiel-Gewerbeschule</orange> mit dem Ziel, IoT-Technologie zur Lösung realer Umweltprobleme einzusetzen. Heute helfen wir Kommunen, ihre Abfalllogistik nachhaltiger zu gestalten."
+    },
+    "application": {
+      "title": "CiTBIN in der <violet>Anwendung</violet>",
+      "description": "Die CiTBIN-Plattform bietet eine klare Übersicht über alle Behälterfüllstände, analysiert Datenmuster und generiert automatisch optimierte Entsorgungsrouten. Einfach, effizient und umweltfreundlich."
+    }
+  },
+  "modal": {
+    "information": {
+      "project_status": {
+        "title": "Informationen über die Korrektheit der Startseite",
+        "body": "Bitte beachten Sie, dass die Informationen, die auf der Startseite (und anderen Unterseiten) bereitgestellt werden, weder korrekt, noch aktuell sein können.",
+        "body2": "Unser Produkt und die Webseite sind aktuell noch im Aufbau. Es handelt sich noch um ein Schulprojekt."
+      }
+    }
+  },
+  "docs": {
+    "title": "Dokumentation von <violet>{app_name}</violet>",
+    "subtitle": "Hier finden Sie alle Informationen zu unserem System.",
+    "description": "Die Dokumentation bietet Ihnen umfassende Informationen zu unserem System, von der Installation bis zur Nutzung. Egal, ob Sie Entwickler, Administrator oder einfach nur interessiert sind - hier finden Sie alles, was Sie brauchen.",
+    "devices": {
+      "title": "<blue>Geräte</blue> & <blue>Mülleimer</blue>",
+      "description": "Bei CiTBIN gibt es die <cyan>Geräte</cyan> und die <cyan>Mülleimer</cyan>. Jeder Mülleimer hat eine festgelegte Position (Standortbeschreibung und Koordinaten), eine Kennnummer (ID) und einen Status. <br>Geräte sind unter anderem die <cyan>Sensoren</cyan>, die die Füllstände der Mülleimer messen. <br>Wie die Mülleimer haben die Geräte eine ID, und eine Verknüpfung mit dem Mülleimer, den sie überwachen. Ein Mülleimer ist in der Lage, mehrere Geräte zu beinhalten, aber ein Gerät kann nur einen Mülleimer überwachen."
+    },
+    "trashbin-management": {
+      "title": "Die <violet>Mülleimer- & Geräteverwaltung</violet>",
+      "description": "Die Mülleimer- und Geräteverwaltung ist da, um Ihnen zu helfen, die einzelnen Mülleimer/Geräte zu erstellen, bearbeiten oder zu löschen. <br>Die Verwaltung ist in zwei Teile unterteilt: <br>- Die Mülleimerverwaltung <br>- Die Geräteverwaltung <br><br>Es ist zu beachten, dass die Geräte nur mit verknüpftem Mülleimer erstellt werden können. <br>Die einzelnen Geräte und Mülleimer werden tabellarisch dargestellt. Die Verwaltung finden Sie im Dashboard unter dem Reiter <blue>Geräte & Mülleimer verwalten</blue>."
+    }
+  },
+  "about": {
+    "title": "Über <cyan>CiT</cyan><green>BIN<green>",
+    "intro": {
+      "subtitle": "Lernen Sie die <blue>Vision</blue> und die <pink>Menschen</pink> hinter dem intelligenten Müllentsorgungssystem kennen.",
+      "description": "Wir sind ein engagiertes Team, das Technologie nutzt, um einen positiven Beitrag zur Umwelt und zur Effizienz kommunaler Dienstleistungen zu leisten."
+    },
+    "origin": {
+      "title": "Unsere <red>Geschichte</red>: Von der Schulbank zur Innovation",
+      "text": "Alles begann als ambitioniertes Schulprojekt an der <orange>Hohentwiel-Gewerbeschule</orange> (Klasse <orange>TG12/3</orange>). Angetrieben von der Neugier auf IoT und dem Wunsch, ein echtes Problem zu lösen, entwickelten wir den ersten Prototypen von CiTBIN. Die positive Resonanz und das Potenzial der Idee motivierten uns, das Projekt über den Schulrahmen hinaus weiterzuentwickeln."
+    },
+    "mission": {
+      "title": "Unsere <green>Mission</green> & <violet>Vision</violet>",
+      "text": "Unsere Mission ist es, Städten und Gemeinden zu helfen, ihre Abfallwirtschaft <blue>nachhaltiger</blue>, <pink>kostengünstiger</pink> und <green>effizienter</green> zu gestalten. Wir glauben an eine Zukunft, in der Technologie intelligent eingesetzt wird, um Ressourcen zu schonen und die Lebensqualität in urbanen Räumen zu verbessern. Unsere Vision ist es, zum führenden Anbieter für datengesteuerte Abfalllogistiklösungen zu werden."
+    },
+    "values": {
+      "title": "Was uns <blue>antreibt</blue>",
+      "innovation": {
+        "title": "<cyan>Innovation</cyan>",
+        "text": "Wir suchen ständig nach neuen Wegen, um unsere Technologie zu verbessern und den Nutzen für unsere Kunden zu maximieren."
+      },
+      "sustainability": {
+        "title": "<green>Nachhaltigkeit</green>",
+        "text": "Der Schutz der Umwelt steht im Mittelpunkt unseres Handelns. Weniger Fahrten bedeuten weniger Emissionen."
+      },
+      "efficiency": {
+        "title": "<pink>Effizienz</pink>",
+        "text": "Wir optimieren Prozesse, um Zeit und Kosten zu sparen – für unsere Kunden und die Umwelt."
+      },
+      "collaboration": {
+        "title": "<orange>Zusammenarbeit</orange>",
+        "text": "Wir arbeiten eng mit Kommunen und Partnern zusammen, um die bestmöglichen Lösungen zu entwickeln."
+      }
+    },
+    "cta": {
+      "text": "Möchten Sie mehr erfahren oder Teil unserer Reise werden?",
+      "button": {
+        "contact": "Kontakt aufnehmen",
+        "docs": "Zur Dokumentation"
+      }
+    }
+  },
+  "sponsor": {
+    "title": "Unsere Unterstützer",
+    "intro": {
+      "subtitle": "Lernen Sie unsere <blue>Sponsoren</blue>, <blue>Investoren</blue> und <blue>Partner</blue> kennen.",
+      "description": "Wir danken diesen für ihre unterstützung, ohne die das Projekt nicht möglich wäre"
+    },
+    "values": {
+      "title": "Danke an",
+      "innovation": {
+        "title": "<cyan>HGS-Singen</cyan>",
+        "text": " "
+      },
+      "sustainability": {
+        "title": "<pink>SYBIT</pink>",
+        "text": " "
+      },
+      "efficiency": {
+        "title": "<br>",
+        "text": "hier könnten <green>SIE</green> stehen"
+      }
+    },
+    "origin": {
+      "title": "Sie wollen uns unterstützen?",
+      "text": "Kontaktieren sie uns per Email unter <br>test.email@testurl.test"
+    },
+    "cta": {
+      "text": "Möchten Sie mehr erfahren oder Teil unserer Reise werden?",
+      "button": {
+        "contact": "Kontakt aufnehmen",
+        "docs": "Zur Dokumentation"
+      }
+    }
+  },
+  "not_found": {
+    "title": "<red>404</red>",
+    "description": "Die Seite, die Sie suchen, konnte nicht gefunden werden. Möglicherweise wurde sie entfernt oder der Link ist falsch.",
+    "suggestion": "Überprüfen Sie die URL oder gehen Sie zurück zur <blue>Startseite</blue>.",
+    "suggestion_2": "Wenn Sie weiterhin Probleme haben, kontaktieren Sie uns bitte über die <blue>Dokumentation</blue>."
+  },
+  "dashboardpage": {
+    "title": "<blue>Dashboard</blue>"
+  }
+}

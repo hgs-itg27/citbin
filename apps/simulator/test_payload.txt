@@ -1,0 +1,111 @@
+{
+  "name": "as.up.data.forward",
+  "time": "2025-04-24T08:23:45.380852569Z",
+  "identifiers": [
+    {
+      "device_ids": {
+        "device_id": "eui-7066e1fffe00a9e2",
+        "application_ids": {
+          "application_id": "loris-distance"
+        },
+        "dev_eui": "7066E1FFFE00A9E2",
+        "join_eui": "7066E1FFFE00A9E3",
+        "dev_addr": "260B495B"
+      }
+    }
+  ],
+  "data": {
+    "@type": "type.googleapis.com/ttn.lorawan.v3.ApplicationUp",
+    "end_device_ids": {
+      "device_id": "eui-7066e1fffe00a9e2",
+      "application_ids": {
+        "application_id": "loris-distance"
+      },
+      "dev_eui": "7066E1FFFE00A9E2",
+      "join_eui": "7066E1FFFE00A9E3",
+      "dev_addr": "260B495B"
+    },
+    "correlation_ids": [
+      "gs:uplink:01JSKEAJRKSQ9183BPCH2KBHBR"
+    ],
+    "received_at": "2025-04-24T08:23:45.376379268Z",
+    "uplink_message": {
+      "session_key_id": "AZYe3eQPwDdxP6+VulWyoQ==",
+      "f_port": 10,
+      "f_cnt": 43234,
+      "frm_payload": "BAAADOQGANQ=",
+      "decoded_payload": {
+        "Distance": 212,
+        "Supply_Voltage": 3300,
+        "TX_Reason": "Cyclic_Event"
+      },
+      "rx_metadata": [
+        {
+          "gateway_ids": {
+            "gateway_id": "eui-5031395363214750",
+            "eui": "5031395363214750"
+          },
+          "time": "2025-04-24T08:22:41.062483Z",
+          "timestamp": 46554900,
+          "rssi": -65,
+          "channel_rssi": -65,
+          "snr": 7.75,
+          "location": {
+            "latitude": 47.76899347156463,
+            "longitude": 8.83515983811519,
+            "source": "SOURCE_REGISTRY"
+          },
+          "uplink_token": "CiIKIAoUZXVpLTUwMzEzOTUzNjMyMTQ3NTASCFAxOVNjIUdQEJS+mRYaCwiR6qfABhDphoZRIKDMjbets5MC",
+          "channel_index": 5,
+          "received_at": "2025-04-24T08:23:45.169968489Z"
+        }
+      ],
+      "settings": {
+        "data_rate": {
+          "lora": {
+            "bandwidth": 125000,
+            "spreading_factor": 7,
+            "coding_rate": "4/5"
+          }
+        },
+        "frequency": "867500000",
+        "timestamp": 46554900,
+        "time": "2025-04-24T08:22:41.062483Z"
+      },
+      "received_at": "2025-04-24T08:23:45.172832487Z",
+      "consumed_airtime": "0.056576s",
+      "version_ids": {
+        "brand_id": "elv",
+        "model_id": "elv-bm-trx1",
+        "hardware_version": "1.0",
+        "firmware_version": "1.0.0",
+        "band_id": "EU_863_870"
+      },
+      "network_ids": {
+        "net_id": "000013",
+        "ns_id": "EC656E0000000181",
+        "tenant_id": "ttn",
+        "cluster_id": "eu1",
+        "cluster_address": "eu1.cloud.thethings.network"
+      },
+      "last_battery_percentage": {
+        "f_cnt": 43218,
+        "value": 100,
+        "received_at": "2025-04-24T06:14:02.840146297Z"
+      }
+    }
+  },
+  "correlation_ids": [
+    "gs:uplink:01JSKEAJRKSQ9183BPCH2KBHBR"
+  ],
+  "origin": "ip-10-100-14-109.eu-west-1.compute.internal",
+  "context": {
+    "tenant-id": "CgN0dG4="
+  },
+  "visibility": {
+    "rights": [
+      "RIGHT_APPLICATION_TRAFFIC_READ"
+    ]
+  },
+  "unique_id": "01JSKEAJZ41ZP263BRDA04AE9S"
+}

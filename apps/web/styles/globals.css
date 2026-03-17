@@ -1,0 +1,194 @@
+/**
+ * Global Stylesheet
+ * 
+ * - Tailwind CSS base, components, and utilities are imported for utility-first styling.
+ * 
+ * Morphing Polygon Animation:
+ * - Defines a custom animation `morph-polygon` using `@keyframes` to smoothly morph a polygon shape via the `clip-path` property.
+ * - The animation transitions through multiple polygon shapes at various keyframes (0%, 12.5%, 25%, ..., 100%) for a dynamic morphing effect.
+ * - `.animate-morph-polygon` utility class applies the morphing animation with a 30s duration, ease-in-out timing, and infinite looping.
+ * 
+ * Leaflet Map Container:
+ * - `.leaflet-container` sets the map container to full viewport height and width, and ensures it is layered behind other elements with `z-index: 0`.
+ */
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Heavily expanded and smoothed morphing polygon animation */
+@layer utilities {
+  @keyframes morph-polygon {
+    0%,
+    100% {
+      clip-path: polygon(
+        74.1% 44.1%,
+        100% 61.6%,
+        97.5% 26.9%,
+        85.5% 0.1%,
+        80.7% 2%,
+        72.5% 32.5%,
+        60.2% 62.4%,
+        52.4% 68.1%,
+        47.5% 58.3%,
+        45.2% 34.5%,
+        27.5% 76.7%,
+        0.1% 64.9%,
+        17.9% 100%,
+        27.6% 76.8%,
+        76.1% 97.7%,
+        74.1% 44.1%
+      );
+    }
+    12.5% {
+      clip-path: polygon(
+        70% 35%,
+        100% 70%,
+        95% 20%,
+        80% 5%,
+        85% 8%,
+        68% 30%,
+        50% 65%,
+        55% 75%,
+        40% 68%,
+        40% 40%,
+        15% 75%,
+        5% 55%,
+        15% 95%,
+        35% 88%,
+        80% 95%,
+        70% 35%
+      );
+    }
+    25% {
+      clip-path: polygon(
+        60% 40%,
+        90% 55%,
+        100% 20%,
+        80% 5%,
+        75% 8%,
+        65% 40%,
+        55% 60%,
+        45% 75%,
+        35% 60%,
+        50% 25%,
+        20% 70%,
+        10% 50%,
+        20% 90%,
+        40% 85%,
+        70% 95%,
+        60% 40%
+      );
+    }
+    37.5% {
+      clip-path: polygon(
+        75% 45%,
+        95% 60%,
+        90% 30%,
+        88% 10%,
+        80% 5%,
+        70% 35%,
+        68% 68%,
+        50% 70%,
+        45% 60%,
+        42% 38%,
+        30% 80%,
+        8% 65%,
+        10% 98%,
+        30% 80%,
+        75% 90%,
+        75% 45%
+      );
+    }
+    50% {
+      clip-path: polygon(
+        70% 55%,
+        98% 75%,
+        85% 15%,
+        90% 8%,
+        75% 3%,
+        75% 42%,
+        70% 75%,
+        55% 80%,
+        45% 70%,
+        40% 40%,
+        15% 90%,
+        0% 70%,
+        15% 100%,
+        45% 80%,
+        85% 98%,
+        70% 55%
+      );
+    }
+    62.5% {
+      clip-path: polygon(
+        68% 50%,
+        90% 80%,
+        80% 25%,
+        85% 15%,
+        70% 8%,
+        78% 45%,
+        65% 78%,
+        58% 85%,
+        50% 72%,
+        45% 45%,
+        20% 88%,
+        3% 68%,
+        10% 90%,
+        40% 88%,
+        78% 92%,
+        68% 50%
+      );
+    }
+    75% {
+      clip-path: polygon(
+        80% 35%,
+        100% 50%,
+        95% 35%,
+        80% 10%,
+        85% 5%,
+        68% 25%,
+        55% 55%,
+        50% 60%,
+        40% 50%,
+        35% 30%,
+        30% 88%,
+        5% 75%,
+        10% 95%,
+        33% 82%,
+        70% 90%,
+        80% 35%
+      );
+    }
+    87.5% {
+      clip-path: polygon(
+        72% 40%,
+        95% 65%,
+        98% 25%,
+        82% 2%,
+        78% 5%,
+        75% 38%,
+        62% 60%,
+        58% 72%,
+        50% 65%,
+        40% 32%,
+        20% 80%,
+        0% 60%,
+        22% 98%,
+        38% 80%,
+        78% 99%,
+        72% 40%
+      );
+    }
+  }
+
+  .animate-morph-polygon {
+    animation: morph-polygon 30s ease-in-out infinite;
+  }
+}
+
+.leaflet-container {
+  height: 100vh;
+  width: 100wh;
+  z-index: 0;
+}
