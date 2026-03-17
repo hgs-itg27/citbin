@@ -56,7 +56,19 @@ Das Projekt besteht aus den folgenden Hauptkomponenten:
 
 ## Infrastruktur Diagramm
 
-![image](https://github.com/user-attachments/assets/4c83982c-f269-495b-9776-f7cf73b5d7c4)
+
+```mermaid
+flowchart LR
+
+    sensor[Sensor] -->|LoRaWAN| gateway[Gateway]
+    gateway --> lns[LNS Network<br/>(Helium / IoT / TTS / …)]
+    lns --> chirpstack[ChirpStack LNS]
+
+    chirpstack <-->|HTTP Integration| backend[Backend]
+
+    backend --> db[(PostgreSQL DB)]
+    backend -->|REST API| frontend[Frontend]
+```
 
 
 ## Erste Schritte
