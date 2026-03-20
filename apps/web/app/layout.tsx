@@ -74,7 +74,7 @@ export default function RootLayout({
               <footer className="flex items-center justify-center w-full py-4">
                 <div className="text-center text-sm text-default-600">
                   <span>
-                    © 2025 {siteConfig.name} - Ein Projekt der TG12/3 der
+                    © 2026 {siteConfig.name} - Ein Projekt der TG12/3 der
                     Hohentwiel-Gewerbeschule
                   </span>
                   {/* Optional: Weitere Links wie Impressum/Datenschutz */}
