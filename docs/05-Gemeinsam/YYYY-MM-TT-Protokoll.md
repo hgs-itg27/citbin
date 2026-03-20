@@ -11,7 +11,7 @@
 **Schüler:**  
 ***01-Betrieb: Artem, Huzaifa, Irakli, Marius***  
 ***02-Hardware: Eray, Lukas***  
-***03-Software: Felix, Jannik, Marlon, Theodor***  
+***03-Software: Felix, Jannick, Marlon, Theodor***  
 ***04-Projektleitung: Daniel, Jan, Sofia***
 
 ***Notiz: Bitte die nicht anwesenden Personen aus der Liste entfernen.***
