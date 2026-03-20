@@ -14,6 +14,8 @@
 ***03-Software: Felix, Jannik, Marlon, Theodor***  
 ***04-Projektleitung: Daniel, Jan, Sofia***
 
+***Notiz: Bitte die nicht anwesenden Personen aus der Liste entfernen.***
+
   
 ---
 ## Aktueller Stand/ Rückblick seit der letzten Sitzung:
