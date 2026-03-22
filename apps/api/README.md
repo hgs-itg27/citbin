@@ -2,6 +2,10 @@
 
 ## Running Backend Locally
 
+> **Achtung**
+> 
+> Es wird die Python-Version `3.12.3` benötigt!
+
 ```bash
 # Either set environment variables manually or rename a copy of ".env.example" to ".env" 
 
