@@ -1,6 +1,6 @@
 # Device Simulator
 
-This script simulates a LoRaWAN device sending uplink messages with sensor data. It can send these messages either via HTTP POST to a backend endpoint, or both.
+This script simulates a LoRaWAN and a Mioty device sending uplink messages with sensor data. It can send these messages either via HTTP POST to a backend endpoint, or both.
 
 ## Installation
 
