@@ -48,7 +48,5 @@
 - 
 ### 3. Software:
 - 
-### 4. Projektleitung:
-- 
-### 5. Allgemein:
+### 4. Allgemein:
 - 
