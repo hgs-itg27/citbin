@@ -1,6 +1,6 @@
 # Device Simulator
 
-This script simulates a LoRaWAN and a Mioty device sending uplink messages with sensor data. It can send these messages either via HTTP POST to a backend endpoint, or both.
+This script simulates a Sensor device sending uplink messages with sensor data. It can send these messages either via HTTP POST to a backend endpoint, or both.
 
 ## Installation
 
@@ -29,7 +29,7 @@ The following environment variables can be used to configure the simulator:
 | Variable                | Description                                                                 | Default Value                       |
 | ----------------------- | --------------------------------------------------------------------------- | ----------------------------------- |
 | `DEVICE_NAME`           | Name of the simulated device.                                               | `Simulator-001`                     |
-| `DEVICE_EUI`            | LoRaWAN Device EUI (DevEUI). If not set, a random one is generated.         | `eui-<random_hex>`                  |
+| `DEVICE_EUI`            | Device EUI (DevEUI). If not set, a random one is generated.                 | `eui-<random_hex>`                  |
 | `SLEEP_TIME`            | Time in seconds between sending messages.                                   | `5`                                 |
 | `BACKEND_API_URL`       | Base URL of the backend API for HTTP uplinks.                               | `http://localhost:8000`             |
 
