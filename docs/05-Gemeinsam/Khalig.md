@@ -1,4 +1,4 @@
-# Gesrpäch mit Khalig:  
+# Gespräch mit Khalig:  
 
 ## Gespräch vom 20-03-2026
 
