@@ -198,17 +198,17 @@ export const checkHealth = (): Promise<any> => {
 };
 
 export const getDevices = (): Promise<DeviceListResponse[]> => {
-  return apiRequest<DeviceListResponse[]>("/api/v0/device/", "GET");
+  return apiRequest<DeviceListResponse[]>("/api/v1/device/", "GET");
 };
 
 export const createDevice = (
   deviceData: DeviceCreate,
 ): Promise<DeviceResponse> => {
-  return apiRequest<DeviceResponse>("/api/v0/device/", "POST", deviceData);
+  return apiRequest<DeviceResponse>("/api/v1/device/", "POST", deviceData);
 };
 
 export const getDeviceDetails = (deviceId: string): Promise<DeviceResponse> => {
-  return apiRequest<DeviceResponse>(`/api/v0/device/${deviceId}`, "GET");
+  return apiRequest<DeviceResponse>(`/api/v1/device/${deviceId}`, "GET");
 };
 
 export const updateDevice = (
@@ -216,7 +216,7 @@ export const updateDevice = (
   deviceData: DeviceUpdate,
 ): Promise<DeviceResponse> => {
   return apiRequest<DeviceResponse>(
-    `/api/v0/device/${deviceId}`,
+    `/api/v1/device/${deviceId}`,
     "PUT",
     deviceData,
   );
@@ -226,7 +226,7 @@ export const deleteDevice = (
   deviceId: string,
 ): Promise<Record<string, any>> => {
   return apiRequest<Record<string, any>>(
-    `/api/v0/device/${deviceId}`,
+    `/api/v1/device/${deviceId}`,
     "DELETE",
   );
 };
@@ -234,21 +234,21 @@ export const deleteDevice = (
 export const sendHeliumUplink = (
   payload: Record<string, any>,
 ): Promise<any> => {
-  return apiRequest<any>("/api/v0/helium/uplink", "POST", payload);
+  return apiRequest<any>("/api/v1/helium/uplink", "POST", payload);
 };
 
 export const getTrashbinList = (): Promise<TrashbinListItem[]> => {
-  return apiRequest<TrashbinListItem[]>("/api/v0/trashbin/", "GET");
+  return apiRequest<TrashbinListItem[]>("/api/v1/trashbin/", "GET");
 };
 
 export const createTrashbin = (
   trashbinData: TrashbinCreate,
 ): Promise<TrashbinCreate> => {
-  return apiRequest<TrashbinCreate>("/api/v0/trashbin/", "POST", trashbinData);
+  return apiRequest<TrashbinCreate>("/api/v1/trashbin/", "POST", trashbinData);
 };
 
 export const getTrashbin = (trashbin_id: string): Promise<TrashbinResponse> => {
-  return apiRequest<TrashbinResponse>(`/api/v0/trashbin/${trashbin_id}`, "GET");
+  return apiRequest<TrashbinResponse>(`/api/v1/trashbin/${trashbin_id}`, "GET");
 };
 
 export const updateTrashbinData = (
@@ -256,29 +256,29 @@ export const updateTrashbinData = (
   trashbinData: TrashbinUpdate,
 ): Promise<TrashbinUpdate> => {
   return apiRequest<TrashbinUpdate>(
-    `/api/v0/trashbin/${trashbin_id}`,
+    `/api/v1/trashbin/${trashbin_id}`,
     "PUT",
     trashbinData,
   );
 };
 
 export const deleteTrashbin = (trashbin_id: string) => {
-  return apiRequest(`/api/v0/trashbin/${trashbin_id}`, "DELETE");
+  return apiRequest(`/api/v1/trashbin/${trashbin_id}`, "DELETE");
 };
 
 export const getDevicesByTrashbinID = (
   trashbin_id: string,
 ): Promise<DeviceListResponse[]> => {
   return apiRequest<DeviceListResponse[]>(
-    `/api/v0/trashbin/${trashbin_id}/device`,
+    `/api/v1/trashbin/${trashbin_id}/device`,
     "GET",
   );
 };
 
 export const getTrashbinTypes = (): Promise<string[]> => {
-  return apiRequest("/api/v0/trashbin/types", "GET");
+  return apiRequest("/api/v1/trashbin/types", "GET");
 };
 
 export const getDeviceProfiles = (): Promise<string[]> => {
-  return apiRequest("/api/v0/device/profiles", "GET");
+  return apiRequest("/api/v1/device/profiles", "GET");
 };

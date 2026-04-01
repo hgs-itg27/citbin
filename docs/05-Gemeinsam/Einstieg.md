@@ -36,7 +36,7 @@ Kleine **Sensoren** werden in Mülltonnen eingebaut. Diese Sensoren messen mit U
 
 ### Das Ergebnis
 
-Auf einem Dashboard sieht man auf einer Karte alle Mülltonnen mit ihrem aktuellen Füllstand, Batteriestatus und Standort. Die live-Anwendung ist erreichbar unter: **https://citbin.sybit.education**
+Auf einem Dashboard sieht man auf einer Karte alle Mülltonnen mit ihrem aktuellen Füllstand, Batteriestatus und Standort. Die live-Anwendung ist erreichbar unter: **<https://citbin.sybit.education>**
 
 ---
 
@@ -53,6 +53,7 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 > **Analogie:** Stell dir das Backend wie das Herzstück eines Restaurants vor – die Küche. Es nimmt Bestellungen (Anfragen) entgegen, verarbeitet sie und schickt die fertigen Gerichte (Antworten) zurück.
 
 **Was das Backend macht:**
+
 - Empfängt Sensordaten von IoT-Geräten
 - Speichert Daten in der Datenbank
 - Stellt Daten für das Frontend bereit
@@ -67,6 +68,7 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 > **Analogie:** Das Frontend ist das, was der Gast im Restaurant sieht – das Speiselokal, die Speisekarte, die Tische. Es kommuniziert mit dem Backend (der Küche), um aktuelle Informationen anzuzeigen.
 
 **Was das Frontend macht:**
+
 - Zeigt alle Mülltonnen auf einer interaktiven Karte an
 - Visualisiert Füllstand, Batteriestand und Standort
 - Bietet eine Admin-Oberfläche zur Verwaltung
@@ -132,6 +134,7 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 ```
 
 **Schritt-für-Schritt-Ablauf:**
+
 1. Der Sensor in der Mülltonne misst den Abstand zur Oberfläche des Mülls
 2. Das Messergebnis wird per LoRaWAN zum Gateway gesendet
 3. Das Gateway leitet die Daten über das Internet zu ChirpStack weiter
@@ -151,21 +154,25 @@ Bevor du anfangen kannst, musst du einige Programme auf deinem Computer installi
 Öffne die **PowerShell** (Rechtsklick auf das Windows-Symbol → „Windows PowerShell") und führe folgende Befehle aus:
 
 **Git installieren** (zum Herunterladen und Verwalten des Quellcodes):
+
 ```powershell
 winget install -e --id Git.Git
 ```
 
 **Python installieren** (für das Backend und den Simulator):
+
 ```powershell
 winget install -e --id Python.Python.3
 ```
 
 **Node.js installieren** (für das Frontend):
+
 ```powershell
 winget install -e --id OpenJS.NodeJS
 ```
 
 **GitHub CLI installieren** (optional, vereinfacht GitHub-Anmeldung):
+
 ```powershell
 winget install -e --id GitHub.cli
 ```
@@ -325,12 +332,13 @@ INFO: Started server process [...]
 INFO: Uvicorn running on http://0.0.0.0:8000
 ```
 
-Das Backend läuft jetzt auf **http://localhost:8000**
+Das Backend läuft jetzt auf **<http://localhost:8000>**
 
 **Nützliche URLs:**
-- **API-Dokumentation (Swagger UI):** http://localhost:8000/api/docs  
+
+- **API-Dokumentation (Swagger UI):** <http://localhost:8000/api/docs>  
   Hier kannst du alle verfügbaren Endpunkte interaktiv ausprobieren!
-- **Health-Check:** http://localhost:8000/api/health
+- **Health-Check:** <http://localhost:8000/api/health>
 
 ---
 
@@ -367,7 +375,7 @@ Du solltest folgende Ausgabe sehen:
 - Local:        http://localhost:3000
 ```
 
-Das Frontend ist jetzt erreichbar unter **http://localhost:3000**
+Das Frontend ist jetzt erreichbar unter **<http://localhost:3000>**
 
 > **Entwicklungsserver vs. Produktionsserver:** Der Entwicklungsserver (`npm run dev`) lädt Änderungen automatisch neu und gibt hilfreiche Fehlermeldungen aus. Im echten Betrieb wird die Anwendung mit `npm run build` gebaut und mit `npm start` gestartet.
 
@@ -402,6 +410,7 @@ Du kannst das Verhalten über Umgebungsvariablen steuern:
 | `BACKEND_API_URL` | URL des Backends | `http://localhost:8000` |
 
 Beispiel (Linux/macOS):
+
 ```bash
 SLEEP_TIME=10 DEVICE_NAME=MeinSensor python app.py
 ```
@@ -445,8 +454,8 @@ api/
 │   ├── trashbin.py     ← Datenmodell für Mülltonnen
 │   └── trashbin_data.py ← Datenmodell für Sensormessungen
 ├── routers/
-│   ├── devices.py      ← Endpunkte: /api/v0/device/...
-│   ├── trashbin.py     ← Endpunkte: /api/v0/trashbin/...
+│   ├── devices.py      ← Endpunkte: /api/v1/device/...
+│   ├── trashbin.py     ← Endpunkte: /api/v1/trashbin/...
 │   ├── helium_uplink.py ← Endpunkt: empfängt Sensordaten vom Netzwerk
 │   └── admin.py        ← Admin-Endpunkte (geschützt mit Passwort)
 └── modules/
@@ -486,7 +495,7 @@ Eine **REST API** ist eine Schnittstelle, über die Programme über das Internet
 | `PUT` | Vorhandene Daten ändern | Mülltonne umbenennen |
 | `DELETE` | Daten löschen | Mülltonne entfernen |
 
-**Beispiel:** Der Browser des Frontend schickt eine GET-Anfrage an `http://localhost:8000/api/v0/trashbin/`, und das Backend antwortet mit einer Liste aller Mülltonnen als JSON-Daten.
+**Beispiel:** Der Browser des Frontend schickt eine GET-Anfrage an `http://localhost:8000/api/v1/trashbin/`, und das Backend antwortet mit einer Liste aller Mülltonnen als JSON-Daten.
 
 ### JSON
 
@@ -571,7 +580,7 @@ def meine_funktion():
     return {"nachricht": "Hallo Welt!"}
 ```
 
-3. Starte das Backend neu und teste die Route unter http://localhost:8000/api/docs
+1. Starte das Backend neu und teste die Route unter <http://localhost:8000/api/docs>
 
 ### Eine neue Frontend-Seite hinzufügen
 
@@ -586,21 +595,24 @@ export default function MeineSeite() {
 }
 ```
 
-3. Die Seite ist automatisch erreichbar unter http://localhost:3000/meine-seite
+1. Die Seite ist automatisch erreichbar unter <http://localhost:3000/meine-seite>
 
 ### Datenbankmodell ändern
 
 1. Öffne die Modelldatei in `apps/api/models/`
 2. Füge das neue Feld hinzu, z.B. in `trashbin.py`:
+
 ```python
 beschreibung: str | None = None   # Neue optionale Spalte
 ```
-3. Erstelle eine neue Migration:
+1. Erstelle eine neue Migration:
+
 ```bash
 cd apps/api
 alembic revision --autogenerate -m "Beschreibung hinzugefügt"
 ```
-4. Führe die Migration aus:
+1. Führe die Migration aus:
+
 ```bash
 alembic upgrade head
 ```
@@ -652,6 +664,7 @@ pytest --cov=app tests/ --cov-report html
 Code-Abdeckung zeigt an, welcher Prozentsatz des Codes durch Tests überprüft wurde. 80%+ gilt als guter Wert.
 
 **Testdateien:**
+
 - `tests/test_app.py` – Allgemeine Tests der Anwendung
 - `tests/test_devices_router.py` – Tests für Geräte-Endpunkte
 - `tests/conftest.py` – Testkonfiguration und Hilfsdaten (Fixtures)
@@ -680,6 +693,7 @@ python3 -m pip install -r requirements.txt
 ### ❌ Backend startet nicht (Datenbankfehler)
 
 Das Backend kann die Datenbank nicht erreichen. Mögliche Ursachen:
+
 1. Docker läuft nicht → Docker Desktop starten und `docker ps` prüfen
 2. Falsche Verbindungsdaten → `.env`-Datei prüfen
 3. Port bereits belegt → prüfen ob PostgreSQL lokal läuft (`sudo systemctl status postgresql`)
@@ -687,7 +701,8 @@ Das Backend kann die Datenbank nicht erreichen. Mögliche Ursachen:
 ### ❌ Frontend zeigt keine Daten an
 
 Das Frontend kann das Backend nicht erreichen:
-1. Läuft das Backend? → http://localhost:8000/api/health prüfen
+
+1. Läuft das Backend? → <http://localhost:8000/api/health> prüfen
 2. Ist der richtige Port konfiguriert? → Prüfe die `.env.local` im Frontend-Verzeichnis
 
 ### ❌ `npm install` schlägt fehl
@@ -734,16 +749,16 @@ Wenn du tiefer in die verwendeten Technologien einsteigen möchtest:
 
 | Technologie | Offizielle Dokumentation | Sprache |
 |---|---|---|
-| Python | https://docs.python.org/de/3/ | Deutsch verfügbar |
-| FastAPI | https://fastapi.tiangolo.com | Englisch |
-| SQLModel | https://sqlmodel.tiangolo.com | Englisch |
-| Next.js | https://nextjs.org/docs | Englisch |
-| React | https://de.react.dev | Deutsch verfügbar |
-| TypeScript | https://www.typescriptlang.org/docs/ | Englisch |
-| PostgreSQL | https://www.postgresql.org/docs/ | Englisch |
-| Docker | https://docs.docker.com | Englisch |
-| Git | https://git-scm.com/book/de/v2 | Deutsch verfügbar |
-| Alembic | https://alembic.sqlalchemy.org | Englisch |
+| Python | <https://docs.python.org/de/3/> | Deutsch verfügbar |
+| FastAPI | <https://fastapi.tiangolo.com> | Englisch |
+| SQLModel | <https://sqlmodel.tiangolo.com> | Englisch |
+| Next.js | <https://nextjs.org/docs> | Englisch |
+| React | <https://de.react.dev> | Deutsch verfügbar |
+| TypeScript | <https://www.typescriptlang.org/docs/> | Englisch |
+| PostgreSQL | <https://www.postgresql.org/docs/> | Englisch |
+| Docker | <https://docs.docker.com> | Englisch |
+| Git | <https://git-scm.com/book/de/v2> | Deutsch verfügbar |
+| Alembic | <https://alembic.sqlalchemy.org> | Englisch |
 
 ---
 
