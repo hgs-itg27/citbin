@@ -57,61 +57,6 @@ while True:
     # Aktuelle Zeit (kompatibel mit älteren Python-Versionen)
     now = datetime.now(timezone.utc).isoformat()
 
-    # Komplette Webhook Message
-    message = {
-        "deduplicationId": str(uuid.uuid4()),
-        "time": now,
-        "deviceInfo": {
-            "tenantId": str(uuid.uuid4()),
-            "tenantName": "simulator-tenant",
-            "applicationId": str(uuid.uuid4()),
-            "applicationName": "simulator-app",
-            "deviceProfileId": str(uuid.uuid4()),
-            "deviceProfileName": "SimulatorProfile",
-            "deviceName": f"{DEVICE_NAME}",
-            "devEui": DEVICE_EUI,
-            "deviceClassEnabled": "CLASS_A",
-            "tags": {},
-        },
-        "devAddr": "2601" + format(random.randint(0, 0xFFFF), "04x"),
-        "adr": True,
-        "dr": 5,
-        "fCnt": fcnt,
-        "fPort": 85,
-        "confirmed": False,
-        "data": data_base64,
-        "object": {"distance": distance, "battery": battery, "tilt": tilt},
-        "rxInfo": [
-            {
-                "gatewayId": "sim-gw-01",
-                "uplinkId": random.randint(10000, 99999),
-                "gwTime": now,
-                "rssi": rssi,
-                "snr": snr,
-                "crcStatus": "CRC_OK",
-                "context": base64.b64encode(os.urandom(6)).decode(),
-                "metadata": {
-                    "gateway_name": "simulator-gateway",
-                    "gateway_id": str(uuid.uuid4()),
-                    "regi": "EU868",
-                    "gateway_lat": str(round(random.uniform(47, 51), 6)),
-                    "gateway_long": str(round(random.uniform(6, 13), 6)),
-                },
-            }
-        ],
-        "txInfo": {
-            "frequency": 867100000,
-            "modulation": {
-                "lora": {
-                    "bandwidth": 125000,
-                    "spreadingFactor": 7,
-                    "codeRate": "CR_4_5",
-                }
-            },
-        },
-        "regionConfigId": "eu868",
-    }
-
     mioty_message = {
         "session_key_id": "AYY660iFsk5LInv+xd6AVg==",
         "f_port": 1,
@@ -139,10 +84,6 @@ while True:
     }
 
     try:
-        send_http_uplink(
-            f"{BACKEND_API_URL}/api/v0/helium/uplink", message
-        )  # Use the 'message' dict
-        time.sleep(SLEEP_TIME)
         send_http_uplink(
             f"{BACKEND_API_URL}/api/v1/mioty/uplink", mioty_message
         )  # Use the 'mioty_message' dict
