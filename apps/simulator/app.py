@@ -55,7 +55,7 @@ while True:
     data_base64 = base64.b64encode(raw_payload).decode()
 
     # Aktuelle Zeit (kompatibel mit älteren Python-Versionen)
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(datetime.timezone(datetime.timedelta(hours=2)).isoformat()
 
     # Komplette Webhook Message
 
