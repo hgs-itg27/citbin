@@ -78,8 +78,8 @@ Zum registrieren der Sensoren bei mioty braucht ihr nur EUI, Network Key und Sho
 
  
 
-## APOQ57189 EUI: FCA84A01000036C8 -> Network Key: 1FBAC79CA83DC2E40F5372EAC20493BB     short adrress: 36C8  
-## APOQ57198 EUI: FCA84A01000036C9  -> Network Key: B92C28AD997CA3E17893A611BB2A2358 short adrress: 36C9  
-## Die short address sind immer die letzten 2 Bytes der EUI.    
+**APOQ57189 EUI: FCA84A01000036C8 -> Network Key: 1FBAC79CA83DC2E40F5372EAC20493BB   short adrress: 36C8**    
+**APOQ57198 EUI: FCA84A01000036C9  -> Network Key: B92C28AD997CA3E17893A611BB2A2358 short adrress: 36C9**  
+***Die short address sind immer die letzten 2 Bytes der EUI.***    
 
  
