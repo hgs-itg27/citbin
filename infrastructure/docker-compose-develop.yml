@@ -2,8 +2,7 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
-    platform: linux/amd64
-    restart: always
+    restart: unless-stopped
     ports:
        - 9000:9000
 #       - 9443:9443
@@ -15,11 +14,9 @@ services:
     image: postgres:16-alpine
     container_name: citbin-postgres
     restart: unless-stopped
-    platform: linux/amd64
     ports:
       - "5432:5432"
     volumes:
-      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - ./postgresqldata:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=citbin
@@ -28,18 +25,16 @@ services:
       
   mosquitto:
     image: eclipse-mosquitto:2
-    container_name: chirpstack-mosquitto
+    container_name: mosquitto
     restart: unless-stopped
-    platform: linux/amd64
     ports:
       - "1883:1883"
     volumes:
       - ./configuration/mosquitto/config/:/mosquitto/config/
   
   simulator:
-    image: ghcr.io/hgs-itg26/mhgs-software-simulator:latest
-    container_name: mhgs-software-simulator
-    platform: linux/amd64
+    image: ghcr.io/hgs-itg27/citbin-simulator:latest
+    container_name: citbin-simulator
     depends_on:
       - mosquitto
     environment:
