@@ -4,7 +4,7 @@ import random
 import logging
 import json
 import uuid
-from datetime import datetime, timezone  # timezone importieren
+from datetime import datetime  # timezone importieren
 import base64
 import requests
 
@@ -55,7 +55,7 @@ while True:
     data_base64 = base64.b64encode(raw_payload).decode()
 
     # Aktuelle Zeit (kompatibel mit älteren Python-Versionen)
-    now = datetime.now(datetime.timezone(datetime.timedelta(hours=2))).isoformat()
+    now = datetime.now().isoformat()
 
     # Komplette Webhook Message
 
