@@ -57,3 +57,29 @@ IP: 10.85.33.236
 - PreAtt aktivieren
 - Network key folgt
 - Applications key folgt
+
+# Gesrpäch vom 27.03.2026  
+
+**Wir:**  
+Guten Tag Alex, 
+Wir sind noch einmal auf Fragen gestoßen für die wir dich bräuchten.
+Wir brächten den Application Key und den Network Key .
+Und was wäre der EUI Typ? 
+MfG,  
+
+**Khalig:**  
+Zum registrieren der Sensoren bei mioty braucht ihr nur EUI, Network Key und Short Address. Ist etwas anders wie bei lora
+
+ 
+
+
+
+ 
+
+ 
+
+## APOQ57189 EUI: FCA84A01000036C8 -> Network Key: 1FBAC79CA83DC2E40F5372EAC20493BB     short adrress: 36C8  
+## APOQ57198 EUI: FCA84A01000036C9  -> Network Key: B92C28AD997CA3E17893A611BB2A2358 short adrress: 36C9  
+## Die short address sind immer die letzten 2 Bytes der EUI.    
+
+ 
