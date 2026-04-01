@@ -1,138 +1,20 @@
 services:
-  chirpstack:
-    image: chirpstack/chirpstack:4
-    container_name: chirpstack
-    command: -c /etc/chirpstack
-    restart: unless-stopped
-    volumes:
-      - ./configuration/chirpstack:/etc/chirpstack
-    depends_on:
-      - chirpstack-postgres
-      - mosquitto
-      - redis
-    environment:
-      - MQTT_BROKER_HOST=chirpstack-mosquitto
-      - REDIS_HOST=chirpstack-redis
-      - POSTGRESQL_HOST=chirpstack-postgres
-#    ports:
-#      - "8080:8080"
-    networks:
-      - traefik_net
-      - citbin_net
-    labels:
-      - "io.portainer.accesscontrol.teams=azubis"
-      - "traefik.enable=true"
-      - "traefik.http.routers.chirpstack-http.rule=Host(`chirpstack.sybit.education`)"
-      - "traefik.http.routers.chirpstack-http.entrypoints=web"
-      - "traefik.http.routers.chirpstack.rule=Host(`chirpstack.sybit.education`)"
-      - "traefik.http.routers.chirpstack.entrypoints=web-secure"
-      - "traefik.http.routers.chirpstack.tls=true"
-      - "traefik.http.routers.chirpstack.middlewares=secHeaders@file"
-      - "traefik.http.services.chirpstack.loadbalancer.server.port=8080"
-#      - "traefik.http.routers.chirpstack.middlewares=myheader@docker"
-#      - "traefik.http.middlewares.myheader.headers.customFrameOptionsValue=ALLOW-FROM https://chirpstack.sybit.education"
-#      - "traefik.http.middlewares.myheader.headers.contentSecurityPolicy=frame-ancestors https://chirpstack.sybit.education"
-
-
-  chirpstack-gateway-bridge:
-    image: chirpstack/chirpstack-gateway-bridge:4
-    container_name: chirpstack-gateway-bridge
-    restart: unless-stopped
-    ports:
-      - "1700:1700/udp"
-    networks:
-      - citbin_net
-    volumes:
-      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
-    environment:
-      - INTEGRATION__MQTT__EVENT_TOPIC_TEMPLATE=eu868/gateway/{{ .GatewayID }}/event/{{ .EventType }}
-      - INTEGRATION__MQTT__STATE_TOPIC_TEMPLATE=eu868/gateway/{{ .GatewayID }}/state/{{ .StateType }}
-      - INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE=eu868/gateway/{{ .GatewayID }}/command/#
-    depends_on:
-      - mosquitto
-    labels:
-      - "io.portainer.accesscontrol.teams=azubis"
-
-  chirpstack-gateway-bridge-basicstation:
-    image: chirpstack/chirpstack-gateway-bridge:4
-    container_name: chirpstack-gateway-basicstation
-    restart: unless-stopped
-    command: -c /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge-basicstation-eu868.toml
-    ports:
-      - "3001:3001"
-    networks:
-      - citbin_net
-    volumes:
-      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
-    depends_on:
-      - mosquitto
-    labels:
-      - "io.portainer.accesscontrol.teams=azubis"
-
-  chirpstack-rest-api:
-    image: chirpstack/chirpstack-rest-api:4
-    container_name: chirpstack-rest-api
-    restart: unless-stopped
-    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
-#    ports:
-#      - "8090:8090"
-    depends_on:
-      - chirpstack
-    networks:
-      - traefik_net
-      - citbin_net
-    labels:
-      - "io.portainer.accesscontrol.teams=azubis"
-      - "traefik.enable=true"
-      - "traefik.http.routers.chirpstack-api-http.rule=Host(`chirpstack-api.sybit.education`)"
-      - "traefik.http.routers.chirpstack-api-http.entrypoints=web"
-      - "traefik.http.routers.chirpstack-api.rule=Host(`chirpstack-api.sybit.education`)"
-      - "traefik.http.routers.chirpstack-api.entrypoints=web-secure"
-      - "traefik.http.routers.chirpstack-api.tls=true"
-      - "traefik.http.routers.chirpstack-api.middlewares=secHeaders@file"
-      - "traefik.http.services.chirpstack-api.loadbalancer.server.port=8090"
-#      - "traefik.http.routers.chirpstack-api.middlewares=myheader@docker"
-#      - "traefik.http.middlewares.myheader.headers.customFrameOptionsValue=ALLOW-FROM https://chirpstack-api.sybit.education"
-#      - "traefik.http.middlewares.myheader.headers.contentSecurityPolicy=frame-ancestors https://chirpstack-api.sybit.education"
-
-  chirpstack-postgres:
-    image: postgres:14-alpine
-    container_name: chirpstack-postgres
-    restart: unless-stopped
-    volumes:
-      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
-      - ./postgresqldata:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=chirpstack
-      - POSTGRES_PASSWORD=chirpstack
-      - POSTGRES_DB=chirpstack
-    networks:
-      - citbin_net
-    labels:
-      - "io.portainer.accesscontrol.teams=azubis"
-
-  redis:
-    image: redis:7-alpine
-    container_name: chirpstack-redis
-    restart: unless-stopped
-    command: redis-server --save 300 1 --save 60 100 --appendonly no
-    volumes:
-      - ./redisdata:/data
-    networks:
-      - citbin_net
-    labels:
-      - "io.portainer.accesscontrol.teams=azubis"
 
   mosquitto:
     image: eclipse-mosquitto:2
     container_name: mosquitto
     restart: unless-stopped
-    ports:
-      - "1883:1883"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    # ports:
+    #  - "1883:1883"
     volumes:
       - ./configuration/mosquitto/config/:/mosquitto/config/
     networks:
-      - traefik_net    
+      - traefik_net
       - citbin_net
     labels:
       - "io.portainer.accesscontrol.teams=azubis"
@@ -141,6 +23,11 @@ services:
     image: postgres:16-alpine
     container_name: citbin-postgres
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
     volumes:
       - ./citbin-postgresqldata:/var/lib/postgresql/data
     environment:
@@ -151,30 +38,43 @@ services:
       - citbin_net
     labels:
       - "io.portainer.accesscontrol.teams=azubis"
-      
-  #citbin-simulator:
-  #  image: ghcr.io/hgs-itg26/mhgs-software-simulator:latest
-  #  container_name: citbin-simulator
-  #  depends_on:
-  #    - mosquitto
-  #  environment:
-  #    - DEVICE_ID=eui-7066e1fffe00a9e2
-  #    - SLEEP_TIME=120
-  #    - BACKEND_API_URL=citbin-backend:8000
-  #    - ./configuration/mosquitto/config/:/mosquitto/config/
-  #  networks:
-  #    - citbin_net      
-  #  labels:
-  #    - "com.centurylinklabs.watchtower.enable=true"    
-  #    - "io.portainer.accesscontrol.teams=azubis"
-                    
-  citbin-backend:
-    image: ghcr.io/hgs-itg26/mhgs-software-backend:latest
-    container_name: citbin-backend
-    restart: unless-stopped
+
+  citbin-simulator:
+    image: ghcr.io/hgs-itg27/citbin-simulator:latest
+    container_name: citbin-simulator
     depends_on:
       - mosquitto
-      - citbin-postgres    
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=simulator/data
+      - DEVICE_ID=eui-7066e1fffe00a9e2
+      - SLEEP_TIME=120
+      - BACKEND_API_URL=http://citbin-backend:8000
+      - ./configuration/mosquitto/config/:/mosquitto/config/
+    networks:
+      - citbin_net
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "io.portainer.accesscontrol.teams=azubis"
+
+  citbin-backend:
+    image: ghcr.io/hgs-itg27/citbin-backend:latest
+    container_name: citbin-backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    depends_on:
+      - mosquitto
+      - citbin-postgres
     networks:
       - traefik_net
       - citbin_net
@@ -184,42 +84,123 @@ services:
       - POSTGRES_USER=citbin
       - POSTGRES_PASSWORD=citbin2025!
       - POSTGRES_DB=citbin
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - MQTT_TOPIC=simulator/data
+      - ADMIN_PASSWORD=citbin2025!
+      - APP_LOG_FILE=/app/logs/citbin-backend.log
+    volumes:
+      - ./citbin-logs:/app/logs:rw
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"    
+      - "com.centurylinklabs.watchtower.enable=true"
       - "io.portainer.accesscontrol.teams=azubis"
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik_net"      
+      - "traefik.docker.network=traefik_net"
       - "traefik.http.routers.citbin-backend-http.rule=Host(`citbin-backend.sybit.education`)"
       - "traefik.http.routers.citbin-backend-http.entrypoints=web"
       - "traefik.http.routers.citbin-backend.rule=Host(`citbin-backend.sybit.education`)"
       - "traefik.http.routers.citbin-backend.entrypoints=web-secure"
       - "traefik.http.routers.citbin-backend.tls=true"
+      - "traefik.http.routers.citbin-backend.service=citbin-backend"
       - "traefik.http.routers.citbin-backend.middlewares=secHeaders@file"
       - "traefik.http.services.citbin-backend.loadbalancer.server.port=8000"
-  
+      - "traefik.http.services.citbin-backend.loadbalancer.server.scheme=http"
+
   citbin-frontend:
-    image: ghcr.io/hgs-itg26/mhgs-software-frontend:latest
+    image: ghcr.io/hgs-itg27/citbin-frontend:latest
     container_name: citbin-frontend
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
     depends_on:
-      - citbin-postgres     
+      - citbin-postgres
     networks:
       - traefik_net
       - citbin_net
+    volumes:
+      - ./secrets/.htpasswd:/run/secrets/.htpasswd:ro
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"    
+      - "com.centurylinklabs.watchtower.enable=true"
       - "io.portainer.accesscontrol.teams=azubis"
+
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_net"
+
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
+
       - "traefik.http.routers.citbin-frontend-http.rule=Host(`citbin.sybit.education`)"
       - "traefik.http.routers.citbin-frontend-http.entrypoints=web"
+      - "traefik.http.routers.citbin-frontend-http.middlewares=redirect-to-https@docker"
+
       - "traefik.http.routers.citbin-frontend.rule=Host(`citbin.sybit.education`)"
       - "traefik.http.routers.citbin-frontend.entrypoints=web-secure"
       - "traefik.http.routers.citbin-frontend.tls=true"
       - "traefik.http.routers.citbin-frontend.middlewares=secHeaders@file"
-      - "traefik.http.services.citbin-frontend.loadbalancer.server.port=3000"    
+      - "traefik.http.services.citbin-frontend.loadbalancer.server.port=3000"
+
     environment:
       - NEXT_PUBLIC_API_URL=https://citbin-backend.sybit.education
+
+
+  citbin-mioty-service-server:
+    image: ghcr.io/stritti/mioty-service-center:latest
+    container_name: citbin-mioty-service-center
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PUID=1000
+      - PGID=1000
+      - BASE_STATION_CONFIG_FILE=/app/data/base_stations.json
+    depends_on:
+      - citbin-postgres
+    networks:
+      - traefik_net
+      - citbin_net
+   # healthcheck:
+   #   test: ["CMD", "python", "-c", "import socket; s1 = socket.create_connection(('localhost', 16018), timeout=5); s2 = socket.create_connection(('localhost', 5000), timeout=5); s1.close(); s2.close()"]
+   #   interval: 30s
+   #   timeout: 10s
+   #   retries: 3
+   #   start_period: 40s
+    volumes:
+      - ./mioty/certs:/app/certs:rw
+      - ./mioty/endpoints.json:/app/endpoints.json:rw
+      - ./mioty/bssci_config.py:/app/bssci_config.py:rw
+      - ./mioty/.env:/app/.env:rw
+      - ./mioty/base_stations.json:/app/data/base_stations.json:rw
+      - ./mioty/logs:/app/logs
+      - ./mioty/coverage_positions.json:/app/coverage_positions.json:rw
+      - ./mioty/coverage_floorplan.txt:/app/coverage_floorplan.txt:rw
+      - ./mioty/users.json:/app/users.json:rw
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "io.portainer.accesscontrol.teams=azubis"
+
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_net"
+
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
+      - "traefik.http.routers.citbin-mioty.rule=Host(`mioty.sybit.education`)"
+      - "traefik.http.routers.citbin-mioty.entrypoints=web-secure"
+      - "traefik.http.routers.citbin-mioty.tls=true"
+      - "traefik.http.routers.citbin-mioty.middlewares=secHeaders@file"
+      - "traefik.http.services.citbin-mioty.loadbalancer.server.port=5000"
+
+#      - "traefik.http.routers.citbin-mioty-tls.rule=Host(`mioty-tls.sybit.education`)"
+#      - "traefik.http.routers.citbin-mioty-tls.entrypoints=web-secure"
+#      - "traefik.http.routers.citbin-mioty-tls.tls=true"
+#      - "traefik.http.routers.citbin-mioty-tls.middlewares=secHeaders@file"
+#      - "traefik.http.services.citbin-mioty-tls.loadbalancer.server.port=16018"
+
+
 
 #volumes:
 #  postgresqldata:
