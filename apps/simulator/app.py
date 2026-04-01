@@ -144,7 +144,7 @@ while True:
         )  # Use the 'message' dict
         time.sleep(SLEEP_TIME)
         send_http_uplink(
-            f"{BACKEND_API_URL}/api/v0/helium/uplink", mioty_message
+            f"{BACKEND_API_URL}/api/v1/mioty/uplink", mioty_message
         )  # Use the 'mioty_message' dict
         time.sleep(SLEEP_TIME)
 
