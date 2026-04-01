@@ -42,3 +42,18 @@ Ich verstehe die Frage nicht so richtig.
 
 
 --- 
+# Inbetriebnahme Gateway
+
+IPad mit WLan verbinden: IoT ,,HGS-WLan-IoT,,
+
+- Passwort: IoTHGSTG133
+
+IP: 10.85.33.236
+
+## Sensor Daten Sensor Neu
+
+- EUI -> Box
+- ShAddr: letzte 4 Zahlen von EUI
+- PreAtt aktivieren
+- Network key folgt
+- Applications key folgt
