@@ -57,11 +57,16 @@ while True:
     # Aktuelle Zeit (kompatibel mit älteren Python-Versionen)
     now = datetime.now(timezone.utc).isoformat()
 
+    # Komplette Webhook Message
+
     mioty_message = {
         "session_key_id": "AYY660iFsk5LInv+xd6AVg==",
         "f_port": 1,
         "f_cnt": 211294,
         "frm_payload": "ESPOFI4Esx0D1gHRAAABZg==",
+        "deveui": DEVICE_EUI,
+        "time": now,
+        "deviceProfileName": "SimulatorProfile",
         "decoded_payload": {
             "alarm": 0,
             "base_id": 1,
