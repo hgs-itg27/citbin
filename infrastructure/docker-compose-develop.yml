@@ -29,8 +29,8 @@ services:
     restart: unless-stopped
     ports:
       - "1883:1883"
-    volumes:
-      - ./configuration/mosquitto/config/:/mosquitto/config/
+    # volumes:
+      # - ./configuration/mosquitto/config/:/mosquitto/config/
   
   simulator:
     image: ghcr.io/hgs-itg27/citbin-simulator:latest
