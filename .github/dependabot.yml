@@ -20,3 +20,11 @@ updates:
       - "infrastructure"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: ".github"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "apps/simulator"
+    schedule:
+      interval: "weekly"
