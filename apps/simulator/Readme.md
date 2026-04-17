@@ -4,12 +4,23 @@ This script simulates a Sensor device sending uplink messages with sensor data. 
 
 ## Installation
 
-The simulator requires Python 3 and the libraries listed in `requirements.txt`.
+The simulator requires Python 3.11+ and the libraries listed in `pyproject.toml`.
 
-Install the dependencies using pip:
+### Mit UV (empfohlen)
+
+```bash
+# Dependencies installieren
+uv sync
+
+# Simulator starten
+uv run python app.py
+```
+
+### Mit pip (alternativ)
 
 ```bash
 pip install -r requirements.txt
+python app.py
 ```
 
 ## Running the Simulator
@@ -17,7 +28,7 @@ pip install -r requirements.txt
 You can run the simulator directly using Python:
 
 ```bash
-python app.py
+uv run python app.py
 ```
 
 The simulator's behavior can be configured using environment variables.

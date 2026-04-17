@@ -72,6 +72,55 @@ flowchart LR
 ```
 
 
+## Paketverwaltung mit UV
+
+Das Projekt verwendet [UV](https://github.com/astral-sh/uv) als modernen Python-Paketmanager (alternativ zu pip).
+
+### Installation von UV
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# oder
+pip install uv
+```
+
+### Grundlegende Befehle
+
+```bash
+# Dependencies installieren
+cd apps/api && uv sync
+
+# Mit Dev-Dependencies
+cd apps/api && uv sync --dev
+
+# Paket hinzufügen
+cd apps/api && uv add requests
+
+# Paket zu Dev-Dependencies hinzufügen
+cd apps/api && uv add --dev pytest
+
+# Paket entfernen
+cd apps/api && uv remove requests
+
+# Virtual Environment erstellen (falls nicht vorhanden)
+cd apps/api && uv venv
+
+# App innerhalb der Umgebung ausführen
+cd apps/api && uv run uvicorn app:app --reload
+
+# App testen
+cd apps/api && uv run pytest
+
+# Lock-Datei aktualisieren
+cd apps/api && uv lock
+```
+
+### Warum UV?
+
+- **Schnell**: Bis zu 10-100x schneller als pip
+- **Zuverlässig**: Reproduzierbare Builds mit `uv.lock`
+- **Einfach**: Ein einziges Tool für Virtual Environments, Dependencies und Scripts
+
 ## Erste Schritte
 
 Eine **umfassende Einsteiger-Dokumentation** mit Erklärungen zu allen Technologien, einer Schritt-für-Schritt-Installationsanleitung und wichtigen Konzepten findest du hier:

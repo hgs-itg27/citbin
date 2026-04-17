@@ -3,12 +3,25 @@
 ## Running Backend Locally
 
 > **Achtung**
-> 
-> Es wird die Python-Version `3.12.3` benötigt!
+>
+> Es wird die Python-Version `3.11+` benötigt!
+
+### Mit UV (empfohlen)
 
 ```bash
-# Either set environment variables manually or rename a copy of ".env.example" to ".env" 
+# Umgebungsvariablen setzen (.env.example zu .env kopieren)
+cp .env.example .env
 
+# Dependencies installieren (inkl. dev-dependencies)
+uv sync --dev
+
+# Backend starten
+uv run uvicorn app:app --reload
+```
+
+### Mit pip (alternativ)
+
+```bash
 # Create and activate a virtual environment (optional but recommended)
 python -m venv venv
 source venv/bin/activate  # On Windows: venv/scripts/activate
@@ -16,20 +29,20 @@ source venv/bin/activate  # On Windows: venv/scripts/activate
 # Install dependencies
 pip install -r requirements.txt
 
-# run 
+# run
 python app.py
 ```
 
 ## run tests
 ```bash
-# run tests
+# Mit UV
+uv run pytest -v tests/
+
+# Mit pip
 pytest -v tests/
 
-# run tests with coverage
-pytest --cov=app tests/
-
-# run tests with coverage and generate report
-pytest --cov=app tests/ --cov-report html
+# Mit coverage
+uv run pytest --cov=app tests/ --cov-report html
 ```
 
 ### Running the development infrastructure docker stack:
@@ -53,7 +66,7 @@ This project uses Alembic for database migration management. Here are the key co
 To bring the database up to date with the latest schema:
 
 ```bash
-alembic upgrade head
+uv run alembic upgrade head
 ```
 
 ### Creating a New Migration
@@ -61,7 +74,7 @@ alembic upgrade head
 When you've made changes to the database models, you can create a new migration:
 
 ```bash
-alembic revision --autogenerate -m "Description of changes"
+uv run alembic revision --autogenerate -m "Description of changes"
 ```
 
 Alembic will compare the current models with the database schema and generate a migration file in the `migrations/versions/` directory.
@@ -71,13 +84,13 @@ Alembic will compare the current models with the database schema and generate a 
 To apply the latest migration:
 
 ```bash
-alembic upgrade head
+uv run alembic upgrade head
 ```
 
 To migrate to a specific version:
 
 ```bash
-alembic upgrade <revision>
+uv run alembic upgrade <revision>
 ```
 
 ### Rolling Back Migrations
@@ -85,19 +98,19 @@ alembic upgrade <revision>
 To roll back the last migration:
 
 ```bash
-alembic downgrade -1
+uv run alembic downgrade -1
 ```
 
 To return to a specific version:
 
 ```bash
-alembic downgrade <revision>
+uv run alembic downgrade <revision>
 ```
 
 ### Viewing Migration History
 
 ```bash
-alembic history
+uv run alembic history
 ```
 
 ### Tips for Working with Alembic
