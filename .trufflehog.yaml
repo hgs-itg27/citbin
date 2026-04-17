@@ -1,0 +1,13 @@
+detectors:
+  - name: wifi-password
+    keywords:
+      - wpa_passphrase
+      - wpa_psk
+      - psk=
+      - wifi_password
+      - wlan_pass
+      - wlankey
+      - wireless_key
+      - wireless_password
+    regex:
+      wifi_key: '(?i)psk[=\s:]+["\047]?([a-zA-Z0-9]{8,63})["\047]?'
