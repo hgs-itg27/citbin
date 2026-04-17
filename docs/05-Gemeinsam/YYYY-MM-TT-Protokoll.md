@@ -10,8 +10,8 @@
 **Lehrer:** ***Stefan Martin, Karl Laber***  
 **Schüler:**  
 ***01-Betrieb: Artem, Huzaifa, Irakli, Marius***  
-***02-Hardware: Eray, Lukas***  
-***03-Software: Felix, Jannick, Marlon, Theodor***  
+***02-Hardware: Eray, Lukas, Marlon***  
+***03-Software: Felix, Jannick, Theodor***  
 ***04-Projektleitung: Daniel, Jan, Sofia***
 
 ***Notiz: Bitte die nicht anwesenden Personen aus der Liste entfernen.***
