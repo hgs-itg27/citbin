@@ -19,3 +19,6 @@ httpx==0.24.1
 colorlog==6.9.0
 gevent==24.11.1
 requests==2.32.4
+
+#MQTT
+paho-mqtt==2.1.0
