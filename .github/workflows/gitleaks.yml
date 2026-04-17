@@ -24,7 +24,7 @@ jobs:
         with:
           base: ""
           head: ${{ github.ref_name }}
-          extra_args: --results=verified,unknown
+          extra_args: --results=verified,unknown --config .trufflehog.yaml
 
       - name: Scan pull requests
         if: github.event_name == 'pull_request'
@@ -32,7 +32,7 @@ jobs:
         with:
           base: ${{ github.event.pull_request.base.ref }}
           head: HEAD
-          extra_args: --results=verified,unknown
+          extra_args: --results=verified,unknown --config .trufflehog.yaml
 
       - name: Scan scheduled/manual (full repo)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -40,5 +40,5 @@ jobs:
         with:
           base: ""
           head: ${{ github.ref_name }}
-          extra_args: --results=verified,unknown
+          extra_args: --results=verified,unknown --config .trufflehog.yaml
 
