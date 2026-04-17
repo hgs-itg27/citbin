@@ -5,27 +5,25 @@ description = "Citbin IoT API"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "python-dotenv>=1.0.0",
-    "fastapi>=0.110.0",
-    "uvicorn>=0.22.0",
-    "python-multipart>=0.0.9",
-    "sqlmodel>=0.0.24",
-    "sqlalchemy>=2.0.0",
-    "alembic>=1.13.0",
-    "psycopg2-binary>=2.9.10",
-    "pytest>=8.0.0",
-    "pytest-mock>=3.12.0",
-    "httpx>=0.24.0",
-    "colorlog>=6.9.0",
-    "gevent>=24.0.0",
-    "requests>=2.32.0",
+  "python-dotenv>=1.0.0",
+  "fastapi>=0.110.0",
+  "uvicorn>=0.22.0",
+  "python-multipart>=0.0.9",
+  "sqlmodel>=0.0.24",
+  "sqlalchemy>=2.0.0",
+  "alembic>=1.13.0",
+  "psycopg2-binary>=2.9.10",
+  "pytest>=8.0.0",
+  "pytest-mock>=3.12.0",
+  "httpx>=0.24.0",
+  "colorlog>=6.9.0",
+  "gevent>=24.0.0",
+  "requests>=2.32.0",
+  "paho-mqtt>=2.1.0",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "ruff>=0.1.0",
-    "mypy>=1.0.0",
-]
+dev = ["ruff>=0.1.0", "mypy>=1.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -35,10 +33,7 @@ build-backend = "hatchling.build"
 packages = ["."]
 
 [dependency-groups]
-dev = [
-    "ruff>=0.1.0",
-    "mypy>=1.0.0",
-]
+dev = ["ruff>=0.1.0", "mypy>=1.0.0"]
 
 [tool.ruff]
 line-length = 100
