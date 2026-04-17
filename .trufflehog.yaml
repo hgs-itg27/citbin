@@ -4,10 +4,12 @@ detectors:
       - wpa_passphrase
       - wpa_psk
       - psk=
-      - wifi_password
-      - wlan_pass
+      - wlan
       - wlankey
       - wireless_key
-      - wireless_password
+      - wlan_key
+      - wlan_passwort
+      - wlan_pass
     regex:
       wifi_key: '(?i)psk[=\s:]+["\047]?([a-zA-Z0-9]{8,63})["\047]?'
+      wifi_pass: '(?i)[\s"-]*[Pp]asswort[\s:]+([a-zA-Z0-9]{8,})'
