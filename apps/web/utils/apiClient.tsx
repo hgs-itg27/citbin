@@ -234,7 +234,7 @@ export const deleteDevice = (
 export const sendHeliumUplink = (
   payload: Record<string, any>,
 ): Promise<any> => {
-  return apiRequest<any>("/api/v1/helium/uplink", "POST", payload);
+  return apiRequest<any>("/api/v1/mioty/uplink", "POST", payload);
 };
 
 export const getTrashbinList = (): Promise<TrashbinListItem[]> => {
