@@ -1,9 +1,9 @@
 name: Secret Scan
 
 on:
-  push:
-    branches: [main, develop]
   pull_request:
+    branches: [main, develop]
+  push:
     branches: [main, develop]
   schedule:
     - cron: "0 0 * * 0"
@@ -18,10 +18,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Secret Scanning
+      - name: Scan push to main/develop (full repo)
+        if: github.event_name == 'push'
         uses: trufflesecurity/trufflehog@main
         with:
-          base: ${{ github.event.repository.default_branch }}
+          base: ""
+          head: ${{ github.ref_name }}
+          extra_args: --results=verified,unknown
+
+      - name: Scan pull requests
+        if: github.event_name == 'pull_request'
+        uses: trufflesecurity/trufflehog@main
+        with:
+          base: ${{ github.event.pull_request.base.ref }}
           head: HEAD
+          extra_args: --results=verified,unknown
+
+      - name: Scan scheduled/manual (full repo)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: trufflesecurity/trufflehog@main
+        with:
+          base: ""
+          head: ${{ github.ref_name }}
           extra_args: --results=verified,unknown
 
