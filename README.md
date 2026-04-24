@@ -60,13 +60,13 @@ Das Projekt besteht aus den folgenden Hauptkomponenten:
 
 ```mermaid
 flowchart LR
-
-    sensor[Sensor] -->|LoRaWAN| gateway[Gateway]
-    gateway --> lns["LNS Network - Helium / IoT / TTS"]
-    lns --> chirpstack["ChirpStack LNS"]
-
-    chirpstack <-->|HTTP Integration| backend[Backend]
-
+ 
+    sensor[Sensor] -->|LoRaWAN| BaseStationHGS[BaseStationHGS]
+    BaseStationHGS --> lns["LNS Network - Helium / IoT / TTS"]
+    lns --> BaseStationSybit["BaseStationSybit"]
+ 
+    BaseStationSybit <-->|HTTP Integration| backend[Backend]
+ 
     backend --> db[(PostgreSQL DB)]
     backend -->|REST API| frontend[Frontend]
 ```
