@@ -1,17 +1,19 @@
-from typing import Dict, Any, Optional
-from sqlmodel import Session, select
-from models.device import Device
-from models.trashbin_data import DataLog
-from models.trashbin import Trashbin
-import logging
 import json
+import logging
+from typing import Any, Dict, Optional
+
+from sqlmodel import Session, select
+
+from models.device import Device
+from models.trashbin import Trashbin
+from models.trashbin_data import DataLog
 from modules.sensor_factory import SensorFactory
 from modules.trashbin_factory import TrashbinFactory
 
 
 def parse_sensor_payload(payload: Dict[str, Any]) -> Dict[str, Optional[Any]]:
     """
-    Extrahiert Sensordaten aus einem Mioty-kompatiblen Webhook-Payload.
+    Extrahiert Sensordaten aus einem Mioty-kompatiblen MQTT-Payload.
 
     Gibt ein Dictionary zurück mit:
     - devEui
@@ -61,9 +63,7 @@ def save_sensor_data(db, data: Dict[str, Any]):
             return
 
         # Check if trashbin with device exists in db
-        trashbin = session.exec(
-            select(Trashbin).where(Trashbin.id == device.trashbin_id)
-        ).first()
+        trashbin = session.exec(select(Trashbin).where(Trashbin.id == device.trashbin_id)).first()
         if not trashbin:
             logging.info(
                 f"Received data from unattached device(device_id: {device.id}) -> wasn't saved in DB"
@@ -82,9 +82,7 @@ def save_sensor_data(db, data: Dict[str, Any]):
                 f"Trashbin profile {trashbin_profile_name} not found for trashbin {trashbin.id}"
             )
             return
-        logging.info(
-            f"Using {trashbin_profile.profile_name} trashbin data processing profile"
-        )
+        logging.info(f"Using {trashbin_profile.profile_name} trashbin data processing profile")
 
         obj_data = profile.get_data(data.get("object"))
         obj_data = profile.process_data(obj_data, trashbin_profile)
