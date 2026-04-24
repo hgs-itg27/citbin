@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, Optional
+from typing import Any
 import logging
 
 def uncomplement(val, bitwidth):
@@ -78,7 +78,7 @@ def hex_to_bytes(hex_string):
     hex_string = hex_string.lower().replace("0x", "").replace(" ", "")
     return list(bytes.fromhex(hex_string))
 
-def decode(encoded_payload:str)->decoded_payload:Dict[str,Any]:
+def decode(encoded_payload:str)->dict[str,Any]:
     hex_input = encoded_payload
     port = 1
         try:
