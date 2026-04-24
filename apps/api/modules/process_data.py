@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from sqlmodel import Session, select
 
@@ -11,7 +11,7 @@ from modules.sensor_factory import SensorFactory
 from modules.trashbin_factory import TrashbinFactory
 
 
-def parse_sensor_payload(payload: Dict[str, Any]) -> Dict[str, Optional[Any]]:
+def parse_sensor_payload(payload: dict[str, Any]) -> dict[str, Optional[Any]]:
     """
     Extrahiert Sensordaten aus einem Mioty-kompatiblen MQTT-Payload.
 
@@ -42,7 +42,7 @@ def parse_sensor_payload(payload: Dict[str, Any]) -> Dict[str, Optional[Any]]:
     }
 
 
-def save_sensor_data(db, data: Dict[str, Any]):
+def save_sensor_data(db, data: dict[str, Any]):
     if not data.get("devEui", None):
         return
     devEui = data["devEui"]

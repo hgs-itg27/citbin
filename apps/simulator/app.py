@@ -6,7 +6,7 @@ import json
 from datetime import datetime, timezone  # timezone importieren
 import base64
 import atexit
-import paho.mqtt.client as mqtt 
+import paho.mqtt.client as mqtt
 
 
 # Konfiguration aus ENV oder Defaults
@@ -20,7 +20,7 @@ TOPIC = os.environ.get("TOPIC", "home/tutorial/PubSubDemo")
 BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS", "localhost")
 PORT = int(os.environ.get("PORT", "1883"))
 QOS = int(os.environ.get("QOS", "1"))
-client_id = f'python-mqtt-{random.randint(0, 1000)}'
+client_id = f"python-mqtt-{random.randint(0, 1000)}"
 
 
 # Logging
@@ -31,10 +31,7 @@ logging.basicConfig(
 # -----------------------------
 # MQTT CLIENT (PERSISTENT)
 # -----------------------------
-client = mqtt.Client(
-    mqtt.CallbackAPIVersion.VERSION2,
-    client_id
-)
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id)
 
 try:
     client.connect(BROKER_ADDRESS, PORT)
@@ -99,30 +96,36 @@ while True:
         "time": now,
         "deviceProfileName": "SimulatorProfile",
         "decoded_payload": {
-            "alarm": 0,
             "base_id": 1,
-            "battery_voltage": 7,
-            "tof_status": 0,  # 0 == Valid range
-            "tof_distance": 1000,  # in milimeter
+            "major_version": 1,
+            "minor_version": 2,
+            "product_version": 7,
+            "up_cnt": 83,
+            "battery_voltage": 6.088,
+            "internal_temperature": 24,
+            "alarm": "ALARM",
+            "master_value": 310,
+            "tof_status": 2,  # 0 == Valid range
+            "tof_distance": 1315,  # in milimeter
             "tof_index": 0,  # Letzter aufgenommer Wert 0 == bis 1.3 m
             "radar_status": 1,  # 1 == erfogreich, 0 == error
-            "radar_no_peaks": 3,  # Anzahl der Peaks (unbekannt)
-            "radar_distance_1": 1000,  # Distanz 1 mit maximalem Peak in milimeter
-            "radar_ra_1": 0,  # Distanz 1 mit maximalem Peak in milimeter
-            "radar_distance_2": 1000,  # Distanz 2 mit maximalem Peak in milimeter
-            "radar_ra_2": 0,  # Distanz 2 mit maximalem Peak in milimeter
-            "radar_distance_3": 1000,  # Distanz 3 mit maximalem Peak in milimeter
-            "radar_ra_3": 0,  # Distanz 3 mit maximalem Peak in milimeter
-            "acc_status": 0,  # 0 == OK
-            "acc_orientation": 2,  # 2 == Linse zum Boden
-            "acc_impact": 0,  # 1 == Vandalismusevent
+            "radar_no_peaks": 1,  # Anzahl der Peaks (unbekannt)
+            "radar_distance_1": 310,  # Distanz 1 mit maximalem Peak in milimeter
+            "radar_amplitude_1": -99,
+            "radar_distance_2": 0,  # Distanz 2 mit maximalem Peak in milimeter
+            "radar_amplitude_2": 0,
+            "radar_distance_3": 0,  # Distanz 3 mit maximalem Peak in milimeter
+            "radar_amplitude_3": 0,
+            "acc_status": "OK",  # 0 == OK
+            "acc_orientation": 1,  # 2 == Linse zum Boden
+            "acc_open": 0,
+            "acc_open_cnt": 21,
+            "acc_impact": "OK",  # 1 == Vandalismusevent
         },
     }
 
     try:
-        send_mqtt_uplink(
-            mioty_message
-        )  # Use the 'mioty_message' dict
+        send_mqtt_uplink(mioty_message)  # Use the 'mioty_message' dict
         time.sleep(SLEEP_TIME)
 
     except Exception as e:
