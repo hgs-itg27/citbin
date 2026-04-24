@@ -7,16 +7,16 @@ class Sensor:
     Basisklasse für alle Sensoren.
     Jeder Sensor muss die Methoden get_data und process_data implementieren.
     """
-    
+
     profile_name = None
 
     @staticmethod
     def get_data(object: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Returns raw battery and distance values from chirpstack payloads 'object'
+        Returns raw battery and distance values from mioty payloads 'object'
 
         Args:
-            object: chirpstack payloads 'object' attribute as Dict
+            object: mioty payloads 'object' attribute as Dict
 
         Returns:
             Dictionary with raw values
