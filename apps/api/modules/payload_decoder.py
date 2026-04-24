@@ -82,16 +82,16 @@ def decode(encoded_payload:str)->dict[str,Any]:
     hex_input = encoded_payload
     port = 1
         try:
-        bytes_data = hex_to_bytes(hex_input)
+            bytes_data = hex_to_bytes(hex_input)
 
-        logging.info("\nRohbytes:")
-        logging.info(bytes_data)
+            logging.info("\nRohbytes:")
+            logging.info(bytes_data)
 
-        result = decoder(bytes_data, port)
+            result = decoder(bytes_data, port)
 
-        logging.info("\nDecoded Payload:")
-        logging.info(json.dumps(result, indent=2))
-        return result
+            logging.info("\nDecoded Payload:")
+            logging.info(json.dumps(result, indent=2))
+            return result
 
     except Exception as e:
         logging.info("Fehler:", e)
