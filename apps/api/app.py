@@ -1,20 +1,21 @@
-from dotenv import load_dotenv
-import os
-from fastapi import FastAPI, status, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 import logging
 import logging.handlers
-import colorlog
+import os
 from contextlib import asynccontextmanager
-from modules import postgresql as postgres
-from modules.auto_migrate import run_migrations
+
+import colorlog
 import uvicorn
+from dotenv import load_dotenv
 
 # Setup API routes from modules
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, FastAPI, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
 from dependencies import get_dependencies
-from routers import devices, mioty, trashbin, trashbin_data, admin
+from modules import postgresql as postgres
+from modules.auto_migrate import run_migrations
+from routers import admin, devices, mioty, trashbin, trashbin_data
 
 load_dotenv()
 
@@ -63,9 +64,7 @@ if log_dir and not os.path.exists(log_dir):  # Check if log_dir is not empty
     except OSError as e:
         logger.error(f"Error creating log directory {log_dir}: {e}")
 elif not log_dir:  # Handle case where APP_LOG_FILE is just a filename like "app.log"
-    logger.info(
-        "Logging to current directory as no specific log directory is set in APP_LOG_FILE."
-    )
+    logger.info("Logging to current directory as no specific log directory is set in APP_LOG_FILE.")
 
 
 # File Handler
@@ -106,6 +105,7 @@ CONFIG = {
 async def lifespan(app: FastAPI):
     # Startup code - runs before the application starts
     import dependencies
+    from api import mioty_service
 
     # Run database migrations
     try:
@@ -130,6 +130,11 @@ async def lifespan(app: FastAPI):
         logging.info("Successfully created SQL tables.")
     except Exception as e:
         logging.error(f"Failed to create SQL tables: {e}")
+    try:
+        mioty_service.create()
+        logging.info("Successfully connected to MQTT BROKER.")
+    except Exception as e:
+        logging.error(f"Failed to connect to MQTT BROKER: {e}")
 
     yield  # This is where the application runs
 
@@ -153,7 +158,6 @@ origins = [
     "http://localhost",
     "http://localhost:3000",  # Standard-Port für Next.js
     "http://localhost:8000",  # Die API selbst
-    "https://animated-fiesta-r4p775q6xjr7hpq54-8000.app.github.dev/",
     # Füge hier die URL deiner produktiven Frontend-Anwendung hinzu, z.B.:
     # "https://deine-domain.de"
 ]
@@ -197,9 +201,7 @@ api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(devices.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(mioty.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(trashbin.router, dependencies=[Depends(get_dependencies)])
-api_router.include_router(
-    trashbin_data.router, dependencies=[Depends(get_dependencies)]
-)
+api_router.include_router(trashbin_data.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(
     admin.router,
     dependencies=[
