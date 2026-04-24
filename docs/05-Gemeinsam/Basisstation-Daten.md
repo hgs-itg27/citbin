@@ -1,4 +1,4 @@
-# Basisstation EUI
+# Basisstation (BS) EUI
 ### HGS Basisstation
 A001-0090-001
 Gateway AVA
