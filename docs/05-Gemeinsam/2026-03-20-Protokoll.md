@@ -1,4 +1,4 @@
-# Protokoll Sitzung 2026-03-20
+# Protokoll Sitzung 02
 
 **Datum:** 2026-03-20  
 **Sitzung:** ***02***  
