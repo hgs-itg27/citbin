@@ -1,4 +1,4 @@
-# Protokoll Sitzung XX
+# Protokoll Sitzung 06
 
 **Datum:** ***2026-04-24***  
 **Sitzung:** ***06***  
