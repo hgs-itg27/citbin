@@ -1,4 +1,4 @@
-# Protokoll Sitzung 5
+# Protokoll Sitzung 05
 
 **Datum:** ***2026-04-17***  
 **Sitzung:** ***5***  
