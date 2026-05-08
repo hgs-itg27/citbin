@@ -7,7 +7,7 @@ from dependencies import get_dependencies
 from modules import payload_decoder, process_data
 
 TOPIC = "home/tutorial/PubSubDemo"
-BROKER_ADDRESS = "localhost"
+BROKER_ADDRESS = "10.83.33.236"
 PORT = 1883
 
 
