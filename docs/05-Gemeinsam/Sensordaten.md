@@ -4,8 +4,9 @@
 **Sensortyp -> S-APOQ-MIOTY-TR-ACC**  
 **Netw-Key -> 1FBAC79CA83DC2E40F5372EAC20493BB**  
 **Short Address -> 36C8**  
-**DEV EUI -> FCA84A01000036C8**
+**DEV EUI -> FCA84A01000036C8**  
 **Standort: HGS Schule** 
+
 
 ---
 
