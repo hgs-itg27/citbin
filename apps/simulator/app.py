@@ -16,8 +16,8 @@ SLEEP_TIME = float(os.environ.get("SLEEP_TIME", "5"))
 # BACKEND_API_URL = os.environ.get("BACKEND_API_URL", "http://localhost:8000")
 
 # muss noch in die env datei
-TOPIC = os.environ.get("TOPIC", "home/tutorial/PubSubDemo")
-BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS", "localhost")
+TOPIC = os.environ.get("TOPIC", "mioty/simulator")
+BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS", "10.85.33.236")
 PORT = int(os.environ.get("PORT", "1883"))
 QOS = int(os.environ.get("QOS", "1"))
 client_id = f"python-mqtt-{random.randint(0, 1000)}"

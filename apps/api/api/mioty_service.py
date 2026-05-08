@@ -6,8 +6,8 @@ from fastapi import Depends
 from dependencies import get_dependencies
 from modules import payload_decoder, process_data
 
-TOPIC = "home/tutorial/PubSubDemo"
-BROKER_ADDRESS = "10.83.33.236"
+TOPIC = "mioty/simulator"
+BROKER_ADDRESS = "10.85.33.236"
 PORT = 1883
 
 
