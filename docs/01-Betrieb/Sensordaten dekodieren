@@ -7,11 +7,8 @@
    `apps/api/test/standalone_payloaddecoder.py`  
    komplett in den Editor kopieren.
 
-3. MIOTY-Payload als HEX-Wert einfügen, z. B.:
+3. MIOTY-Payload als HEX-Wert einfügen
 
-```python
-payload = "01020304AABBCCDD"
-```
 
 4. Auf **Run** klicken.
 
