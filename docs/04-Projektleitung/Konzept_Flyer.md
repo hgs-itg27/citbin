@@ -1,6 +1,5 @@
 # Konzept Flyer CitBin
 
---
 
 ## Abgabe
 Texte abgeben
@@ -8,7 +7,6 @@ Texte abgeben
 - spätestens Mitte nächster Woche (17. Juni)
 - Informationen und Texte an Herr Zschoernig (zs) auf Teams schicken
 
---
 
 ## Algemein
 - ca. 70% Bilder, 30% Text
@@ -16,7 +14,6 @@ Texte abgeben
 - Bilder/ Logos sollen in Vektor sein bzw. Herr Ztschörnig schicken, und er wandelt es um
 - Anzahl Wörter der Texte zu den Bilder angeben, damit sie wissen, wie viel Platz sie brauchen
 
---
 
 ## Inhalt
 
