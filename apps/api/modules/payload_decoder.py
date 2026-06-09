@@ -99,10 +99,10 @@ def hex_to_bytes(hex_string):
 
 
 def decode(encoded_payload: list[int]) -> dict[str, Any]:
-    hex_input = encoded_payload
     port = 1
+
     try:
-        bytes_data = hex_to_bytes(hex_input)
+        bytes_data = encoded_payload
 
         logging.info("\nRohbytes:")
         logging.info(bytes_data)
@@ -111,9 +111,9 @@ def decode(encoded_payload: list[int]) -> dict[str, Any]:
 
         logging.info("\nDecoded Payload:")
         logging.info(json.dumps(result, indent=2))
+
         return result
 
-    except ValueError as e:
-        logging.error(f"Ungueltiger Hex Payload {e}")
-    except Exception as e:
+    except Exception:
         logging.exception("Unerwarteter Fehler beim Decoding")
+        return {}
