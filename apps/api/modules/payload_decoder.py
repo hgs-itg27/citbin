@@ -104,8 +104,7 @@ def decode(encoded_payload: list[int]) -> dict[str, Any]:
     try:
         bytes_data = encoded_payload
 
-        logging.info("\nRohbytes:")
-        logging.info(bytes_data)
+        logging.info(f"\nRohbytes: {bytes_data}")
 
         result = decoder(bytes_data, port)
 
