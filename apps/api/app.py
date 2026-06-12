@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse
 from dependencies import get_dependencies
 from modules import postgresql as postgres
 from modules.auto_migrate import run_migrations
-from routers import admin, devices, mioty, trashbin, trashbin_data
+from routers import admin, devices, trashbin, trashbin_data
 
 load_dotenv()
 
@@ -199,7 +199,6 @@ api_router = APIRouter(prefix="/api/v1")
 
 # Include routers
 api_router.include_router(devices.router, dependencies=[Depends(get_dependencies)])
-api_router.include_router(mioty.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(trashbin.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(trashbin_data.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(

@@ -1,5 +1,7 @@
+import datetime
 import json
 import logging
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 from sqlmodel import Session, select
@@ -11,7 +13,7 @@ from modules.sensor_factory import SensorFactory
 from modules.trashbin_factory import TrashbinFactory
 
 
-def parse_sensor_payload(payload: dict[str, Any]) -> dict[str, Optional[Any]]:
+def parse_sensor_payload(payload: dict[str, Any], devEui: str) -> dict[str, Optional[Any]]:
     """
     Extrahiert Sensordaten aus einem Mioty-kompatiblen MQTT-Payload.
 
@@ -27,11 +29,10 @@ def parse_sensor_payload(payload: dict[str, Any]) -> dict[str, Optional[Any]]:
     profile_name = payload.get("deviceProfileName")
 
     # Zeitstempel (falls vorhanden)
-    timestamp = payload.get("time")
+    timestamp = datetime.now(timezone.utc).isoformat()
 
     # Entschlüsselte Sensordaten (aus 'object')
-    obj = payload.get("decoded_payload", {})
-    devEui = payload.get("deveui")
+    obj = payload
 
     return {
         "devEui": devEui,
@@ -101,7 +102,7 @@ def save_sensor_data(db, data: dict[str, Any]):
         logging.info(f"INSERT datalog: {datalog}")
 
         # Update device attributes
-        device.battery_level = obj_data.get("battery") or device.battery_level
+        device.battery_level = obj_data.get("battery_voltage") or device.battery_level
         device.last_seen = datalog.time
         device.latest_data_id = datalog.id
         device.deviceProfileName = sensor_profile_name

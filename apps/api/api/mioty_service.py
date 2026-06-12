@@ -19,9 +19,10 @@ def on_message(client, userdata, message):
     msg = json.loads(message.payload.decode("utf-8"))
     # logging.info(f"[DEBUG] Mioty Rohdaten empfangen:\n{msg}")
     temp = message.topic.split("/")
-    logging.info(f"DevEui: {temp[2]}")
+    devEui = temp[2]
+    logging.info(f"DevEui: {devEui}")
     decoded = payload_decoder.decode(msg["data"])
-    parsed = process_data.parse_sensor_payload(decoded)
+    parsed = process_data.parse_sensor_payload(decoded, devEui)
     process_data.save_sensor_data(deps["db"], parsed)
 
 
