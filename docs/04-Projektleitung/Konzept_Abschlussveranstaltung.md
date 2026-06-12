@@ -1,4 +1,4 @@
-# Kozept Abschlussveranstaltung
+# Konzept Abschlussveranstaltung
 
 ## Termin
 Donnerstag, 16. Juli 2026
