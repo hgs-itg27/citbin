@@ -19,7 +19,7 @@ Frau Bieler gibt Informationen an Bürgermeister, Ihrer Vertretung (evtl. auch F
 - Herr Gantner (GMT) (ga@hgs-singen.online)
 - Herr Zschoernig (GMT) (zs@hgs-singen.online)
 - Herr Gripentrog (IT nächstes Jahr) (gp@hgs-singen.online)
-- Herr Benz (IT nächstes Jahr) (bz@hgs-singen.online) ?
+- Herr Benz (IT nächstes Jahr) (bz@hgs-singen.online)
 - Klasse TG 12/3 (so.jaeger@hgs-singen.online; d.saracoglu@hgs-singen.online)
 - Samuel Brandao-Santana (TG13/3) (s.brandao@hgs-singen.online)
 - Nicolas Wagner (TG13/3) (n.wagner@hgs-singen.online)
