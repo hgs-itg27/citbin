@@ -1,7 +1,7 @@
 # Tagesordnung Meeting am Montag, 15. Juni 2026
 
 **Termin:** Montag, 15. Juni 2026; 9:30 - 13:00 Uhr  
-**Teilnehmer:** Herr Bucher, (evtl. Herr Khalig), Herr Laber, Herr Martin, Klasse TG12/3  
+**Teilnehmer:** Herr Bucher, (evtl. Herr Dr. Kahlig), Herr Laber, Herr Martin, Klasse TG12/3  
 **Pause:** Zwischendurch, voraussichtlich von 11:10 Uhr - 11:30 Uhr  
 (Kommt darauf an, wie lange wir zur Besprechung brauchen.)
 
