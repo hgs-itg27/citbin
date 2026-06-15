@@ -5,13 +5,13 @@
 **Protokollführer:** ***Felix Baumann***  
 
 **Teilnehmer:**  
-**IFM:** ***?***  
+**ifm:** ***Herr Kahlig, Herr Bucher***  
 **Lehrer:** ***Stefan Martin, Karl Laber***  
 **Schüler:**  
-***01-Betrieb: Artem, Huzaifa, Irakli, Marius***  
-***02-Hardware: Eray, Lukas, Marlon***  
+***01-Betrieb: Huzaifa, Irakli, Marius***  
+***02-Hardware: Eray, Lukas***  
 ***03-Software: Felix, Jannick, Theodor***  
-***04-Projektleitung: Daniel, Jan, Sofia***
+***04-Projektleitung: Daniel, Sofia***
 
 ---
 ## Besprochene Themen/ Inhalt:
@@ -46,6 +46,6 @@
 - erst mal alles provesorisch machen um in 4 Wochen vorzuführen, dass es funktioniert
 
 ## 6. Fragen
-- bei fragen an Herr Dr. ? schicken (über Projektleitung)
+- bei fragen an Herr Dr. Kahlig schicken (über Projektleitung)
 
 ...
