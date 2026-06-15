@@ -1,4 +1,4 @@
-# Protokoll Sitzung XX
+# Protokoll Sitzung 08
 
 **Datum:** ***2026-06-15***  
 **Sitzung:** ***08***  
@@ -36,8 +36,9 @@
 - Die Raspys können im neun Basistationsystem genutzt/angeschlossen werden.
 
 ### 3. Sensoren kaufen
-- Sensoren kaufbar unter https://shop.sentinum.de/products/apollon-q-radar-smart-waste-sensor-mioty%C2%AE 
-- Hardwaregruppe übernimmt kauf
+- 4 Stk. von Sensor `Apollon-Q Radar Smart Waste Sensor mioty®` kaufen
+- Sensoren kaufbar unter https://shop.sentinum.de/products/apollon-q-radar-smart-waste-sensor-mioty%C2%AE
+- Hardwaregruppe/ Herr Laber übernimmt Kauf
 
 ### 4. Projektvorstellung
 - Ifm stellt ihre Ergebnisse vor
@@ -47,5 +48,3 @@
 
 ## 6. Fragen
 - bei fragen an Herr Dr. Kahlig schicken (über Projektleitung)
-
-...
