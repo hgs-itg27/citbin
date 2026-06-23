@@ -92,8 +92,8 @@ def save_sensor_data(db, data: dict[str, Any]):
             f"Using {trashbin_profile.profile_name} trashbin data processing profile"
         )
 
-        obj_data = profile.get_data(data.get("object"))
-        obj_data = profile.process_data(obj_data, trashbin_profile)
+        temp = profile.get_data(data.get("object"))
+        obj_data = profile.process_data(temp, trashbin_profile)
 
         # Insert into datalog
         datalog = DataLog(

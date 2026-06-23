@@ -35,7 +35,7 @@ console_handler.setFormatter(
         datefmt="%Y-%m-%d %H:%M:%S",
         log_colors={
             "DEBUG": "cyan",
-            "INFO": "blue,bg_white",
+            "INFO": "black,bg_white",
             "WARNING": "yellow",
             "ERROR": "red",
             "CRITICAL": "bold_red,bg_white",
@@ -64,7 +64,9 @@ if log_dir and not os.path.exists(log_dir):  # Check if log_dir is not empty
     except OSError as e:
         logger.error(f"Error creating log directory {log_dir}: {e}")
 elif not log_dir:  # Handle case where APP_LOG_FILE is just a filename like "app.log"
-    logger.info("Logging to current directory as no specific log directory is set in APP_LOG_FILE.")
+    logger.info(
+        "Logging to current directory as no specific log directory is set in APP_LOG_FILE."
+    )
 
 
 # File Handler
@@ -200,7 +202,9 @@ api_router = APIRouter(prefix="/api/v1")
 # Include routers
 api_router.include_router(devices.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(trashbin.router, dependencies=[Depends(get_dependencies)])
-api_router.include_router(trashbin_data.router, dependencies=[Depends(get_dependencies)])
+api_router.include_router(
+    trashbin_data.router, dependencies=[Depends(get_dependencies)]
+)
 api_router.include_router(
     admin.router,
     dependencies=[

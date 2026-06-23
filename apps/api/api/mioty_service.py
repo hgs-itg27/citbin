@@ -9,6 +9,8 @@ from modules import payload_decoder, process_data
 topics = {
     "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-36-c8/uplink",
     "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-36-c9/uplink",
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-94/uplink",
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-96/uplink",
 }
 BROKER_ADDRESS = "10.85.33.236"
 PORT = 1883
