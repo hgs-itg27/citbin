@@ -106,6 +106,11 @@ To return to a specific version:
 ```bash
 uv run alembic downgrade <revision>
 ```
+To set a current version:
+
+```
+uv run alembic stamp head
+```
 
 ### Viewing Migration History
 

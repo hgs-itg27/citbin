@@ -157,8 +157,8 @@ Daniel Saracoglu: d.saracoglu@hgs-singen.online
 
 # 6. Sprecher & Mitglieder der jeweiligen Gruppen:  
 
-**Software:** Felix (GS), Jannick (stellv. GS), Theodor (TM), Marlon (TM)  
-**Hardware:** Eray (GS), Lukas (stellv. GS)  
+**Software:** Felix (GS), Jannick (stellv. GS), Theodor (TM)     
+**Hardware:** Eray (GS), Lukas (stellv. GS), Marlon (TM)  
 **Betrieb:** Marius (GS), Artem (stellv. GS), Huzaifa (TM), Irakli (TM)  
 **Projektleitung:** Daniel (GS), Sofia (stellv. GS), Jan (TM)  
 

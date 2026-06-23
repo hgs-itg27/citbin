@@ -1,17 +1,23 @@
-from typing import Dict, Any, Optional
-from sqlmodel import Session, select
-from models.device import Device
-from models.trashbin_data import DataLog
-from models.trashbin import Trashbin
-import logging
+import datetime
 import json
+import logging
+from datetime import datetime, timezone
+from typing import Any, Optional
+
+from sqlmodel import Session, select
+
+from models.device import Device
+from models.trashbin import Trashbin
+from models.trashbin_data import DataLog
 from modules.sensor_factory import SensorFactory
 from modules.trashbin_factory import TrashbinFactory
 
 
-def parse_sensor_payload(payload: Dict[str, Any]) -> Dict[str, Optional[Any]]:
+def parse_sensor_payload(
+    payload: dict[str, Any], devEui: str
+) -> dict[str, Optional[Any]]:
     """
-    Extrahiert Sensordaten aus einem Mioty-kompatiblen Webhook-Payload.
+    Extrahiert Sensordaten aus einem Mioty-kompatiblen MQTT-Payload.
 
     Gibt ein Dictionary zurück mit:
     - devEui
@@ -25,11 +31,10 @@ def parse_sensor_payload(payload: Dict[str, Any]) -> Dict[str, Optional[Any]]:
     profile_name = payload.get("deviceProfileName")
 
     # Zeitstempel (falls vorhanden)
-    timestamp = payload.get("time")
+    timestamp = datetime.now(timezone.utc).isoformat()
 
     # Entschlüsselte Sensordaten (aus 'object')
-    obj = payload.get("decoded_payload", {})
-    devEui = payload.get("deveui")
+    obj = payload
 
     return {
         "devEui": devEui,
@@ -40,10 +45,10 @@ def parse_sensor_payload(payload: Dict[str, Any]) -> Dict[str, Optional[Any]]:
     }
 
 
-def save_sensor_data(db, data: Dict[str, Any]):
+def save_sensor_data(db, data: dict[str, Any]):
     if not data.get("devEui", None):
         return
-    devEui = data["devEui"]
+    devEui = data.get("devEui")
 
     if not bool(data.get("object")):
         logging.info(
@@ -71,7 +76,8 @@ def save_sensor_data(db, data: Dict[str, Any]):
             return
 
         # Process data
-        sensor_profile_name = data.get("profile_name")
+        # sensor_profile_name = data.get("profile_name")
+        sensor_profile_name = "APOLLON-Q"
         profile = SensorFactory.get_sensor(sensor_profile_name)
         logging.info(f"Using {profile.profile_name} sensor data processing profile")
 
@@ -94,7 +100,7 @@ def save_sensor_data(db, data: Dict[str, Any]):
             trashbin_id=trashbin.id,
             time=data.get("timestamp"),
             payload=json.dumps(data.get("full_payload")),
-            distance=obj_data.get("radar_distance_1"),
+            distance=obj_data.get("distance"),
             fill_level=obj_data.get("fill_level"),
         )
         session.add(datalog)
@@ -103,7 +109,7 @@ def save_sensor_data(db, data: Dict[str, Any]):
         logging.info(f"INSERT datalog: {datalog}")
 
         # Update device attributes
-        device.battery_level = obj_data.get("battery") or device.battery_level
+        device.battery_level = obj_data.get("battery_voltage") or device.battery_level
         device.last_seen = datalog.time
         device.latest_data_id = datalog.id
         device.deviceProfileName = sensor_profile_name
