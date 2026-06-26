@@ -25,7 +25,7 @@
 ## Bearbeiteter Inhalt:
 
 ### 1. Betrieb:
--       Eine Beschreibung angefangen zu erstellen wie man einen Sensor in die Website intigriert.
+-       Eine Beschreibung angefangen zu erstellen wie man einen Sensor in die Website integriert.
 ### 2. Hardware:
 -       Neue Senosren beschriftet
         Sensoren Reichweite mit kleiner Antenne und offenem    Fenster getestet.  
