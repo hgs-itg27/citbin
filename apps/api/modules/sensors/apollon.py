@@ -32,9 +32,9 @@ class Apollon_Q(Sensor):
         if battery > 100:
             battery = 100
 
-        logging.info(f"Battery: {battery}")
+        logging.info(f"Final Battery: {battery}")
         return {
-            "battery": battery,
+            "battery_voltage": battery,
             "distance": data.get("distance"),
             "fill_level": fill_level,
         }
