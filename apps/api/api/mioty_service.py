@@ -13,7 +13,7 @@ topics = {
     "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-96/uplink",
     "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-97/uplink",
 }
-BROKER_ADDRESS = "10.85.33.236"
+BROKER_ADDRESS = "citbin.hgs-singen.de"
 PORT = 1883
 
 
