@@ -1,33 +1,55 @@
 import logging
+import json
 
 import paho.mqtt.client as mqtt
-from fastapi import Depends
 
 from dependencies import get_dependencies
 from modules import payload_decoder, process_data
 
-TOPIC = "home/tutorial/PubSubDemo"
-BROKER_ADDRESS = "localhost"
+topics = {
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-36-c8/uplink",
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-36-c9/uplink",
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-94/uplink",
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-96/uplink",
+    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-3d-97/uplink",
+}
+BROKER_ADDRESS = "10.85.33.236"
 PORT = 1883
 
 
-def on_message(client, userdata, message, deps: dict = Depends(get_dependencies)):
-    msg = str(message.payload.decode("utf-8"))
+def on_message(client, userdata, message):
+    deps = get_dependencies()
+    msg = json.loads(message.payload.decode("utf-8"))
     logging.info(f"[DEBUG] Mioty Rohdaten empfangen:\n{msg}")
-    decoded = payload_decoder.decode(msg)
-    parsed = process_data.parse_sensor_payload(decoded)
-    logging.info(f"[DEBUG] Mioty Daten umgewandelt:\n{parsed}")
+    temp = message.topic.split("/")
+    devEui = temp[2]
+    logging.info(f"DevEui: {devEui}")
+    decoded = payload_decoder.decode(msg["data"])
+    temp2 = msg["baseStations"]
+    temp3 = temp2[0]
+    rxTime = temp3["rxTime"]
+    logging.info(f"[DEBUG] rxTime: {rxTime}")
+    parsed = process_data.parse_sensor_payload(decoded, devEui, int(str(rxTime)[:10]))
     process_data.save_sensor_data(deps["db"], parsed)
 
 
 def on_connect(client, userdata, flags, rc):
     logging.info("Connected to MQTT Broker: " + BROKER_ADDRESS)
-    client.subscribe(TOPIC)
+    for t in topics:
+        client.subscribe(t)
+        logging.info(f"Subscribed succesfully to:{t} ")
+
+
+def on_disconnect(client, userdata, rc):
+    logging.warning(f"\nDisconnected from broker, rc = {rc}\n")
 
 
 def create():
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
+    client.on_disconnect = on_disconnect
     client.connect(BROKER_ADDRESS, PORT)
-    client.loop_forever()
+    logging.info("Before loop")
+    client.loop_start()
+    logging.info("After loop")
