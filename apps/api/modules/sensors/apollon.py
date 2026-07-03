@@ -14,7 +14,6 @@ class Apollon_Q(Sensor):
     @staticmethod
     def process_data(data: Dict[str, Any], trashbin_profile) -> Dict[str, Any]:
         temp = data.get("battery")
-        logging.info(f"Battery: {temp}")
         MAX_BAT = 6.1
         MIN_BAT = 5.7
         battery = 0
@@ -32,7 +31,6 @@ class Apollon_Q(Sensor):
         if battery > 100:
             battery = 100
 
-        logging.info(f"Final Battery: {battery}")
         return {
             "battery_voltage": battery,
             "distance": data.get("distance"),

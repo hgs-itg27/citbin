@@ -20,12 +20,16 @@ PORT = 1883
 def on_message(client, userdata, message):
     deps = get_dependencies()
     msg = json.loads(message.payload.decode("utf-8"))
-    # logging.info(f"[DEBUG] Mioty Rohdaten empfangen:\n{msg}")
+    logging.info(f"[DEBUG] Mioty Rohdaten empfangen:\n{msg}")
     temp = message.topic.split("/")
     devEui = temp[2]
     logging.info(f"DevEui: {devEui}")
     decoded = payload_decoder.decode(msg["data"])
-    parsed = process_data.parse_sensor_payload(decoded, devEui)
+    temp2 = msg["baseStations"]
+    temp3 = temp2[0]
+    rxTime = temp3["rxTime"]
+    logging.info(f"[DEBUG] rxTime: {rxTime}")
+    parsed = process_data.parse_sensor_payload(decoded, devEui, int(str(rxTime)[:10]))
     process_data.save_sensor_data(deps["db"], parsed)
 
 
@@ -36,10 +40,15 @@ def on_connect(client, userdata, flags, rc):
         logging.info(f"Subscribed succesfully to:{t} ")
 
 
+def on_disconnect(client, userdata, rc):
+    logging.warning(f"\nDisconnected from broker, rc = {rc}\n")
+
+
 def create():
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
+    client.on_disconnect = on_disconnect
     client.connect(BROKER_ADDRESS, PORT)
     logging.info("Before loop")
     client.loop_start()

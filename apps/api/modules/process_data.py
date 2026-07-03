@@ -14,7 +14,7 @@ from modules.trashbin_factory import TrashbinFactory
 
 
 def parse_sensor_payload(
-    payload: dict[str, Any], devEui: str
+    payload: dict[str, Any], devEui: str, rxTime: int
 ) -> dict[str, Optional[Any]]:
     """
     Extrahiert Sensordaten aus einem Mioty-kompatiblen MQTT-Payload.
@@ -31,7 +31,7 @@ def parse_sensor_payload(
     profile_name = payload.get("deviceProfileName")
 
     # Zeitstempel (falls vorhanden)
-    timestamp = datetime.now(timezone.utc).isoformat()
+    timestamp = datetime.utcfromtimestamp(rxTime).isoformat()
 
     # Entschlüsselte Sensordaten (aus 'object')
     obj = payload
