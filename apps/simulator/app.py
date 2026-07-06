@@ -3,6 +3,7 @@ import time
 import random
 import logging
 import json
+import sys
 from datetime import datetime, timezone  # timezone importieren
 import base64
 import atexit
@@ -25,7 +26,9 @@ client_id = f"python-mqtt-{random.randint(0, 1000)}"
 
 # Logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
 )
 
 # -----------------------------
