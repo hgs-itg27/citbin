@@ -31,8 +31,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-          cache: ""
-          cache-dependency-path: ""
+          cache: "false"
 
       - name: 🏗️ Install simulator dependencies
         run: |
