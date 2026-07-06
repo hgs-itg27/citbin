@@ -38,10 +38,12 @@ services:
     depends_on:
       - mosquitto
     environment:
-      - DEVICE_ID=eui-7066e1fffe00a9e2
+      - DEVICE_EUI=eui-7066e1fffe00a9e2
       - SLEEP_TIME=5
+      - BROKER_ADDRESS=mosquitto
+      - PORT=1883
+      - TOPIC=mioty/simulator
       - BACKEND_API_URL=http://host.docker.internal:8000
-      - ./configuration/mosquitto/config/:/mosquitto/config/
     extra_hosts:
     - "host.docker.internal:host-gateway"
 
