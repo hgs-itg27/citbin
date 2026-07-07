@@ -16,7 +16,7 @@
 
 CiTBIN is an IoT platform for monitoring public waste bins using wireless sensors. Sensor data is transmitted through a **mioty** network, forwarded via **MQTT**, processed by a **FastAPI** backend, stored in **PostgreSQL**, and visualized through a modern **Next.js** web application.
 
-The project was developed as part of a initiative at the **Hohentwiel Gewerbeschule Singen**.
+The project was developed as part of an initiative at the **Hohentwiel Gewerbeschule Singen**.
 
 The project will be published under the following adress: https://citbin.sybit.education
 
