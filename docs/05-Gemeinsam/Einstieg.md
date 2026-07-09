@@ -32,7 +32,7 @@ Mülltonnen werden oft geleert, obwohl sie noch nicht voll sind – oder umgekeh
 
 ### Die Lösung
 
-Kleine **Sensoren** werden in Mülltonnen eingebaut. Diese Sensoren messen mit Ultraschall, wie voll die Tonne ist – ähnlich wie ein Einparksensor am Auto. Die Daten werden drahtlos über **LoRaWAN** (ein energiesparendes Funknetz für IoT-Geräte) übertragen. Das CitBin-System empfängt diese Daten, speichert sie in einer Datenbank und zeigt sie auf einer interaktiven Karte im Browser an.
+Kleine **Sensoren** werden in Mülltonnen eingebaut. Diese Sensoren messen mit Ultraschall, wie voll die Tonne ist – ähnlich wie ein Einparksensor am Auto. Die Daten werden drahtlos über **Mioty** (ein energiesparendes Funknetz für IoT-Geräte) übertragen. Das CitBin-System empfängt diese Daten, speichert sie in einer Datenbank und zeigt sie auf einer interaktiven Karte im Browser an.
 
 ### Das Ergebnis
 
@@ -44,11 +44,11 @@ Auf einem Dashboard sieht man auf einer Karte alle Mülltonnen mit ihrem aktuell
 
 Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwenden.
 
-### 🐍 Python & FastAPI (Backend)
+### Python & FastAPI (Backend)
 
 **Python** ist eine weit verbreitete Programmiersprache, die für ihre einfache, lesbare Syntax bekannt ist. Sie wird oft für Server-Anwendungen, Datenanalyse und automatisierte Skripte eingesetzt.
 
-**FastAPI** ist ein Python-Framework, das das Erstellen von Web-APIs (Schnittstellen, über die Programme miteinander kommunizieren) sehr einfach macht. Es generiert automatisch eine interaktive Dokumentation aller Endpunkte.
+**FastAPI** ist ein Python-Framework, dass das Erstellen von Web-APIs (Schnittstellen, über die Programme miteinander kommunizieren) sehr einfach macht. Es generiert automatisch eine interaktive Dokumentation aller Endpunkte.
 
 > **Analogie:** Stell dir das Backend wie das Herzstück eines Restaurants vor – die Küche. Es nimmt Bestellungen (Anfragen) entgegen, verarbeitet sie und schickt die fertigen Gerichte (Antworten) zurück.
 
@@ -59,7 +59,7 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 - Stellt Daten für das Frontend bereit
 - Verwaltet Mülltonnen und Geräte
 
-### 🌐 TypeScript & Next.js (Frontend)
+### TypeScript & Next.js (Frontend)
 
 **TypeScript** ist eine Erweiterung von JavaScript (der Sprache, die im Browser läuft), die zusätzlich Datentypen kennt. Das hilft, Fehler früh zu finden und den Code besser zu verstehen.
 
@@ -74,23 +74,17 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 - Bietet eine Admin-Oberfläche zur Verwaltung
 - Funktioniert im Browser ohne Installation
 
-### 🗄️ PostgreSQL (Datenbank)
+###  PostgreSQL (Datenbank)
 
 **PostgreSQL** ist ein leistungsstarkes, quelloffenes Datenbanksystem. Daten werden in Tabellen gespeichert – ähnlich wie in Excel-Tabellen, aber viel leistungsfähiger und für große Datenmengen geeignet.
 
 **SQLModel** ist eine Python-Bibliothek, die den Umgang mit der Datenbank vereinfacht: Statt SQL-Befehle direkt zu schreiben, arbeitet man mit Python-Klassen (sogenannten „Modellen").
 
-### 🐳 Docker (Infrastruktur)
+### Docker (Infrastruktur)
 
 **Docker** ist ein Werkzeug, das Anwendungen in abgeschlossene „Container" verpackt. Ein Container enthält alles, was eine Anwendung zum Laufen braucht – ähnlich wie ein Versandpaket, das alle Teile enthält und überall gleich aussieht, egal auf welchem Computer er geöffnet wird.
 
 **Docker Compose** erlaubt es, mehrere Container gemeinsam zu starten und zu verwalten.
-
-### 📡 LoRaWAN & ChirpStack (IoT)
-
-**LoRaWAN** (Long Range Wide Area Network) ist ein drahtloses Kommunikationsprotokoll speziell für IoT-Geräte (Internet of Things – vernetzte Alltagsgegenstände). Es überträgt kleine Datenpakete über weite Strecken bei sehr geringem Energieverbrauch – ideal für batteriebetriebene Sensoren.
-
-**ChirpStack** ist ein quelloffener LoRaWAN-Netzwerkserver, der die Funkkommunikation zwischen Sensoren und Backend vermittelt.
 
 ---
 
@@ -101,44 +95,43 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 │                        Gesamtübersicht                          │
 └─────────────────────────────────────────────────────────────────┘
 
-  📡 Sensor           📻 Gateway          🌐 Netzwerk
-  (in der Mülltonne)  (im Freien)         (Helium / ChirpStack)
+   Sensor            Basisstation           Netzwerk
+  (in der Mülltonne)  (an der HGS)         
        │                   │                      │
-       │   LoRaWAN Funk    │   Internet           │
+       │   Mioty           │   MQTT               │
        └──────────────────>│─────────────────────>│
                                                   │
-                                     HTTP Anfrage │
+                                                  │
                                                   ▼
                                     ┌─────────────────────┐
-                                    │   Backend (FastAPI)  │
-                                    │   Python             │
-                                    │   Port 8000          │
+                                    │   Backend (FastAPI) │
+                                    │   Python            │
+                                    │   Port 8000         │
                                     └──────────┬──────────┘
                                                │
                                     ┌──────────▼──────────┐
-                                    │  Datenbank           │
-                                    │  PostgreSQL          │
+                                    │  Datenbank          │
+                                    │  PostgreSQL         │
                                     └──────────┬──────────┘
                                                │
                                     REST API   │
                                                ▼
                                     ┌─────────────────────┐
-                                    │  Frontend (Next.js)  │
-                                    │  TypeScript/React    │
-                                    │  Port 3000           │
+                                    │  Frontend (Next.js) │
+                                    │  TypeScript/React   │
+                                    │  Port 3000          │
                                     └─────────────────────┘
                                                │
                                                │  Browser
                                                ▼
-                                    👤 Benutzer (Karte im Browser)
+                                           Benutzer (Dashboard im Browser)
 ```
 
 **Schritt-für-Schritt-Ablauf:**
 
 1. Der Sensor in der Mülltonne misst den Abstand zur Oberfläche des Mülls
 2. Das Messergebnis wird per LoRaWAN zum Gateway gesendet
-3. Das Gateway leitet die Daten über das Internet zu ChirpStack weiter
-4. ChirpStack sendet die Daten per HTTP-Anfrage (sogenannter „Uplink") an das Backend
+3. Das Gateway leitet die Daten über MQTT zum Backend weiter
 5. Das Backend verarbeitet die Daten und speichert sie in PostgreSQL
 6. Das Frontend fragt das Backend regelmäßig nach neuen Daten
 7. Der Benutzer sieht den aktuellen Füllstand auf der Karte im Browser
@@ -149,7 +142,7 @@ Das Projekt besteht aus mehreren Teilen, die unterschiedliche Technologien verwe
 
 Bevor du anfangen kannst, musst du einige Programme auf deinem Computer installieren.
 
-### 🪟 Windows
+### Windows
 
 Öffne die **PowerShell** (Rechtsklick auf das Windows-Symbol → „Windows PowerShell") und führe folgende Befehle aus:
 
@@ -177,9 +170,9 @@ winget install -e --id OpenJS.NodeJS
 winget install -e --id GitHub.cli
 ```
 
-> ⚠️ **Wichtig:** Nach der Installation ein neues Terminal-Fenster öffnen, damit die Installationen erkannt werden!
+>  **Wichtig:** Nach der Installation ein neues Terminal-Fenster öffnen, damit die Installationen erkannt werden!
 
-### 🐧 Linux (Debian / Ubuntu)
+### Linux (Debian / Ubuntu)
 
 ```bash
 # Paketquellen aktualisieren
@@ -195,7 +188,7 @@ sudo apt install python3 python3-pip python3-venv -y
 sudo apt install nodejs npm -y
 ```
 
-### 🎩 Linux (Fedora)
+### Linux (Fedora)
 
 ```bash
 # Git installieren
@@ -206,6 +199,19 @@ sudo dnf install python3 python3-pip -y
 
 # Node.js installieren
 sudo dnf install nodejs npm -y
+```
+
+### Linux (Arch)
+
+```bash
+# Git installieren
+sudo pacman -S git
+
+# Python installieren
+sudo pacman -S python python-pip
+
+# Node.js installieren
+sudo pacman -S nodejs npm
 ```
 
 ### Installation prüfen
@@ -266,13 +272,13 @@ source venv/bin/activate
 
 ### Schritt 3: Abhängigkeiten installieren
 
-**Abhängigkeiten** (Dependencies) sind externe Bibliotheken und Pakete, die das Projekt benötigt. Alle notwendigen Pakete sind in der Datei `requirements.txt` aufgelistet.
+**Abhängigkeiten** (Dependencies) sind externe Bibliotheken und Pakete, die das Projekt benötigt. Alle notwendigen Pakete sind in der Datei `pyproject.toml` aufgelistet.
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
-> `pip` ist der Paketmanager von Python – ähnlich wie ein App-Store für Python-Bibliotheken.
+> `uv` ist ein Paketmanager von Python – ähnlich wie ein App-Store für Python-Bibliotheken.
 
 ### Schritt 4: Umgebungsvariablen konfigurieren
 
@@ -390,7 +396,7 @@ Der Simulator imitiert einen echten IoT-Sensor und sendet Testdaten an das Backe
 cd apps/simulator
 
 # Abhängigkeiten installieren
-pip install -r requirements.txt
+uv sync
 
 # Simulator starten
 python app.py
@@ -429,7 +435,7 @@ citbin/
 │   │   ├── modules/       ← Hilfsfunktionen und Logik
 │   │   ├── migrations/    ← Datenbankmigrationen (Versionierung)
 │   │   ├── tests/         ← Automatische Tests
-│   │   └── requirements.txt ← Python-Abhängigkeiten
+│   │   └── pyproject.toml ← Python-Abhängigkeiten
 │   │
 │   ├── web/               ← Frontend (TypeScript / Next.js)
 │   │   ├── app/           ← Seiten der Weboberfläche
@@ -447,21 +453,21 @@ citbin/
 
 ```
 api/
-├── app.py              ← Startpunkt: initialisiert FastAPI, registriert Routen
-├── dependencies.py     ← Datenbankverbindung wird hier als "Abhängigkeit" bereitgestellt
+├── app.py                  ← Startpunkt: initialisiert FastAPI, registriert Routen
+├── dependencies.py         ← Datenbankverbindung wird hier als "Abhängigkeit" bereitgestellt
 ├── models/
-│   ├── device.py       ← Datenmodell für IoT-Geräte
-│   ├── trashbin.py     ← Datenmodell für Mülltonnen
-│   └── trashbin_data.py ← Datenmodell für Sensormessungen
+│   ├── device.py           ← Datenmodell für IoT-Geräte
+│   ├── trashbin.py         ← Datenmodell für Mülltonnen
+│   └── trashbin_data.py    ← Datenmodell für Sensormessungen
 ├── routers/
-│   ├── devices.py      ← Endpunkte: /api/v1/device/...
-│   ├── trashbin.py     ← Endpunkte: /api/v1/trashbin/...
-│   ├── helium_uplink.py ← Endpunkt: empfängt Sensordaten vom Netzwerk
-│   └── admin.py        ← Admin-Endpunkte (geschützt mit Passwort)
+│   ├── devices.py          ← Endpunkte: /api/v1/device/...
+│   ├── trashbin.py         ← Endpunkte: /api/v1/trashbin/...
+│   └── admin.py            ← Admin-Endpunkte (geschützt mit Passwort)
 └── modules/
-    ├── postgresql.py   ← Verbindung zur Datenbank herstellen
-    ├── process_data.py ← Rohdaten vom Sensor in Datenbankeinträge umwandeln
-    └── sensors/        ← Unterstützung verschiedener Sensortypen
+    ├── postgresql.py       ← Verbindung zur Datenbank herstellen
+    ├── mioty_service.py    ← Verbindung zur Basisstation
+    ├── process_data.py     ← Rohdaten vom Sensor in Datenbankeinträge umwandeln
+    └── sensors/            ← Unterstützung verschiedener Sensortypen
 ```
 
 ### Frontend im Detail (`apps/web/`)
@@ -682,14 +688,6 @@ python3 --version
 python3 -m venv venv
 ```
 
-### ❌ `pip` nicht gefunden
-
-```bash
-python -m pip install -r requirements.txt
-# oder
-python3 -m pip install -r requirements.txt
-```
-
 ### ❌ Backend startet nicht (Datenbankfehler)
 
 Das Backend kann die Datenbank nicht erreichen. Mögliche Ursachen:
@@ -762,4 +760,4 @@ Wenn du tiefer in die verwendeten Technologien einsteigen möchtest:
 
 ---
 
-*Letzte Aktualisierung: März 2026 | CitBin – TG12/3, Hohentwiel Gewerbeschule Singen*
+*Letzte Aktualisierung: Juli 2026 | CitBin – TG12/3, Hohentwiel Gewerbeschule Singen*

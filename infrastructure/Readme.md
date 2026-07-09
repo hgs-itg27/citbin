@@ -1,133 +1,366 @@
-# ChirpStack Docker Stack
+# CiTBIN Infrastructure
 
-  ⚠️ This directory is based on the example of [https://github.com/chirpstack/chirpstack-docker](https://github.com/chirpstack/chirpstack-docker).
+The infrastructure layer provides the services required to run the CiTBIN platform locally and in development environments. It is responsible for provisioning databases, networking, and supporting services using Docker Compose.
 
-  Following modifications are made:
-
-  - Exposing the services via Traefik
-  - Externalized the configuration to `.env` file. See `.env.example` for the required variables.
-
-## Pre-requisites
-- Docker: [Installation](https://docs.docker.com/engine/install/)
-- Docker Compose [Installation](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
-
-
-### On Development Environment
-
-- Run `./update-development.sh` to install/update services:
-   - **Prostgres:** for CitBin data
-   - **Mosquitto:** MQTT Server
-   - **Simulator:** Automatically sending random Sensor data
-
-### On Production Environment
-
-- Traefik
-  - [Traefik](https://doc.traefik.io/traefik/) is a modern HTTP reverse proxy and load balancer that makes deploying microservices easy.
-  - Traefic must define following endpoints:
-    ```yml
-    entrypoints.mqtt.address=:1883
-    entrypoints.web.address=:80
-    entrypoints.web-secure.address=:443
-    ```
+The application itself is **not** started from this directory. Instead, this directory provides the infrastructure that the backend and frontend depend on.
 
 ---
 
-# ChirpStack Docker Example
+# Purpose
 
-This repository contains a skeleton to setup the [ChirpStack](https://www.chirpstack.io)
-open-source LoRaWAN Network Server (v4) using [Docker Compose](https://docs.docker.com/compose/).
+The infrastructure stack is designed to provide a reproducible development environment.
 
-**Note:** Please use this `docker-compose.yml` file as a starting point for testing
-but keep in mind that for production usage it might need modifications. 
+It currently provides:
 
-## Directory layout
+* PostgreSQL database
+* Docker networking
+* Persistent data volumes
+* Environment configuration
+* Service orchestration
 
-* `docker-compose.yml`: the docker-compose file containing the services
-* `configuration/chirpstack`: directory containing the ChirpStack configuration files
-* `configuration/chirpstack-gateway-bridge`: directory containing the ChirpStack Gateway Bridge configuration
-* `configuration/mosquitto`: directory containing the Mosquitto (MQTT broker) configuration
-* `configuration/postgresql/initdb/`: directory containing PostgreSQL initialization scripts
+The backend and frontend connect to these services during startup.
 
-## Configuration
+---
 
-This setup is pre-configured for all regions. You can either connect a ChirpStack Gateway Bridge
-instance (v3.14.0+) to the MQTT broker (port 1883) or connect a Semtech UDP Packet Forwarder.
-Please note that:
+# Architecture
 
-* You must prefix the MQTT topic with the region.
-  Please see the region configuration files in the `configuration/chirpstack` for a list
-  of topic prefixes (e.g. eu868, us915_0, au915_0, as923_2, ...).
-* The protobuf marshaler is configured.
-
-This setup also comes with two instances of the ChirpStack Gateway Bridge. One
-is configured to handle the Semtech UDP Packet Forwarder data (port 1700), the
-other is configured to handle the Basics Station protocol (port 3001). Both
-instances are by default configured for EU868 (using the `eu868` MQTT topic
-prefix).
-
-### Reconfigure regions
-
-ChirpStack has at least one configuration of each region enabled. You will find
-the list of `enabled_regions` in `configuration/chirpstack/chirpstack.toml`.
-Each entry in `enabled_regions` refers to the `id` that can be found in the
-`region_XXX.toml` file. This `region_XXX.toml` also contains a `topic_prefix`
-configuration which you need to configure the ChirpStack Gateway Bridge
-UDP instance (see below).
-
-#### ChirpStack Gateway Bridge (UDP)
-
-Within the `docker-compose.yml` file, you must replace the `eu868` prefix in the
-`INTEGRATION__..._TOPIC_TEMPLATE` configuration with the MQTT `topic_prefix` of
-the region you would like to use (e.g. `us915_0`, `au915_0`, `in865`, ...).
-
-#### ChirpStack Gateway Bridge (Basics Station)
-
-Within the `docker-compose.yml` file, you must update the configuration file
-that the ChirpStack Gateway Bridge instance must used. The default is
-`chirpstack-gateway-bridge-basicstation-eu868.toml`. For available
-configuration files, please see the `configuration/chirpstack-gateway-bridge`
-directory.
-
-# Data persistence
-
-PostgreSQL and Redis data is persisted in Docker volumes, see the `docker-compose.yml`
-`volumes` definition.
-
-## Requirements
-
-Before using this `docker-compose.yml` file, make sure you have [Docker](https://www.docker.com/community-edition)
-installed.
-
-## Importing device repository
-
-To import the [lorawan-devices](https://github.com/TheThingsNetwork/lorawan-devices)
-repository (optional step), run the following command:
-
-```bash
-make import-lorawan-devices
+```text
+                     +---------------------+
+                     |   Docker Network    |
+                     +----------+----------+
+                                |
+                 +--------------+--------------+
+                 |                             |
+                 |                             |
+          PostgreSQL                    Other Services
+                 |                             |
+                 +--------------+--------------+
+                                |
+                       FastAPI Backend
+                                |
+                         REST API
+                                |
+                       Next.js Frontend
 ```
 
-This will clone the `lorawan-devices` repository and execute the import command of ChirpStack.
-Please note that for this step you need to have the `make` command installed.
+---
 
-**Note:** an older snapshot of the `lorawan-devices` repository is cloned as the
-latest revision no longer contains a `LICENSE` file.
+# Directory Structure
 
-## Usage
+```text
+infrastructure/
 
-To start the ChirpStack simply run:
-
-```bash
-$ docker-compose up
+├── docker-compose.yml
+├── .env.example
+├── postgres/
+│   ├── init/
+│   └── data/
+└── README.md
 ```
 
-After all the components have been initialized and started, you should be able
-to open http://localhost:8080/ in your browser.
+Depending on the deployment environment, additional configuration files may exist for development or production.
 
-##
+---
 
-The example includes the [ChirpStack REST API](https://github.com/chirpstack/chirpstack-rest-api).
-You should be able to access the UI by opening http://localhost:8090 in your browser.
+# Requirements
 
-**Note:** It is recommended to use the [gRPC](https://www.chirpstack.io/docs/chirpstack/api/grpc.html)
-interface over the [REST](https://www.chirpstack.io/docs/chirpstack/api/rest.html) interface.
+Before starting the infrastructure, install:
+
+| Software                       | Version |
+| ------------------------------ | ------- |
+| Docker Desktop / Docker Engine | Latest  |
+| Docker Compose                 | v2+     |
+
+Verify your installation.
+
+```bash
+docker --version
+
+docker compose version
+```
+
+---
+
+# Starting the Infrastructure
+
+Navigate to the infrastructure directory.
+
+```bash
+cd infrastructure
+```
+
+Start all configured services.
+
+```bash
+docker compose up -d
+```
+
+Docker will automatically:
+
+* create the required network
+* create persistent volumes
+* start PostgreSQL
+* attach all configured services
+
+---
+
+# Stopping the Infrastructure
+
+Stop all running containers.
+
+```bash
+docker compose down
+```
+
+Containers are removed, while database data remains stored in Docker volumes.
+
+---
+
+# Rebuilding Containers
+
+If Dockerfiles or images change, rebuild the infrastructure.
+
+```bash
+docker compose up --build
+```
+
+---
+
+# Viewing Logs
+
+To inspect running services:
+
+```bash
+docker compose logs
+```
+
+Follow logs continuously.
+
+```bash
+docker compose logs -f
+```
+
+View logs for PostgreSQL only.
+
+```bash
+docker compose logs postgres
+```
+
+---
+
+# PostgreSQL
+
+The backend stores all persistent data inside PostgreSQL.
+
+Typical data includes:
+
+* devices
+* waste bins
+* measurements
+* historical sensor data
+* metadata
+
+The backend automatically applies database migrations during startup.
+
+---
+
+# Persistent Storage
+
+Database files are stored inside Docker volumes.
+
+This ensures that data is retained even if containers are recreated.
+
+To remove all stored data:
+
+```bash
+docker compose down -v
+```
+
+**Warning:** This permanently deletes the development database.
+
+---
+
+# Environment Variables
+
+Configuration is managed using environment files.
+
+Typical variables include:
+
+```env
+POSTGRES_DB=citbin
+
+POSTGRES_USER=postgres
+
+POSTGRES_PASSWORD=password
+```
+
+The backend uses its own `.env` file to connect to the database.
+
+---
+
+# Networking
+
+All services communicate over the Docker network created by Docker Compose.
+
+Typical communication flow:
+
+```text
+Frontend
+     │
+ REST API
+     │
+Backend
+     │
+ PostgreSQL
+```
+
+The frontend never communicates directly with the database.
+
+---
+
+# Development Workflow
+
+Start the infrastructure before launching the backend.
+
+Typical order:
+
+1. Start Docker infrastructure.
+2. Start the backend.
+3. Wait for database migrations.
+4. Verify MQTT connection.
+5. Start the frontend.
+6. Open the web application.
+
+---
+
+# Updating the Database
+
+Database schema changes are managed with Alembic.
+
+After modifying models:
+
+```bash
+uv run alembic revision --autogenerate -m "Description"
+
+uv run alembic upgrade head
+
+uv run alembic stamp head
+```
+
+No manual SQL changes should be required.
+
+---
+
+# Common Commands
+
+Start services.
+
+```bash
+docker compose up -d
+```
+
+Stop services.
+
+```bash
+docker compose down
+```
+
+Restart services.
+
+```bash
+docker compose restart
+```
+
+View running containers.
+
+```bash
+docker compose ps
+```
+
+View logs.
+
+```bash
+docker compose logs -f
+```
+
+Rebuild images.
+
+```bash
+docker compose up --build
+```
+
+Remove everything, including volumes.
+
+```bash
+docker compose down -v
+```
+
+---
+
+# Troubleshooting
+
+## PostgreSQL is unavailable
+
+Check whether the container is running.
+
+```bash
+docker compose ps
+```
+
+Review the logs.
+
+```bash
+docker compose logs postgres
+```
+
+---
+
+## Backend cannot connect
+
+Verify:
+
+* PostgreSQL is running.
+* The database credentials match the backend `.env`.
+* Docker networking is functioning correctly.
+
+---
+
+## Containers fail to start
+
+Run:
+
+```bash
+docker compose logs
+```
+
+Most startup issues are caused by invalid environment variables or ports already being in use.
+
+---
+
+# Best Practices
+
+* Keep infrastructure configuration under version control.
+* Never commit production secrets.
+* Use `.env.example` files for configuration templates.
+* Keep Docker images lightweight.
+* Rebuild containers after dependency updates.
+* Use named volumes to preserve database data.
+
+---
+
+# Related Documentation
+
+* Root Documentation: `../README.md`
+* Backend Documentation: `../apps/api/README.md`
+* Frontend Documentation: `../apps/web/README.md`
+
+---
+
+# Future Improvements
+
+Potential infrastructure enhancements include:
+
+* Automated backups 💀
+* Health monitoring ♠️
+
+These additions would improve scalability, observability, and deployment flexibility as the project grows.
