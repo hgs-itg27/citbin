@@ -83,7 +83,6 @@ def on_message(client, userdata, message):
         decoded = payload_decoder.decode(msg["data"])
 
         rxTime = msg["baseStations"][0]["rxTime"]
-        logging.info(f"[DEBUG] rxTime: {rxTime}")
 
         parsed = process_data.parse_sensor_payload(
             decoded,
