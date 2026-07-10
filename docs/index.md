@@ -4,13 +4,12 @@ layout: home
 hero:
   name: "CitBin Documentation"
   text: ""
-  tagline: ""
+  tagline: "Lasst, die ihr eintretet, alle Hoffnung fahren!"
   actions:
     - theme: brand
       text: Erste Schritte
-      link: /05-Gemeinsam/Einstieg
+      link: /GETTING_STARTED
     - theme: alt
       text: GitHub
       link: https://github.com/hgs-itg27/citbin
-
 ---
