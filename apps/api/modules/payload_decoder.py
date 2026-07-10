@@ -104,12 +104,11 @@ def decode(encoded_payload: list[int]) -> dict[str, Any]:
     try:
         bytes_data = encoded_payload
 
-        logging.info(f"\nRohbytes: {bytes_data}")
+        logging.debug(f"Rohbytes:\n {bytes_data}")
 
         result = decoder(bytes_data, port)
 
-        logging.info("\nDecoded Payload:")
-        logging.info(json.dumps(result, indent=2))
+        logging.debug(f"Decoded Payload:\n {json.dumps(result, indent=2)}")
 
         return result
 

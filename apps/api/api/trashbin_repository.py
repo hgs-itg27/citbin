@@ -48,14 +48,14 @@ def get(db, trashbin_id: str) -> Optional[Trashbin]:
     Returns:
         TrashbinResponse object with trashbin details or None if the trashbin was not found
     """
-    logging.info(f"Processing trashbin GET request with ID: {trashbin_id}")
+    logging.debug(f"-> GET trashbin ID: {trashbin_id}")
     with Session(db) as session:
         trashbin = session.get(Trashbin, trashbin_id)
     if trashbin is None:
         logging.warning(f"Trashbin with ID {trashbin_id} not found")
         return None
 
-    logging.info(f"Trashbin with ID {trashbin_id} found: {trashbin}")
+    logging.debug(f"<- Trashbin with ID {trashbin_id} found: {trashbin}")
     return trashbin
 
 
@@ -68,12 +68,12 @@ def create(db, trashbin: Trashbin) -> Trashbin:
     Returns:
         Created Trashbin object
     """
-    logging.info(f"-> POST request for trashbin with data: {trashbin}")
+    logging.debug(f"-> POST request for trashbin with data: {trashbin}")
     with Session(db) as session:
         session.add(trashbin)
         session.commit()
         session.refresh(trashbin)
-    logging.info(f"<- Trashbin {trashbin.id} created successfully")
+    logging.debug(f"<- Trashbin {trashbin.id} created successfully")
     return trashbin
 
 
