@@ -118,7 +118,7 @@ def test_create_device_service_returns_none(client: TestClient, mocker: MockerFi
 
     assert response.status_code == 500
     assert response.json() == {
-        "detail": "Failed to create device: 500: Failed to create device"
+        "detail": "Failed to create device"
     }
     mock_create_service.assert_called_once_with(mocker.ANY, create_payload)
 
