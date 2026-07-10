@@ -9,7 +9,7 @@ def connect(config):
     """
     Connect to PostgreSQL database using SQLAlchemy
     """
-    logger.info("Connecting to PostgreSQL on %s:%s", config['host'], config['port'])
+    logger.info("Connecting to PostgreSQL DB on %s:%s", config["host"], config["port"])
     url = URL.create(
         'postgresql+psycopg2',
         username=config['username'],
@@ -28,4 +28,4 @@ def connect(config):
 
 def create_tables(engine):
     SQLModel.metadata.create_all(engine)
-    logger.info("Verified SQL tables: %s", list(SQLModel.metadata.tables.keys()))
+    logger.debug("Tables: %s", SQLModel.metadata.tables.keys())

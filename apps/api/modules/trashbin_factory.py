@@ -2,6 +2,7 @@ import importlib
 import inspect
 import pkgutil
 import logging
+logger = logging.getLogger(__name__)
 from typing import Dict, Type
 from modules.trashbins.base import Trashbin
 
@@ -40,12 +41,12 @@ class TrashbinFactory:
                         if (inspect.isclass(obj) and issubclass(obj, Trashbin) and obj != Trashbin):
                             # Registriere die Trashbin-Klasse
                             cls.register_trashbin(obj.profile_name, obj)
-                            logging.debug("Trashbin-Klasse registriert: %s aus %s", name, module_name)
+                            logger.debug("Trashbin class registered: %s from %s (profile: %s)", name, module_name, obj.profile_name)
                 except Exception as e:
-                    logging.error("Fehler beim Laden des Trashbin-Moduls %s: %s", module_name, e)
+                    logger.error("Error loading trashbin module %s: %s", module_name, e)
 
         cls._initialized = True
-        logging.debug("TrashbinFactory initialisiert mit %d Trashbin-Typen", len(cls._trashbins))
+        logger.debug("TrashbinFactory initialized with %d trashbin types", len(cls._trashbins))
 
     @classmethod
     def register_trashbin(cls, name: str, trashbin_class: Type[Trashbin]) -> None:

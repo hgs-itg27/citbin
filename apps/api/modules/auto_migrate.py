@@ -30,18 +30,18 @@ def run_migrations():
                 )
                 
                 if "Can't locate revision" in check_result.stderr or "DatatypeMismatch" in check_result.stderr:
-                    logger.warning("Probleme mit der Migrationsdatenbank erkannt. Versuche Reset...")
+                    logger.warning("Migration issues detected, attempting reset...")
                     reset_result = subprocess.run(
                         ["python", "reset_alembic.py"],
                         capture_output=True,
                         text=True
                     )
-                    logging.debug("Reset-Ergebnis: %s", reset_result.stdout)
+                    logger.info("Reset result: %s", reset_result.stdout)
             except Exception as reset_error:
-                logger.warning("Fehler beim Versuch, die Migration zurückzusetzen: %s", reset_error)
+                logger.warning("Error attempting migration reset: %s", reset_error)
             
             # Alembic-Upgrade ausführen
-            logger.info("Führe ausstehende Datenbankmigrationen aus...")
+            logger.info("Running pending database migrations...")
             result = subprocess.run(
                 ["alembic", "upgrade", "head"],
                 capture_output=True,
@@ -49,10 +49,10 @@ def run_migrations():
             )
             
             if result.returncode == 0:
-                logger.info("Migrationen erfolgreich ausgeführt")
+                logger.info("Migrations executed successfully: %s", result.stdout)
                 return True
             else:
-                logger.error("Fehler bei der Ausführung der Migrationen: %s", result.stderr)
+                logger.error("Migration execution failed: %s", result.stderr)
                 return False
 
         finally:
@@ -60,5 +60,5 @@ def run_migrations():
             os.chdir(original_dir)
             
     except Exception as e:
-        logger.error("Unerwarteter Fehler bei der Ausführung der Migrationen: %s", str(e))
+        logger.error("Unexpected error running migrations: %s", str(e))
         return False

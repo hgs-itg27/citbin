@@ -77,36 +77,36 @@ async def lifespan(app: FastAPI):
     try:
         migration_success = run_migrations()
         if migration_success:
-            logging.info("Database migrations completed successfully.")
+            logger.info("Database migrations completed successfully.")
         else:
-            logging.warning("Database migrations may not have completed successfully.")
+            logger.warning("Database migrations may not have completed successfully.")
     except Exception as e:
-        logging.error("Error running database migrations: %s", e)
+        logger.error("Error running database migrations: %s", e)
 
     # Connect to PostgreSQL
     try:
         dependencies.db = postgres.connect(CONFIG["postgresql"])
-        logging.info("Connected to PostgreSQL database.")
+        logger.info("Connected to PostgreSQL database.")
     except Exception as e:
-        logging.error("Failed to connect to PostgreSQL database: %s", e)
+        logger.error("Failed to connect to PostgreSQL database: %s", e)
         dependencies.db = None
 
     try:
         postgres.create_tables(dependencies.db)
-        logging.info("SQL tables created.")
+        logger.info("SQL tables created / verified.")
     except Exception as e:
-        logging.error("Failed to create SQL tables: %s", e)
+        logger.error("Failed to create SQL tables: %s", e)
 
     try:
         mioty_service.create()
-        logging.info("Connected to MQTT broker.")
+        logger.info("Connected to MQTT broker.")
     except Exception as e:
-        logging.error("Failed to connect to MQTT broker: %s", e)
+        logger.error("Failed to connect to MQTT broker: %s", e)
 
     yield  # Application runs here
 
     # Shutdown
-    logging.info("Application shutting down")
+    logger.info("Application shutting down")
 
 
 # ---------------------------------------------------------------------------
