@@ -6,7 +6,6 @@ from contextlib import asynccontextmanager
 import uvicorn
 from dotenv import load_dotenv
 
-# Setup API routes from modules
 from fastapi import APIRouter, Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -59,7 +58,10 @@ CONFIG = {
 
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 if not ADMIN_PASSWORD:
-    logger.warning("ADMIN_PASSWORD env var is not set. Log download endpoint will not be secure.")
+    logger.warning(
+        "ADMIN_PASSWORD environment variable is not set. "
+        "Log download endpoint will not be secure."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -69,7 +71,6 @@ if not ADMIN_PASSWORD:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
     import dependencies
     from api import mioty_service
 
@@ -105,7 +106,6 @@ async def lifespan(app: FastAPI):
 
     yield  # Application runs here
 
-    # Shutdown
     logger.info("Application shutting down")
 
 
@@ -168,8 +168,15 @@ api_router = APIRouter(prefix="/api/v1")
 
 api_router.include_router(devices.router, dependencies=[Depends(get_dependencies)])
 api_router.include_router(trashbin.router, dependencies=[Depends(get_dependencies)])
-api_router.include_router(trashbin_data.router, dependencies=[Depends(get_dependencies)])
-api_router.include_router(admin.router, dependencies=[Depends(get_dependencies)])
+api_router.include_router(
+    trashbin_data.router, dependencies=[Depends(get_dependencies)]
+)
+api_router.include_router(
+    admin.router,
+    dependencies=[
+        Depends(get_dependencies)
+    ],  # Ensures DB dependencies are available if needed by admin routes
+)
 
 app.include_router(api_router)
 

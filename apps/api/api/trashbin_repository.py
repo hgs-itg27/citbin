@@ -57,7 +57,6 @@ def get(db, trashbin_id: str) -> Optional[Trashbin]:
         logger.warning("Trashbin %s not found", trashbin_id)
         return None
 
-    
     return trashbin
 
 

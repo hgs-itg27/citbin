@@ -1,42 +1,135 @@
 import logging
 logger = logging.getLogger(__name__)
 import json
+import os
+import threading
+import time
 
 import paho.mqtt.client as mqtt
+from dotenv import load_dotenv
+from sqlmodel import Session, select
 
 from dependencies import get_dependencies
+from models.device import Device
 from modules import payload_decoder, process_data
 
-topics = {
-    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-36-c8/uplink",
-    "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-36-c9/uplink",
-}
-BROKER_ADDRESS = "10.85.33.236"
-PORT = 1883
+load_dotenv()
+
+BROKER_ADDRESS = os.getenv("MQTT_HOSTNAME", "citbin.hgs-singen.de")
+PORT = int(os.getenv("MQTT_PORT", 1883))
+
+# Aktuell abonnierte Topics
+current_topics = set()
+
+
+def load_topics():
+    deps = get_dependencies()
+    db = deps["db"]
+
+    with Session(db) as session:
+        devices = session.exec(select(Device)).all()
+
+    return {
+        f"mioty/00-00-00-00-00-00-00-00/{device.devEui}/uplink"
+        for device in devices
+        if device.devEui
+    }
+
+
+def refresh_topics(client):
+    global current_topics
+
+    try:
+        new_topics = load_topics()
+
+        # Neue Topics abonnieren
+        for topic in new_topics - current_topics:
+            result, _ = client.subscribe(topic)
+            if result == mqtt.MQTT_ERR_SUCCESS:
+                logger.info("Subscribed: %s", topic)
+            else:
+                logger.warning("Failed to subscribe: %s", topic)
+
+        # Nicht mehr vorhandene Topics abbestellen
+        for topic in current_topics - new_topics:
+            result, _ = client.unsubscribe(topic)
+            if result == mqtt.MQTT_ERR_SUCCESS:
+                logger.info("Unsubscribed: %s", topic)
+            else:
+                logger.warning("Failed to unsubscribe: %s", topic)
+
+        current_topics = new_topics
+
+    except Exception:
+        logger.exception("Error while refreshing MQTT topics")
+
+
+def topic_watcher(client):
+    while True:
+        refresh_topics(client)
+        time.sleep(30)  # alle 30 Sekunden prüfen
 
 
 def on_message(client, userdata, message):
     deps = get_dependencies()
-    msg = json.loads(message.payload.decode("utf-8"))
-    temp = message.topic.split("/")
-    devEui = temp[2]
-    logger.debug("MQTT message from devEui=%s topic=%s", devEui, message.topic)
-    decoded = payload_decoder.decode(msg["data"])
-    parsed = process_data.parse_sensor_payload(decoded, devEui)
-    process_data.save_sensor_data(deps["db"], parsed)
+
+    try:
+        msg = json.loads(message.payload.decode("utf-8"))
+
+        logger.debug("MQTT raw data: %s", msg)
+
+        devEui = message.topic.split("/")[2]
+        logger.debug("DevEui: %s", devEui)
+
+        decoded = payload_decoder.decode(msg["data"])
+
+        rxTime = msg["baseStations"][0]["rxTime"]
+
+        parsed = process_data.parse_sensor_payload(
+            decoded,
+            devEui,
+            int(str(rxTime)[:10]),
+        )
+
+        process_data.save_sensor_data(deps["db"], parsed)
+
+    except Exception:
+        logger.exception("Error while processing MQTT message")
 
 
 def on_connect(client, userdata, flags, rc):
-    logger.info("Connected to MQTT broker at %s", BROKER_ADDRESS)
-    for t in topics:
-        client.subscribe(t)
-        logger.debug("Subscribed to topic: %s", t)
+    if rc == 0:
+        logger.info("Connected to MQTT broker at %s", BROKER_ADDRESS)
+
+        # Beim Verbinden sofort synchronisieren
+        refresh_topics(client)
+
+    else:
+        logger.error("Connection to MQTT broker %s failed (rc=%s)", BROKER_ADDRESS, rc)
+
+
+def on_disconnect(client, userdata, rc):
+    logger.warning("Disconnected from broker (rc=%s)", rc)
 
 
 def create():
     client = mqtt.Client()
+
     client.on_connect = on_connect
     client.on_message = on_message
+    client.on_disconnect = on_disconnect
+
     client.connect(BROKER_ADDRESS, PORT)
+
     client.loop_start()
-    logger.debug("MQTT loop started")
+
+    # Hintergrundthread startet die regelmäßige Synchronisierung
+    threading.Thread(
+        target=topic_watcher,
+        args=(client,),
+        daemon=True,
+    ).start()
+
+    logger.info("MQTT client started")
+
+    return client

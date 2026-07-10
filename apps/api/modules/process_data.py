@@ -14,7 +14,9 @@ from modules.sensor_factory import SensorFactory
 from modules.trashbin_factory import TrashbinFactory
 
 
-def parse_sensor_payload(payload: dict[str, Any], devEui: str) -> dict[str, Optional[Any]]:
+def parse_sensor_payload(
+    payload: dict[str, Any], devEui: str, rxTime: int
+) -> dict[str, Optional[Any]]:
     """
     Extrahiert Sensordaten aus einem Mioty-kompatiblen MQTT-Payload.
 
@@ -30,7 +32,7 @@ def parse_sensor_payload(payload: dict[str, Any], devEui: str) -> dict[str, Opti
     profile_name = payload.get("deviceProfileName")
 
     # Zeitstempel (falls vorhanden)
-    timestamp = datetime.now(timezone.utc).isoformat()
+    timestamp = datetime.fromtimestamp(rxTime, tz=timezone.utc).isoformat()
 
     # Entschlüsselte Sensordaten (aus 'object')
     obj = payload
@@ -47,7 +49,7 @@ def parse_sensor_payload(payload: dict[str, Any], devEui: str) -> dict[str, Opti
 def save_sensor_data(db, data: dict[str, Any]):
     if not data.get("devEui", None):
         return
-    devEui = data["devEui"]
+    devEui = data.get("devEui")
 
     if not bool(data.get("object")):
         logger.info("Received data from device (devEui: %s) without object contents, skipping", devEui)
@@ -61,13 +63,16 @@ def save_sensor_data(db, data: dict[str, Any]):
             return
 
         # Check if trashbin with device exists in db
-        trashbin = session.exec(select(Trashbin).where(Trashbin.id == device.trashbin_id)).first()
+        trashbin = session.exec(
+            select(Trashbin).where(Trashbin.id == device.trashbin_id)
+        ).first()
         if not trashbin:
             logger.info("Received data from unattached device (device_id: %s), discarded", device.id)
             return
 
         # Process data
-        sensor_profile_name = data.get("profile_name")
+        # sensor_profile_name = data.get("profile_name")
+        sensor_profile_name = "APOLLON-Q"
         profile = SensorFactory.get_sensor(sensor_profile_name)
         logger.debug("Using %s sensor data processing profile", profile.profile_name)
 
@@ -78,15 +83,15 @@ def save_sensor_data(db, data: dict[str, Any]):
             return
         logger.debug("Using %s trashbin data processing profile", trashbin_profile.profile_name)
 
-        obj_data = profile.get_data(data.get("object"))
-        obj_data = profile.process_data(obj_data, trashbin_profile)
+        temp = profile.get_data(data.get("object"))
+        obj_data = profile.process_data(temp, trashbin_profile)
 
         # Insert into datalog
         datalog = DataLog(
             trashbin_id=trashbin.id,
             time=data.get("timestamp"),
             payload=json.dumps(data.get("full_payload")),
-            distance=obj_data.get("radar_distance_1"),
+            distance=obj_data.get("distance"),
             fill_level=obj_data.get("fill_level"),
         )
         session.add(datalog)
