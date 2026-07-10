@@ -65,7 +65,7 @@ class _JSONFormatter(logging.Formatter):
 # ---------------------------------------------------------------------------
 
 
-def configure_logistry(log_file: str | None = None) -> None:
+def configure_logging(log_file: str | None = None) -> None:
     """
     Configure the root logger from environment variables.
 
@@ -184,5 +184,4 @@ def configure_logistry(log_file: str | None = None) -> None:
         logging.getLogger(noisy).setLevel(logging.WARNING)
 
 
-# Backward-compatible alias
-configure_logging = configure_logistry
+
