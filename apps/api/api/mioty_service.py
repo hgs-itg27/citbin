@@ -100,7 +100,7 @@ def on_connect(client, userdata, flags, rc):
         refresh_topics(client)
 
     else:
-        logging.error(f"Connection failed (rc={rc})")
+        logging.error(f"Connection to MQTT Broker: {BROKER_ADDRESS} failed (rc={rc})")
 
 
 def on_disconnect(client, userdata, rc):
