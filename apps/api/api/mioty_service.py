@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger(__name__)
 import json
 
 import paho.mqtt.client as mqtt
@@ -17,20 +18,19 @@ PORT = 1883
 def on_message(client, userdata, message):
     deps = get_dependencies()
     msg = json.loads(message.payload.decode("utf-8"))
-    # logging.info(f"[DEBUG] Mioty Rohdaten empfangen:\n{msg}")
     temp = message.topic.split("/")
     devEui = temp[2]
-    logging.info(f"DevEui: {devEui}")
+    logger.debug("MQTT message from devEui=%s topic=%s", devEui, message.topic)
     decoded = payload_decoder.decode(msg["data"])
     parsed = process_data.parse_sensor_payload(decoded, devEui)
     process_data.save_sensor_data(deps["db"], parsed)
 
 
 def on_connect(client, userdata, flags, rc):
-    logging.info("Connected to MQTT Broker: " + BROKER_ADDRESS)
+    logger.info("Connected to MQTT broker at %s", BROKER_ADDRESS)
     for t in topics:
         client.subscribe(t)
-        logging.info(f"Subscribed succesfully to:{t} ")
+        logger.debug("Subscribed to topic: %s", t)
 
 
 def create():
@@ -38,6 +38,5 @@ def create():
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect(BROKER_ADDRESS, PORT)
-    logging.info("Before loop")
     client.loop_start()
-    logging.info("After loop")
+    logger.debug("MQTT loop started")

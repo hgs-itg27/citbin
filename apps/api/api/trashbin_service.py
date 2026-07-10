@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger(__name__)
 import uuid
 from typing import List, Optional
 from api import trashbin_repository
@@ -31,7 +32,7 @@ def get_list(db) -> List[TrashbinListItem]:
         except Exception as e:
             # Log error and skip problematic device to avoid complete failure of the endpoint
             device_id_for_log = getattr(trashbin_model, 'id', 'unknown_id_in_trashbin_model')
-            logging.error(f"Error validating trashbin {device_id_for_log} to TrashbinListItem: {e}")
+            logger.error("Error validating trashbin %s to TrashbinListItem: %s", device_id_for_log, e)
             # Continue to the next device
     return list
 
@@ -95,7 +96,7 @@ def update(db, trashbin_id: str, trashbin_update: TrashbinUpdate) -> Optional[Tr
     Returns:
         Updated Trashbin object or None if the trashbin was not found.
     """
-    logging.info(f"-> UPDATE request for trashbin with ID: {trashbin_id}")
+    logger.debug("Update trashbin %s requested", trashbin_id)
 
     trashbin_dict = trashbin_update.model_dump()
 
@@ -103,10 +104,10 @@ def update(db, trashbin_id: str, trashbin_update: TrashbinUpdate) -> Optional[Tr
 
     result = trashbin_repository.update(db, trashbin_id, trashbin)
     if result:
-        logging.info(f"<- Trashbin {trashbin_id} updated successfully")
+        logger.debug("Trashbin %s updated successfully", trashbin_id)
         return TrashbinResponse.model_validate(result)
     else:
-        logging.error(f"<- Trashbin {trashbin_id} not found")
+        logger.error("Trashbin %s not found for update", trashbin_id)
         raise HTTPException(status_code=404, detail="Trashbin not found")
 
 

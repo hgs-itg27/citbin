@@ -40,12 +40,12 @@ class TrashbinFactory:
                         if (inspect.isclass(obj) and issubclass(obj, Trashbin) and obj != Trashbin):
                             # Registriere die Trashbin-Klasse
                             cls.register_trashbin(obj.profile_name, obj)
-                            logging.info(f"Trashbin-Klasse registriert: {name} aus {module_name} mit Profilnamen {obj.profile_name}")
+                            logging.debug("Trashbin-Klasse registriert: %s aus %s", name, module_name)
                 except Exception as e:
-                    logging.error(f"Fehler beim Laden des Trashbin-Moduls {module_name}: {e}")
+                    logging.error("Fehler beim Laden des Trashbin-Moduls %s: %s", module_name, e)
 
         cls._initialized = True
-        logging.info(f"TrashbinFactory initialisiert mit {len(cls._trashbins)} Trashbin-Typen")
+        logging.debug("TrashbinFactory initialisiert mit %d Trashbin-Typen", len(cls._trashbins))
 
     @classmethod
     def register_trashbin(cls, name: str, trashbin_class: Type[Trashbin]) -> None:

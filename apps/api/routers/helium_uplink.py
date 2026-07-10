@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi import Depends, Body
 from typing import Dict, Any, Optional
 import logging
+logger = logging.getLogger(__name__)
 from api import device_service
 from dependencies import get_dependencies
 from models.api_models import DeviceResponse, DeviceUpdate, DeviceCreate, DeviceListItem
@@ -18,7 +19,7 @@ async def uplink(payload: Dict[str, Any] = Body(...), deps: Dict = Depends(get_d
     Receive RAW uplink data from Helium
     """
     parsed = parse_sensor_payload(payload)
-    logging.info(f"[DEBUG] Helium Rohdaten empfangen:\n{parsed}")
+    logger.debug("Helium raw data received (profile=%s)", parsed.get("profile_name", "unknown"))
     save_sensor_data(deps['db'], parsed)
 
     return {"status": "ok"}

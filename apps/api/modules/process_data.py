@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+logger = logging.getLogger(__name__)
 from datetime import datetime, timezone
 from typing import Any, Optional
 
@@ -49,8 +50,8 @@ def save_sensor_data(db, data: dict[str, Any]):
     devEui = data["devEui"]
 
     if not bool(data.get("object")):
-        logging.info(
-            f"Received data from device (devEui: {devEui}) without 'object' contents -> no further processing"
+        logger.debug(
+            "Received data from device %s without object contents – no further processing", devEui
         )
         return
 
@@ -58,32 +59,32 @@ def save_sensor_data(db, data: dict[str, Any]):
         # Check if device exists in db
         device = session.exec(select(Device).where(Device.devEui == devEui)).first()
         if not device:
-            logging.info(
-                f"Received data from unknown device (devEui: {devEui}) -> wasn't saved in DB"
+            logger.info(
+                "Received data from unknown device %s – not saved", devEui
             )
             return
 
         # Check if trashbin with device exists in db
         trashbin = session.exec(select(Trashbin).where(Trashbin.id == device.trashbin_id)).first()
         if not trashbin:
-            logging.info(
-                f"Received data from unattached device(device_id: {device.id}) -> wasn't saved in DB"
+            logger.info(
+                "Received data from unattached device %s – not saved", device.id
             )
             return
 
         # Process data
         sensor_profile_name = data.get("profile_name")
         profile = SensorFactory.get_sensor(sensor_profile_name)
-        logging.info(f"Using {profile.profile_name} sensor data processing profile")
+        logging.debug("Using %s sensor data processing profile", profile.profile_name)
 
         trashbin_profile_name = trashbin.type
         trashbin_profile = TrashbinFactory.get_trashbin(trashbin_profile_name)
         if not trashbin_profile:
-            logging.error(
-                f"Trashbin profile {trashbin_profile_name} not found for trashbin {trashbin.id}"
+            logger.error(
+                "Trashbin profile '%s' not found for trashbin %s", trashbin_profile_name, trashbin.id
             )
             return
-        logging.info(f"Using {trashbin_profile.profile_name} trashbin data processing profile")
+        logging.debug("Using %s trashbin data processing profile", trashbin_profile.profile_name)
 
         obj_data = profile.get_data(data.get("object"))
         obj_data = profile.process_data(obj_data, trashbin_profile)
@@ -99,7 +100,7 @@ def save_sensor_data(db, data: dict[str, Any]):
         session.add(datalog)
         session.commit()
         session.refresh(datalog)
-        logging.info(f"INSERT datalog: {datalog}")
+        logging.debug("INSERT datalog for trashbin %s (fill_level=%s)", trashbin.id, datalog.fill_level)
 
         # Update device attributes
         device.battery_level = obj_data.get("battery_voltage") or device.battery_level
@@ -109,7 +110,7 @@ def save_sensor_data(db, data: dict[str, Any]):
         session.add(device)
         session.commit()
         session.refresh(device)
-        logging.info(f"UPDATE device: {device}")
+        logging.debug("UPDATE device %s (battery=%s)", device.id, device.battery_level)
 
         # Update trashbin attribues
         trashbin.last_update_time = datalog.time
@@ -118,4 +119,4 @@ def save_sensor_data(db, data: dict[str, Any]):
         session.add(trashbin)
         session.commit()
         session.refresh(trashbin)
-        logging.info(f"UPDATE trashbin: {trashbin}")
+        logging.debug("UPDATE trashbin %s (fill_level=%s)", trashbin.id, trashbin.latest_fill_level)

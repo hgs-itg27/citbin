@@ -1,6 +1,7 @@
 from sqlalchemy import URL, create_engine
 from sqlmodel import SQLModel
 import logging
+logger = logging.getLogger(__name__)
 from models import trashbin, trashbin_data, device
 
 
@@ -8,7 +9,7 @@ def connect(config):
     """
     Connect to PostgreSQL database using SQLAlchemy
     """
-    logging.info(f"Connecting to PostgreSQL DB on {config['host']}:{config['port']}")
+    logger.info("Connecting to PostgreSQL on %s:%s", config['host'], config['port'])
     url = URL.create(
         'postgresql+psycopg2',
         username=config['username'],
@@ -21,10 +22,10 @@ def connect(config):
     # test if db connection exists
     with engine.connect() as test:
         ...
-    logging.info('Connected to PostgreSQL DB')
+    logger.info("Connected to PostgreSQL")
     return engine
 
 
 def create_tables(engine):
     SQLModel.metadata.create_all(engine)
-    logging.info(f'Tables: {SQLModel.metadata.tables.keys()}')
+    logger.info("Verified SQL tables: %s", list(SQLModel.metadata.tables.keys()))

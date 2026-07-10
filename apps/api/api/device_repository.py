@@ -3,6 +3,8 @@ from sqlmodel import Session, select
 from typing import List, Optional
 import logging
 
+logger = logging.getLogger(__name__)
+
 from models.device import Device
 
 
@@ -117,7 +119,7 @@ def update(db, id: str, data: Device) -> Device:
     Returns:
         The updated Device object
     """
-    logging.info(f"-> UPDATE request for ID: {id} with data:\n{data.model_dump(exclude_unset=True)}")
+    logger.debug("Updating device %s", id)
     with Session(db) as session:
         data.id = id  # Ensure the ID is set to the one being updated
         result = session.query(Device).where(Device.id == id).update(data.model_dump())
@@ -125,10 +127,10 @@ def update(db, id: str, data: Device) -> Device:
             # If the update was successful, we need to commit the changes        
             session.commit()
             updated_device = session.query(Device).where(Device.id == id).one()
-            logging.info(f"<- Device with ID {id} updated successfully:\n{updated_device}")
+            logger.debug("Device %s updated successfully", id)
             return updated_device
         else:
             # If the device was not found, return None
-            logging.error(f"Device with ID {id} not found for update")
+            logger.error("Device %s not found for update", id)
             return None
         

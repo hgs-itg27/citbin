@@ -1,6 +1,7 @@
 import json
 from typing import Any
 import logging
+logger = logging.getLogger(__name__)
 
 
 def uncomplement(val, bitwidth):
@@ -104,15 +105,14 @@ def decode(encoded_payload: list[int]) -> dict[str, Any]:
     try:
         bytes_data = encoded_payload
 
-        logging.info(f"\nRohbytes: {bytes_data}")
+        logger.debug("Raw bytes: %s", bytes_data)
 
         result = decoder(bytes_data, port)
 
-        logging.info("\nDecoded Payload:")
-        logging.info(json.dumps(result, indent=2))
+        logger.debug("Decoded payload: %s", json.dumps(result, indent=2))
 
         return result
 
     except Exception:
-        logging.exception("Unerwarteter Fehler beim Decoding")
+        logger.exception("Unexpected error while decoding payload")
         return {}

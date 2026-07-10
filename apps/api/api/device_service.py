@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger(__name__)
 from typing import List, Optional  # Ensure List and Optional are imported
 from models.api_models import DeviceResponse, DeviceUpdate, DeviceCreate, DeviceListItem
 from modules.sensor_factory import SensorFactory
@@ -25,25 +26,23 @@ def get_list(db) -> List[DeviceListItem]:
     actual_device_objects: List[Device] = []
     if not items_from_repo:
         # Repository returned an empty list
-        logging.info("device_repository.get_all returned an empty list.")
+        logger.debug("device_repository.get_all returned an empty list.")
         pass
     elif isinstance(items_from_repo[0], str):
         # Assuming List[str] of device IDs, as suggested by the traceback
-        logging.info("device_repository.get_all returned list of IDs. Fetching full Device objects.")
+        logger.debug("device_repository.get_all returned list of IDs. Fetching full Device objects.")
         for device_id in items_from_repo:
             device_obj = device_repository.get_device_by_id(db, device_id)
-            if device_obj: # device_repository.get_device_by_id returns Optional[Device]
+            if device_obj:
                 actual_device_objects.append(device_obj)
             else:
-                logging.warning(f"Device with ID {device_id} not found during list construction, skipping.")
+                logger.warning("Device with ID %s not found during list construction, skipping.", device_id)
     elif isinstance(items_from_repo[0], Device):
-        # Assuming List[Device] was returned directly
-        logging.info("device_repository.get_all returned list of Device objects.")
+        logger.debug("device_repository.get_all returned list of Device objects.")
         actual_device_objects = items_from_repo
     else:
-        # Unexpected type from repository
-        logging.error(f"device_repository.get_all returned list of unexpected type: {type(items_from_repo[0])}. Returning empty list.")
-        return [] # Or raise an appropriate error
+        logger.error("device_repository.get_all returned unexpected type %s, returning empty list", type(items_from_repo[0]))
+        return []
 
     # Convert Device objects to DeviceListItem objects for the response
     response_list: List[DeviceListItem] = []
@@ -53,10 +52,9 @@ def get_list(db) -> List[DeviceListItem]:
         except Exception as e:
             # Log error and skip problematic device to avoid complete failure of the endpoint
             device_id_for_log = getattr(device_model, 'id', 'unknown_id_in_device_model')
-            logging.error(f"Error validating device {device_id_for_log} to DeviceListItem: {e}")
-            # Continue to the next device
+            logger.error("Error validating device %s to DeviceListItem: %s", device_id_for_log, e)
 
-    logging.info(f"Returning list of {len(response_list)} devices.")
+    logger.debug("Returning list of %d devices.", len(response_list))
     return response_list
 
 
@@ -70,19 +68,15 @@ def get_devices_of_trashbin(db, trashbin_id: str) -> List[DeviceListItem]:
     Returns:
         List[DeviceListItem]: A list of devices associated with the trashbin.
     """
-    logging.info(f"Processing device GET request for trashbin with ID: {trashbin_id}")
+    logger.debug("Processing device GET request for trashbin with ID: %s", trashbin_id)
     response_list: List[DeviceListItem] = []
 
-    # Fetch devices associated with the given trashbin_id
-    # and convert them to DeviceListItem objects
-    # using the SQLModel's model_dump method for serialization
-    # and validation with Pydantic
     list = device_repository.get_all_of_trashbin(db, trashbin_id)
     if not list:
-        logging.info(f"No devices found for trashbin with ID: {trashbin_id}")
+        logger.debug("No devices found for trashbin with ID: %s", trashbin_id)
         return []
     else:
-        logging.info(f"Found {len(list)} devices for trashbin with ID: {trashbin_id}")
+        logger.debug("Found %d devices for trashbin with ID: %s", len(list), trashbin_id)
     # Convert Device objects to DeviceListItem objects for the response
     for device_model in list:
         try:
@@ -93,7 +87,7 @@ def get_devices_of_trashbin(db, trashbin_id: str) -> List[DeviceListItem]:
         except Exception as e:
             # Log error and skip problematic device to avoid complete failure of the endpoint
             device_id_for_log = getattr(device_model, 'id', 'unknown_id_in_device_model')
-            logging.error(f"Error validating device {device_id_for_log} to DeviceListItem: {e}")
+            logger.error("Error validating device %s to DeviceListItem: %s", device_id_for_log, e)
             # Continue to the next device
 
     return response_list
@@ -111,7 +105,7 @@ def get_device(db, device_id: str) -> Optional[DeviceResponse]:
         DeviceResponse object with device details or None if the device was not found
     """
 
-    logging.info(f"Processing device GET request with ID: {device_id}")
+    logger.debug("Processing device GET request with ID: %s", device_id)
     result = device_repository.get_device_by_id(db, device_id)
     if result is None:
         return None
@@ -134,7 +128,7 @@ def create(db, deviceCreate: DeviceCreate) -> DeviceResponse:
     Returns:
         Created device
     """
-    logging.info(f"Processing device POST request with data: {deviceCreate}")
+    logger.debug("Processing device POST request")
     # Create a new Device object
     device = Device.from_device_create(deviceCreate)  
 
@@ -160,7 +154,7 @@ def update(db, device_id: str, device_update: DeviceUpdate) -> Optional[DeviceRe
     Returns:
         Updated device details or None if the device was not found.
     """
-    logging.info(f"Processing device UPDATE request for ID: {device_id} with data: {device_update.model_dump(exclude_unset=True)}")
+    logger.debug("Processing device UPDATE request for ID: %s", device_id)
 
     existing_device = device_repository.get_device_by_id(db, device_id)
     if not existing_device:
@@ -174,7 +168,7 @@ def update(db, device_id: str, device_update: DeviceUpdate) -> Optional[DeviceRe
         if hasattr(existing_device, key):
             setattr(existing_device, key, value)
         else:
-            logging.warning(f"Key '{key}' from DeviceUpdate not found on Device model for ID {device_id}")
+            logger.warning("Key '%s' from DeviceUpdate not found on Device model for ID %s", key, device_id)
 
     # Update the device in the database
     try:
@@ -182,14 +176,12 @@ def update(db, device_id: str, device_update: DeviceUpdate) -> Optional[DeviceRe
 
         # Verify that we got a valid device back
         if not updated_db_device:
-            logging.error(f"Failed to update device {device_id} - repository returned None")
+            logger.error("Failed to update device %s - repository returned None", device_id)
             return None
 
-            
-        # Validate the dictionary with DeviceResponse
         return DeviceResponse.model_validate(updated_db_device.model_dump())
     except Exception as e:
-        logging.error(f"Error updating device {device_id}: {str(e)}")
+        logger.error("Error updating device %s: %s", device_id, str(e))
         raise
 
 

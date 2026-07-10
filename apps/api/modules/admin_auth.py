@@ -1,6 +1,7 @@
 import os
 import secrets
 import logging
+logger = logging.getLogger(__name__)
 from fastapi import APIRouter, Depends, HTTPException, status, Security
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.responses import FileResponse
@@ -17,7 +18,7 @@ def get_current_username(credentials: HTTPBasicCredentials = Security(security))
     Uses secrets.compare_digest for timing attack resistance.
     """
     if not ADMIN_PASSWORD_ENV:
-        logging.error("Admin password (ADMIN_PASSWORD) is not configured on the server. Access denied.")
+        logger.error("Admin password (ADMIN_PASSWORD) is not configured – access denied")
         # Do not reveal that the password is not set to the client for security reasons.
         # Simply state authentication failed.
         raise HTTPException(
@@ -42,7 +43,7 @@ def get_current_username(credentials: HTTPBasicCredentials = Security(security))
     )
 
     if not (is_correct_username and is_correct_password):
-        logging.warning(f"Failed admin login attempt for username: {credentials.username}")
+        logger.warning("Failed admin login attempt for user: %s", credentials.username)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
