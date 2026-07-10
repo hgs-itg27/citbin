@@ -31,7 +31,7 @@ def parse_sensor_payload(
     profile_name = payload.get("deviceProfileName")
 
     # Zeitstempel (falls vorhanden)
-    timestamp = datetime.utcfromtimestamp(rxTime).isoformat()
+    timestamp = datetime.fromtimestamp(rxTime, tz=timezone.utc).isoformat()
 
     # Entschlüsselte Sensordaten (aus 'object')
     obj = payload

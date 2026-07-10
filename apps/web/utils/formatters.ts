@@ -20,9 +20,14 @@ export const formatDateTime = (
 ): string => {
   if (!isoString) return "Unbekannt";
   try {
-    // Using toLocaleString makes it client-friendly (uses browser's locale)
-    return new Date(isoString).toLocaleString("de-DE", {
-      // Use locale default
+    // Backend liefert UTC-Zeit oft ohne Zeitzonen-Indikator (z.B. "2026-07-10T06:25:18").
+    // Ohne Z/Offset interpretiert JavaScript den String als lokale Zeit statt UTC.
+    // Daher hängen wir ein "Z" an, wenn keine Zeitzone angegeben ist.
+    const normalized = /Z$|[+-]\d{2}:\d{2}$/.test(isoString)
+      ? isoString
+      : `${isoString}Z`;
+
+    return new Date(normalized).toLocaleString("de-DE", {
       year: "numeric",
       month: "numeric",
       day: "numeric",
