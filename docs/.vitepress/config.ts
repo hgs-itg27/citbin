@@ -4,6 +4,7 @@ export default defineConfig({
   lang: "de-DE",
   title: "Citbin Dokumentation",
   description: "Dokumentation für das Citbin Projekt",
+  base: "/citbin/",
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },
