@@ -1,19 +1,21 @@
 import json
 import logging
+import os
 import threading
 import time
 
 import paho.mqtt.client as mqtt
+from dotenv import load_dotenv
+from sqlmodel import Session, select
+
 from dependencies import get_dependencies
 from models.device import Device
 from modules import payload_decoder, process_data
-from sqlmodel import Session, select
-from dotenv import load_dotenv
 
 load_dotenv()
 
 BROKER_ADDRESS = os.getenv("MQTT_HOSTNAME", "citbin.hgs-singen.de")
-PORT = os.getenv("MQTT_PORT", "1883")
+PORT = int(os.getenv("MQTT_PORT", 1883))
 
 # Aktuell abonnierte Topics
 current_topics = set()
