@@ -23,7 +23,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["ruff>=0.1.0", "mypy>=1.0.0"]
+dev = ["ruff>=0.1.0", "mypy>=1.0.0", "flake8>=7.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -33,7 +33,7 @@ build-backend = "hatchling.build"
 packages = ["."]
 
 [dependency-groups]
-dev = ["ruff>=0.1.0", "mypy>=1.0.0"]
+dev = ["ruff>=0.1.0", "mypy>=1.0.0", "flake8>=7.0.0"]
 
 [tool.ruff]
 line-length = 100
