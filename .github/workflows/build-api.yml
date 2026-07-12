@@ -39,10 +39,10 @@ jobs:
           cache-dependency-glob: apps/api/pyproject.toml
 
       - name: 🏗️ Install API dependencies
-        run: uv sync --frozen --group dev
+        run: uv sync --frozen --group dev --system
 
       - name: 🪄 Lint API
-        run: uv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=.venv
+        run: uv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: 🎯 Test API
         run: uv run pytest -v tests/
