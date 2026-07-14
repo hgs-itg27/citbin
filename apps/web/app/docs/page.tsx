@@ -1,5 +1,8 @@
+import { button as buttonStyles } from "@heroui/theme";
+import { Link } from "@heroui/link";
 import { Divider } from "@heroui/divider";
 
+import { siteConfig } from "@/config/site";
 import languageSystem from "@/utils/languageSystem";
 import AnimatedGradient from "@/components/animatedGradient";
 
@@ -44,6 +47,7 @@ export default function DocsPage() {
               class: "text-center",
             },
           })}
+
           <br />
           {languageSystem.span({
             key: "docs.description",
@@ -56,6 +60,19 @@ export default function DocsPage() {
               as: "p",
             },
           })}
+          <br />
+          <Link
+            isExternal
+            className={buttonStyles({
+              color: "primary",
+              radius: "full",
+              variant: "shadow",
+              size: "lg",
+            })}
+            href="https://hgs-itg27.github.io/citbin/"
+          >
+            {languageSystem.get({ key: "startpage.buttons.dev-documentation" })}
+          </Link>
         </div>
       </section>
       <Divider />

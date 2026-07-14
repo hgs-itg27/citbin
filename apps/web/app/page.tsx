@@ -60,10 +60,7 @@ export default function Home() {
     <div className="flex flex-col items-center">
       <section className="relative isolate flex flex-col items-center justify-center gap-4 py-16 md:py-24 text-center w-full">
         <AnimatedGradient />
-        <Modal
-          isOpen={cookies.get("closedPopupInfo") !== "true"}
-          onClose={handleClose}
-        >
+        <Modal isOpen={cookies.get("closedPopupInfo") !== "true"} onClose={handleClose}>
           <ModalContent>
             {(onClose) => (
               <>
@@ -128,7 +125,7 @@ export default function Home() {
               radius: "full",
               size: "lg",
             })}
-            href=""
+            href="https://github.com/hgs-itg27/citbin"
           >
             <GithubIcon size={20} />
             {languageSystem.get({ key: "startpage.buttons.github" })}
