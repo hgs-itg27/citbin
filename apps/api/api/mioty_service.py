@@ -28,11 +28,16 @@ def load_topics():
     with Session(db) as session:
         devices = session.exec(select(Device)).all()
 
-    return {
-        f"mioty/00-00-00-00-00-00-00-00/{device.devEui}/uplink"
-        for device in devices
-        if device.devEui
-    }
+    topics = set()
+    for device in devices:
+        if device.devEui:
+            topics.add(f"mioty/00-00-00-00-00-00-00-00/{device.devEui}/uplink")
+            topics.add(
+                f"mioty/00-00-00-00-00-00-00-00/{device.devEui}/uplinkDuplicate"
+            )
+
+    return topics
+
 
 
 def refresh_topics(client):
