@@ -7,15 +7,16 @@
     },
     "buttons": {
       "documentation": "Dokumentation",
+      "dev-documentation": "Entwickler-Dokumentation",
       "github": "GitHub"
     },
     "stats": {
       "bins_monitored": {
-        "title": "<blue>{count}+</blue> Behälter überwacht",
-        "description": "Unser System misst kontinuierlich die Füllstände von über {count} Abfallbehältern in Echtzeit und liefert wertvolle Daten für die Optimierung der Sammelrouten."
+        "title": "Zukünftig <blue>{count}+</blue> Behälter überwacht",
+        "description": "Unser System wird in Zukunft kontinuierlich die Füllstände von über {count} Abfallbehältern in Echtzeit messen und wertvolle Daten für die Optimierung der Sammelrouten liefern."
       },
       "trips_optimized": {
-        "title": "<green>{count}%</green> weniger Fahrten",
+        "title": "Voraussichtlich <green>{count}%</green> weniger Fahrten",
         "description": "Durch intelligente Routenplanung basierend auf echten Füllständen reduzieren wir unnötige Fahrten um bis zu {count}%. Das spart Kosten, Zeit und reduziert CO2-Emissionen."
       }
     },
