@@ -5,7 +5,7 @@
   "packages": {
     ".": {
       "release-type": "simple",
-      "initial-version": "0.2.0",
+      "initial-version": "1.0.2",
       "extra-files": [
         "apps/api/pyproject.toml",
         "apps/web/package.json"
