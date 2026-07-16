@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi import Depends, HTTPException
 from typing import List
 import logging
+logger = logging.getLogger(__name__)
 from api import trashbin_service, device_service
 from dependencies import get_dependencies
 from models.api_models import TrashbinListItem, TrashbinCreate, TrashbinUpdate, TrashbinResponse, DeviceListItem

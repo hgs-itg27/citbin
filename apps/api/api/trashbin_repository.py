@@ -1,4 +1,6 @@
 import logging
+
+logger = logging.getLogger(__name__)
 from typing import Optional, List
 from models.trashbin import Trashbin
 from models.device import Device
@@ -48,14 +50,13 @@ def get(db, trashbin_id: str) -> Optional[Trashbin]:
     Returns:
         TrashbinResponse object with trashbin details or None if the trashbin was not found
     """
-    logging.debug(f"-> GET trashbin ID: {trashbin_id}")
+    logger.debug("Processing trashbin GET request with ID: %s", trashbin_id)
     with Session(db) as session:
         trashbin = session.get(Trashbin, trashbin_id)
     if trashbin is None:
-        logging.warning(f"Trashbin with ID {trashbin_id} not found")
+        logger.warning("Trashbin %s not found", trashbin_id)
         return None
 
-    logging.debug(f"<- Trashbin with ID {trashbin_id} found: {trashbin}")
     return trashbin
 
 
@@ -68,12 +69,12 @@ def create(db, trashbin: Trashbin) -> Trashbin:
     Returns:
         Created Trashbin object
     """
-    logging.debug(f"-> POST request for trashbin with data: {trashbin}")
+    logger.debug("Creating trashbin")
     with Session(db) as session:
         session.add(trashbin)
         session.commit()
         session.refresh(trashbin)
-    logging.debug(f"<- Trashbin {trashbin.id} created successfully")
+    logger.debug("Trashbin %s created successfully", trashbin.id)
     return trashbin
 
 
@@ -87,7 +88,7 @@ def update(db, trashbin_id: int, trashbin: Trashbin) -> Optional[Trashbin]:
     Returns:
         Updated Trashbin object.
     """
-    logging.info(f"-> UPDATE request for trashbin with ID: {trashbin_id}")
+    logger.debug("Updating trashbin %s", trashbin_id)
 
     with Session(db) as session:
         result = session.get(Trashbin, trashbin_id)
@@ -96,10 +97,10 @@ def update(db, trashbin_id: int, trashbin: Trashbin) -> Optional[Trashbin]:
                 setattr(result, k, v)
             session.commit()
             session.refresh(result)
-            logging.info(f"<- Trashbin {trashbin_id} updated successfully")
+            logger.debug("Trashbin %s updated successfully", trashbin_id)
             return result
         else:
-            logging.error(f"<- Trashbin {trashbin_id} not found")
+            logger.error("Trashbin %s not found for update", trashbin_id)
             return None
 
 
@@ -121,11 +122,11 @@ def delete_data(db, trashbin_id: str) -> bool:
     Returns:
         True if data was deleted, False if trashbin was not found
     """
-    logging.info(f"-> DELETE DATA request for trashbin with ID: {trashbin_id}")
+    logger.debug("Deleting data for trashbin %s", trashbin_id)
     with Session(db) as session:
         session.exec(
             sql_delete(DataLog).where(DataLog.trashbin_id == trashbin_id)
         )
         session.commit()
-    logging.info(f"<- Trashbin {trashbin_id} data deleted successfully")
+    logger.debug("Trashbin %s data deleted successfully", trashbin_id)
     return True

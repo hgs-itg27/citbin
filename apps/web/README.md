@@ -1,354 +1,142 @@
-# CiTBIN Web Application
+# mhgs
 
-The CiTBIN Web Application is the primary user interface of the platform. It provides operators with a centralized dashboard for monitoring waste bins, managing devices, and viewing sensor data collected by the backend.
+## Installation unter Windows
 
-Built with **Next.js**, **React**, and **TypeScript**, the frontend communicates exclusively with the REST API exposed by the backend.
-
----
-
-# Features
-
-* Interactive dashboard
-* Waste bin overview
-* Device management
-* Live sensor data visualization
-* Responsive user interface
-* REST API integration
-* Modern React component architecture
-* TypeScript support
-* Tailwind CSS styling
-* Dark mode support (if enabled)
-
----
-
-# Technology Stack
-
-| Component       | Technology   |
-| --------------- | ------------ |
-| Framework       | Next.js      |
-| Language        | TypeScript   |
-| UI Library      | React        |
-| Styling         | Tailwind CSS |
-| HTTP Client     | Fetch API    |
-| Package Manager | npm          |
-
----
-
-# Architecture
-
-```text
-                    FastAPI Backend
-                           │
-                      REST API
-                           │
-           ┌───────────────┴───────────────┐
-           │                               │
-      React Components               API Client
-           │                               │
-           └───────────────┬───────────────┘
-                           │
-                    Next.js Application
-                           │
-                     Browser Interface
+```
+winget install -e --id Git.Git
 ```
 
-The frontend contains no business logic regarding sensor processing. All sensor decoding, MQTT communication, and database interactions are handled by the backend.
-
----
-
-# Project Structure
-
-```text
-apps/web/
-
-├── app/
-│   ├── dashboard/
-│   ├── devices/
-│   ├── trashbins/
-│   ├── settings/
-│   └── layout.tsx
-│
-├── components/
-│   ├── ui/
-│   ├── dashboard/
-│   ├── trashbin/
-│   └── device/
-│
-├── lib/
-│
-├── public/
-│
-├── styles/
-│
-├── utils/
-│
-└── package.json
+```
+winget install -e --id OpenJS.NodeJS
 ```
 
----
-
-# Application Structure
-
-The application follows the Next.js App Router architecture.
-
-Main areas include:
-
-* Dashboard
-* Waste Bin Management
-* Device Management
-* Settings
-* Shared Components
-* API Communication
-* Utility Functions
-
----
-
-# Dashboard
-
-The dashboard provides an overview of the entire system.
-
-Typical information includes:
-
-* Total waste bins
-* Active devices
-* Current fill levels
-* Recent measurements
-* System status
-
-The dashboard should provide users with the most important information at a glance.
-
----
-
-# Waste Bin Management
-
-The waste bin pages allow users to:
-
-* View all waste bins
-* Inspect individual bins
-* View current fill level
-* Display historical measurements
-* Edit waste bin information
-* Assign devices
-
----
-
-# Device Management
-
-The device section provides functionality for managing installed sensor devices.
-
-Typical operations include:
-
-* View registered devices
-* Display device information
-* Check battery status
-* Assign devices to waste bins
-* Remove inactive devices
-
----
-
-# API Communication
-
-The frontend communicates exclusively with the backend REST API.
-
-Typical requests include:
-
-```http
-GET /api/v1/trashbin
-
-GET /api/v1/device
-
-GET /api/v1/trashbin-data
-
-POST /api/v1/device
+```
+winget install -e --id GitHub.cli
 ```
 
-No direct database access exists within the frontend.
+Neues Terminal (Altes schliessen)
 
----
-
-# Environment Variables
-
-Create a local environment file.
-
-```bash
-cp .env.example .env.local
+```
+git clone https://github.com/hgs-itg26/mhgs-software.git
 ```
 
-Typical configuration includes:
+*Es sollte automatisch ein Fenster für die Verbindung mit Github erscheinen. Klicke dort auf die Browser-Option. Falls
+sich kein Fenster öffnet, bitte folgendes Tutorial
+verwenden: https://docs.github.com/en/github-cli/github-cli/quickstart oder versuche folgenden Befehl `gh auth login`*
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+```
+cd mhgs\server\frontend
 ```
 
----
-
-# Installation
-
-Install all dependencies.
-
-```bash
+```
 npm install
 ```
 
-or
+*Falls der NPM Befehl nicht erkannt wird, sollte man bitte die Installation von NodeJS wiederholen. Folgender Link hat
+einen .EXE Installer parat: https://nodejs.org/en/download hier sollte man darauf achten, die richtigen Einstellungen
+getätigt zu haben.*
 
-```bash
-npm ci
-```
+## Installation unter Linux
+
+### Installation unter Debian/Ubuntu
+
+1. **Paketquellen aktualisieren:**
+   ```bash
+   sudo apt update
+   ```
+
+2. **Git installieren:**
+   ```bash
+   sudo apt install git -y
+   ```
+
+3. **Node.js und npm installieren:**
+   ```bash
+   sudo apt install nodejs npm -y
+   ```
+
+4. **GitHub CLI installieren:**
+   Folge den [offiziellen Anweisungen von Github selbst](https://github.com/cli/cli/blob/trunk/docs/install_linux.md).
+
+6. **Neues Terminal öffnen (optional):**
+   Es ist empfehlenswert, ein neues Terminalfenster zu öffnen, um sicherzustellen, dass alle Pfade korrekt erkannt
+   werden.
+
+7. **Repository klonen:**
+   ```bash
+   git clone https://github.com/hgs-itg26/mhgs-software.git
+   ```
+   *Authentifizierung:* Eventuell musst du dich bei GitHub authentifizieren. Folge den Anweisungen im Terminal oder
+   nutze `gh auth login` und wähle die Browser-Option.
+
+8. **In das Verzeichnis wechseln:**
+   *Beachte: Linux verwendet `/` als Pfadtrenner.*
+   ```bash
+   cd citbin/apps/web
+   ```
+
+9. **Abhängigkeiten installieren:**
+   ```bash
+   npm install
+   ```
+   *Falls der `npm` Befehl nicht gefunden wird, überprüfe die Node.js/npm Installation (Schritt 3) oder starte dein
+   Terminal neu.*
 
 ---
 
-# Development
+### Installation unter Fedora
 
-Start the development server.
+1. **Paketquellen aktualisieren (optional, aber empfohlen):**
+   ```bash
+   sudo dnf check-update
+   ```
 
-```bash
+2. **Git installieren:**
+   ```bash
+   sudo dnf install git -y
+   ```
+
+3. **Node.js und npm installieren:**
+   ```bash
+   sudo dnf install nodejs npm -y
+   ```
+   *(Oft wird npm automatisch mit nodejs installiert. Falls nicht, installiere es separat: `sudo dnf install npm -y`)*
+
+4. **GitHub CLI installieren:**
+   ```bash
+   sudo dnf install gh -y
+   ```
+   *Falls das nicht funktioniert folge
+   den [offiziellen Anweisungen von Github selbst](https://github.com/cli/cli/blob/trunk/docs/install_linux.md).*
+
+5. **Neues Terminal öffnen (optional):**
+   Es ist empfehlenswert, ein neues Terminalfenster zu öffnen, um sicherzustellen, dass alle Pfade korrekt erkannt
+   werden.
+
+6. **Repository klonen:**
+   ```bash
+   git clone https://github.com/hgs-itg26/mhgs-software.git
+   ```
+   *Authentifizierung:* Eventuell musst du dich bei GitHub authentifizieren. Folge den Anweisungen im Terminal oder
+   nutze `gh auth login` und wähle die Browser-Option.
+
+7. **In das Verzeichnis wechseln:**
+   *Beachte: Linux verwendet `/` als Pfadtrenner.*
+   ```bash
+   cd citbin/apps/web
+   ```
+
+8. **Abhängigkeiten installieren:**
+   ```bash
+   npm install
+   ```
+   *Falls der `npm` Befehl nicht gefunden wird, überprüfe die Node.js/npm Installation (Schritt 3) oder starte dein
+   Terminal neu.*
+
+---
+
+## Starten des Developement-Servers (localhost)
+
+```
 npm run dev
 ```
-
-Open the application in your browser.
-
-```
-http://localhost:3000
-```
-
-Hot reload is enabled by default.
-
----
-
-# Production Build
-
-Create an optimized production build.
-
-```bash
-npm run build
-```
-
-Start the production server.
-
-```bash
-npm run start
-```
-
----
-
-# Linting
-
-Run ESLint.
-
-```bash
-npm run lint
-```
-
-Keeping the codebase lint-free ensures consistent formatting and improves maintainability.
-
----
-
-# Component Architecture
-
-The frontend follows a component-based architecture.
-
-Components should:
-
-* remain reusable
-* avoid duplicated logic
-* receive data via props
-* separate presentation from business logic
-
-Shared UI elements belong in the common component directory, while page-specific components should remain close to their respective pages.
-
----
-
-# State Management
-
-The application primarily relies on:
-
-* React state
-* React hooks
-* API requests
-
-Business logic should remain inside the backend whenever possible.
-
----
-
-# Styling
-
-Styling is implemented using Tailwind CSS.
-
-Recommended practices:
-
-* Use utility classes whenever possible.
-* Keep components responsive.
-* Avoid inline styles.
-* Reuse shared UI components.
-
----
-
-# Development Workflow
-
-1. Start the infrastructure.
-2. Start the backend API.
-3. Start the frontend.
-4. Verify API connectivity.
-5. Implement UI changes.
-6. Test responsive layouts.
-7. Commit your changes.
-
----
-
-# Troubleshooting
-
-## Backend cannot be reached
-
-Verify that the backend is running and accessible.
-
-```
-http://localhost:8000/api/docs
-```
-
-Also check the configured API URL in `.env.local`.
-
----
-
-## Page does not update
-
-Restart the development server.
-
-```bash
-npm run dev
-```
-
-Clear the browser cache if necessary.
-
----
-
-## Build fails
-
-Verify:
-
-* Node.js version
-* Installed dependencies
-* Environment variables
-* TypeScript errors
-
-Run:
-
-```bash
-npm run lint
-
-npm run build
-```
-
----
-
-# Related Documentation
-
-* Root Documentation: `../../README.md`
-* Backend Documentation: `../api/README.md`
-* Infrastructure Documentation: `../../infrastructure/README.md`
-
----
-
-# to the following class 12/3
-
-* your main focus will be to upgrade/improve the web frontend

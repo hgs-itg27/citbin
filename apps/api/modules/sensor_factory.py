@@ -2,6 +2,7 @@ import importlib
 import inspect
 import pkgutil
 import logging
+logger = logging.getLogger(__name__)
 from typing import Dict, Type
 from modules.sensors.base import Sensor
 
@@ -45,12 +46,12 @@ class SensorFactory:
                         if (inspect.isclass(obj) and issubclass(obj, Sensor) and obj != Sensor):
                             # Registriere die Sensor-Klasse
                             cls.register_sensor(obj.profile_name, obj)
-                            logging.info(f"Sensor-Klasse registriert: {name} aus {module_name} mit Profilnamen {obj.profile_name}")
+                            logger.debug("Sensor class registered: %s from %s (profile: %s)", name, module_name, obj.profile_name)
                 except Exception as e:
-                    logging.error(f"Fehler beim Laden des Sensor-Moduls {module_name}: {e}")
+                    logger.error("Error loading sensor module %s: %s", module_name, e)
 
         cls._initialized = True
-        logging.info(f"SensorFactory initialisiert mit {len(cls._sensors)} Sensor-Typen")
+        logger.debug("SensorFactory initialized with %d sensor types", len(cls._sensors))
 
     @classmethod
     def register_sensor(cls, name: str, sensor_class: Type[Sensor]) -> None:

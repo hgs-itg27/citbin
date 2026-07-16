@@ -1,5 +1,6 @@
 import os
 import logging
+logger = logging.getLogger(__name__)
 import subprocess
 from pathlib import Path
 
@@ -29,18 +30,18 @@ def run_migrations():
                 )
                 
                 if "Can't locate revision" in check_result.stderr or "DatatypeMismatch" in check_result.stderr:
-                    logging.warning("Probleme mit der Migrationsdatenbank erkannt. Versuche Reset...")
+                    logger.warning("Migration issues detected, attempting reset...")
                     reset_result = subprocess.run(
                         ["python", "reset_alembic.py"],
                         capture_output=True,
                         text=True
                     )
-                    logging.info(f"Reset-Ergebnis: {reset_result.stdout}")
+                    logger.info("Reset result: %s", reset_result.stdout)
             except Exception as reset_error:
-                logging.warning(f"Fehler beim Versuch, die Migration zurückzusetzen: {reset_error}")
+                logger.warning("Error attempting migration reset: %s", reset_error)
             
             # Alembic-Upgrade ausführen
-            logging.info("Führe ausstehende Datenbankmigrationen aus...")
+            logger.info("Running pending database migrations...")
             result = subprocess.run(
                 ["alembic", "upgrade", "head"],
                 capture_output=True,
@@ -48,16 +49,16 @@ def run_migrations():
             )
             
             if result.returncode == 0:
-                logging.info(f"Migrationen erfolgreich ausgeführt: {result.stdout}")
+                logger.info("Migrations executed successfully: %s", result.stdout)
                 return True
             else:
-                logging.error(f"Fehler bei der Ausführung der Migrationen: {result.stderr}")
+                logger.error("Migration execution failed: %s", result.stderr)
                 return False
-            
+
         finally:
             # Zurück zum ursprünglichen Verzeichnis wechseln
             os.chdir(original_dir)
             
     except Exception as e:
-        logging.error(f"Unerwarteter Fehler bei der Ausführung der Migrationen: {str(e)}")
+        logger.error("Unexpected error running migrations: %s", str(e))
         return False

@@ -1,5 +1,6 @@
-import json
 import logging
+logger = logging.getLogger(__name__)
+import json
 import os
 import threading
 import time
@@ -50,22 +51,22 @@ def refresh_topics(client):
         for topic in new_topics - current_topics:
             result, _ = client.subscribe(topic)
             if result == mqtt.MQTT_ERR_SUCCESS:
-                logging.info(f"Subscribed: {topic}")
+                logger.info("Subscribed: %s", topic)
             else:
-                logging.warning(f"Failed to subscribe: {topic}")
+                logger.warning("Failed to subscribe: %s", topic)
 
         # Nicht mehr vorhandene Topics abbestellen
         for topic in current_topics - new_topics:
             result, _ = client.unsubscribe(topic)
             if result == mqtt.MQTT_ERR_SUCCESS:
-                logging.info(f"Unsubscribed: {topic}")
+                logger.info("Unsubscribed: %s", topic)
             else:
-                logging.warning(f"Failed to unsubscribe: {topic}")
+                logger.warning("Failed to unsubscribe: %s", topic)
 
         current_topics = new_topics
 
     except Exception:
-        logging.exception("Error while refreshing MQTT topics")
+        logger.exception("Error while refreshing MQTT topics")
 
 
 def topic_watcher(client):
@@ -80,10 +81,10 @@ def on_message(client, userdata, message):
     try:
         msg = json.loads(message.payload.decode("utf-8"))
 
-        logging.info(f"[DEBUG] Mioty Rohdaten empfangen:\n{msg}")
+        logger.debug("MQTT raw data: %s", msg)
 
         devEui = message.topic.split("/")[2]
-        logging.info(f"DevEui: {devEui}")
+        logger.debug("DevEui: %s", devEui)
 
         decoded = payload_decoder.decode(msg["data"])
 
@@ -98,22 +99,22 @@ def on_message(client, userdata, message):
         process_data.save_sensor_data(deps["db"], parsed)
 
     except Exception:
-        logging.exception("Error while processing MQTT message")
+        logger.exception("Error while processing MQTT message")
 
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        logging.info(f"Connected to MQTT Broker: {BROKER_ADDRESS}")
+        logger.info("Connected to MQTT broker at %s", BROKER_ADDRESS)
 
         # Beim Verbinden sofort synchronisieren
         refresh_topics(client)
 
     else:
-        logging.error(f"Connection to MQTT Broker: {BROKER_ADDRESS} failed (rc={rc})")
+        logger.error("Connection to MQTT broker %s failed (rc=%s)", BROKER_ADDRESS, rc)
 
 
 def on_disconnect(client, userdata, rc):
-    logging.warning(f"Disconnected from broker (rc={rc})")
+    logger.warning("Disconnected from broker (rc=%s)", rc)
 
 
 def create():
@@ -134,6 +135,6 @@ def create():
         daemon=True,
     ).start()
 
-    logging.info("MQTT client started")
+    logger.info("MQTT client started")
 
     return client

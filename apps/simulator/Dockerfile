@@ -14,9 +14,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 COPY requirements.txt .
-RUN python -m pip install --upgrade pip && \
-    pip install uv && \
-    uv pip install --system --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=appuser:appuser . .
 

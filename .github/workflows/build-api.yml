@@ -36,18 +36,16 @@ jobs:
         uses: astral-sh/setup-uv@v8.3.2
         with:
           enable-cache: true
-          cache-dependency-glob: apps/api/requirements.txt
+          cache-dependency-glob: apps/api/pyproject.toml
 
       - name: 🏗️ Install API dependencies
-        run: |
-          uv pip install --system -r requirements.txt
-          uv pip install --system pytest httpx flake8
+        run: uv sync --frozen --group dev
 
       - name: 🪄 Lint API
-        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        run: uv run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=.venv
 
       - name: 🎯 Test API
-        run: pytest -v tests/
+        run: uv run pytest -v tests/
 
   docker-build-api:
     needs: [api]

@@ -8,12 +8,11 @@ Das Projekt baut auf einem **Pilotprojekt der damaligen Klasse TG 12/3 aus dem S
 
 Die Schülerinnen und Schüler sammeln dabei **praktische Erfahrungen in Projektmanagement, Softwareentwicklung, Hardwareintegration und Teamarbeit** – unter realen Bedingungen mit einem echten Auftraggeber.
 
-# Personen und Rollen
 
+# Personen und Rollen
 siehe [Personen und Rollen](./01a-Personen+Rollen.md)
 
 # Projektzeitraum
-
 **März bis Juli 2026**
 
 Die regelmäßigen Projekttreffen finden **freitags von 7:55 bis 11:10 Uhr** statt.
@@ -21,6 +20,7 @@ Die regelmäßigen Projekttreffen finden **freitags von 7:55 bis 11:10 Uhr** sta
 Ziel ist es, das System **bis Anfang Juli** fertigzustellen und an die **Stadt Singen zu übergeben**.
 
 siehe [Zeitplanung](01a-Zeitplanung.md)
+
 
 # Projektziel
 
@@ -37,7 +37,7 @@ Im Rahmen einer **Pilotphase** werden zunächst **fünf Mülleimer** mit Sensore
 
 Die entwickelte Software wird anschließend:
 
-- auf **Servern der Stadt Singen** betrieben
+- auf **Servern der Stadt Singen** betrieben  
 - an die **Stadtverwaltung übergeben**
 
 # Projektvorgehen
@@ -48,11 +48,11 @@ Zu Beginn werden innerhalb des Projektteams **Unternehmensrollen und Verantwortl
 
 Wichtige Schritte im Projekt:
 
-- Besetzung der Positionen innerhalb der Projektorganisation
-- Erstgespräch mit dem Kunden (Stadt Singen)
-- Erstellung eines **Lastenhefts** mit den Anforderungen
-- Klärung des **zeitlichen Rahmens**
-- Klärung des **finanziellen Rahmens**
+- Besetzung der Positionen innerhalb der Projektorganisation  
+- Erstgespräch mit dem Kunden (Stadt Singen)  
+- Erstellung eines **Lastenhefts** mit den Anforderungen  
+- Klärung des **zeitlichen Rahmens**  
+- Klärung des **finanziellen Rahmens**  
 - Umsetzung der technischen Lösung in **agilen Entwicklungszyklen**
 
 # Projektinhalt
@@ -61,10 +61,10 @@ Im Projekt werden sowohl **technische als auch organisatorische Aufgaben** umges
 
 Dazu gehören unter anderem:
 
-- Auswahl der **Mülleimerstandorte**, die in das System eingebunden werden
-- Installation neuer **Sensoren, Basisstationen und Antennen**
-- Weiterentwicklung des **bestehenden Systems aus dem Pilotprojekt**
-- Anbindung **neuer Sensoren und eines neuen Servers** für die Sensordaten
+- Auswahl der **Mülleimerstandorte**, die in das System eingebunden werden  
+- Installation neuer **Sensoren, Basisstationen und Antennen**  
+- Weiterentwicklung des **bestehenden Systems aus dem Pilotprojekt**  
+- Anbindung **neuer Sensoren und eines neuen Servers** für die Sensordaten  
 - Integration der Daten in die **bestehende Applikation**
 
 # Bewertung der Schülerleistungen
@@ -74,25 +74,20 @@ Am Ende des Projekts wird **jede Schülerin und jeder Schüler individuell bewer
 Grundlage der Bewertung sind mehrere Kriterien:
 
 ## Dokumentation
-
 - Jede Person dokumentiert ihre Aufgaben und Tätigkeiten
 - Führung eines **Berichtshefts** mit Zuordnung, wer welche Aufgabe hatte
 
 ## Personale Kompetenz
-
 - **Termintreue**
 - **Zuverlässigkeit**
 
 ## Teamarbeit
-
 - Kommunikation im Team
 - Zusammenarbeit
 - Zuverlässigkeit bei gemeinsamen Aufgaben
 
 ## Feedbackgespräche
-
 Im Verlauf des Projekts finden **zwei Feedbacktage** statt, an denen der Projektstand sowie die individuelle Mitarbeit reflektiert werden.
 
 ## Teamleistung
-
 Das Team erhält eine Gesamtbewertung. Diese wird innerhalb der Teammitglieder in einem vorgegeben Rahmen so verteilt, dass der Mittelwert der Teambewertung entspricht.

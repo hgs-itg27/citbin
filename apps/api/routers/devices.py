@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from typing import Dict, List
 import logging
+logger = logging.getLogger(__name__)
 from api import device_service
 from dependencies import get_dependencies
 from models.api_models import DeviceResponse, DeviceUpdate, DeviceCreate, DeviceListItem
@@ -109,18 +110,15 @@ async def create_device(device: DeviceCreate, username: str = Depends(admin_auth
         HTTPException: If the device creation failed
     """
 
-    logging.info(f"Creating device with data: {device}")
     try:
         # Assuming there's a create_device function in the device module
         result = device_service.create(deps["db"], device)
         if result is None:
-            error_msg = "Failed to create device: 500: Failed to create device"
-            logging.error(error_msg)
-            raise HTTPException(status_code=500, detail=error_msg)
+            logger.error("Failed to create device: repository returned None")
+            raise HTTPException(status_code=500, detail="Failed to create device")
         return result
     except HTTPException:
-        # Re-raise HTTP exceptions without modification
         raise
     except Exception as e:
-        logging.error(f"Failed to create device: {str(e)}")
+        logger.error("Failed to create device: %s", str(e))
         raise HTTPException(status_code=500, detail=f"Failed to create device: {str(e)}")

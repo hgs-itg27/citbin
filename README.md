@@ -1,392 +1,134 @@
-# CiTBIN
+# Projekt CitBin
 
-> Smart IoT waste monitoring platform powered by **mioty**, **MQTT**, **FastAPI**, and **Next.js**.
+Das CiTBIN (CITIOT) ist ein Projekt der Klasse TG12/3 an der Hohentwiel Gewerbeschule Singen.
 
-![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
-![Next.js](https://img.shields.io/badge/Next.js-Frontend-black)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
-![MQTT](https://img.shields.io/badge/MQTT-IoT-orange)
-![mioty](https://img.shields.io/badge/mioty-LPWAN-green)
+Die Anwendung wird unter folgender Adresse veröffentlicht: https://citbin.sybit.education
 
----
+## Übersicht
 
-# Overview
+Das Projekt besteht aus den folgenden Hauptkomponenten:
 
-CiTBIN is an IoT platform for monitoring public waste bins using wireless sensors. Sensor data is transmitted through a **mioty** network, forwarded via **MQTT**, processed by a **FastAPI** backend, stored in **PostgreSQL**, and visualized through a modern **Next.js** web application.
+1.  **Backend API (`apps/api`)**:
+    *   Basiert auf Python und dem FastAPI Framework.
+    *   Stellt eine REST-API zur Verwaltung von Geräten, Mülltonnen und Sensordaten bereit.
+    *   Verwendet PostgreSQL mit SQLModel für die Datenpersistenz.
+    *   Emfpängt die Daten per HTTP Uplink vom ChirpStack LNS.
+    *   Verarbeitet eingehende Daten (z.B. vom Helium-Netzwerk).
 
-The project was developed as part of an initiative at the **Hohentwiel Gewerbeschule Singen**.
+2.  **Web-Frontend (`apps/web`)**:
+    *   Entwickelt mit Next.js (React Framework) und TypeScript.
+    *   Bietet eine Weboberfläche zur Visualisierung der Mülltonnen-Standorte und -Füllstände auf einer Karte.
+    *   Ermöglicht die Verwaltung der registrierten Geräte.
+    *   Nutzt die vom Backend bereitgestellte API.
 
-The project will be published under the following adress: <https://citbin.sybit.education>
+3.  **Simulator (`apps/simulator`)**:
+    *   Ein Python-Skript, das das Verhalten eines echten IoT-Geräts simuliert.
+    *   Sendet periodisch Testdaten per Uplink an das Backend.
+    *   Nützlich für Entwicklungs- und Testzwecke ohne physische Hardware.
 
-Its modular architecture allows developers to easily integrate new sensor types, waste bin models, and visualization features while keeping the system maintainable and scalable.
+## Verzeichnisstruktur
 
----
 
-# Features
-
-- Real-time waste bin monitoring
-- mioty sensor integration
-- MQTT-based communication
-- Automatic payload decoding
-- Device management
-- Historical measurement storage
-- Interactive web dashboard
-- REST API
-- Automatic database migrations
-- Docker development environment
-- Sensor simulator
-- Extensible architecture for additional sensor types
-
----
-
-# Architecture
-
-```text
-                  +----------------------+
-                  |   mioty Sensors      |
-                  +----------+-----------+
-                             |
-                      mioty Network
-                             |
-                             v
-                    MQTT Message Broker
-                             |
-                             v
-                  +----------------------+
-                  |   FastAPI Backend    |
-                  | MQTT Client & Parser |
-                  +----------+-----------+
-                             |
-                 Payload Processing Engine
-                             |
-              +--------------+--------------+
-              |                             |
-              v                             v
-      PostgreSQL Database            REST API
-                                            |
-                                            |
-                                            v
-                                 Next.js Web Frontend
+```sh
+    citbin/
+    ├── apps/
+    │   ├── web/       # Next.js Frontend Anwendung
+    │   ├── api/       # FastAPI Backend Anwendung
+    │   └── simulator/ # Daten Simulator
+    ├── docs/
+    │   ├── 00-Organisation/
+    │   ├── 01-Betrieb/
+    │   ├── 02-Hardware/
+    │   ├── 03-Software/
+    │   ├── 04-Projektleitung/
+    │   ├── 05-Gemeinsam/
+    │   └── 06-Abgaben/
+    ├── infrastructure/
+    ├── scripts/
+    ├── package.json
+    ├── bun.lockb
+    ├── bunfig.toml
+    ├── pyproject.toml
+    ├── docker-compose.yml
+    └── Makefile
 ```
 
----
 
-# How It Works
+## Infrastruktur Diagramm
 
-The complete data flow is illustrated below.
+![image](https://github.com/user-attachments/assets/4c83982c-f269-495b-9776-f7cf73b5d7c4)
 
-1. A mioty sensor periodically measures the fill level of a waste bin.
-2. The measurement is transmitted over the mioty network.
-3. The network forwards the payload to an MQTT broker.
-4. The backend subscribes to the configured MQTT topics.
-5. Incoming payloads are decoded.
-6. The correct sensor implementation processes the payload.
-7. Device information is validated.
-8. Measurements are stored inside PostgreSQL.
-9. The REST API exposes the processed data.
-10. The web frontend visualizes the latest information.
-
----
-
-# Repository Structure
-
-```text
-citbin/
-
-├── apps/
-│   ├── api/
-│   │   ├── api/
-│   │   ├── routers/
-│   │   ├── models/
-│   │   ├── modules/
-│   │   ├── migrations/
-│   │   └── tests/
-│   │
-│   ├── web/
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── utils/
-│   │   └── styles/
-│   │
-│   └── simulator/
-│
-├── infrastructure/
-│
-├── docs/
-│
-└── README.md
+```mermaid
+flowchart LR
+ 
+    sensor[Sensor] -->|LoRaWAN| BaseStationHGS[BaseStationHGS]
+    BaseStationHGS --> lns["LNS Network - Helium / IoT / TTS"]
+    lns --> BaseStationSybit["BaseStationSybit"]
+ 
+    BaseStationSybit <-->|HTTP Integration| backend[Backend]
+ 
+    backend --> db[(PostgreSQL DB)]
+    backend -->|REST API| frontend[Frontend]
 ```
 
----
 
-# Project Components
+## Paketverwaltung mit UV
 
-## Backend (`apps/api`)
+Das Projekt verwendet [UV](https://github.com/astral-sh/uv) als modernen Python-Paketmanager (alternativ zu pip).
 
-The backend is built with **FastAPI** and is responsible for all business logic.
-
-Responsibilities include:
-
-- MQTT communication
-- Payload decoding
-- Device management
-- Waste bin management
-- Database access
-- REST API
-- Automatic migrations
-- Sensor abstraction
-- Logging
-
-More information can be found in:
-
-```text
-apps/api/README.md
-```
-
----
-
-## Frontend (`apps/web`)
-
-The frontend is developed using **Next.js**, **React**, and **TypeScript**.
-
-It provides:
-
-- Interactive dashboard
-- Waste bin overview
-- Administrative tools
-- Device management
-- Live status information
-- Responsive design
-
-Documentation:
-
-```text
-apps/web/README.md
-```
-
----
-
-## Infrastructure
-
-The infrastructure directory contains everything required for local development and deployment.
-
-Included services:
-
-- PostgreSQL
-- Docker Compose
-- Environment configuration
-
-Documentation:
-
-```text
-infrastructure/README.md
-```
-
----
-
-## Docs
-
-The documentation files in the docs folder can be viewed as a website.
+### Installation von UV
 
 ```bash
-cd docs/
-npm install # Einmal am Anfang
-npm run docs:dev
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# oder
+pip install uv
 ```
 
-## Simulator
-
-The simulator generates artificial sensor payloads for development and testing.
-
-It enables backend development without requiring physical mioty hardware.
-
----
-
-# Technology Stack
-
-## Backend
-
-- Python 3.11+
-- FastAPI
-- SQLModel
-- SQLAlchemy
-- Alembic
-- PostgreSQL
-- Uvicorn
-- Paho MQTT
-
-## Frontend
-
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-
-## Infrastructure
-
-- Docker
-- Docker Compose
-
-## Communication
-
-- MQTT
-- REST API
-- HTTP
-- JSON
-
----
-
-# Getting Started
-
-## Requirements
-
-Install the following software before starting development.
-
-| Software | Version     |
-| -------- | ----------- |
-| Python   | 3.11+       |
-| Node.js  | 20+         |
-| Docker   | Latest      |
-| Git      | Latest      |
-| UV       | Recommended |
-
----
-
-# Clone the Repository
+### Grundlegende Befehle
 
 ```bash
-git clone https://github.com/your-organization/citbin.git
+# Dependencies installieren
+cd apps/api && uv sync
 
-cd citbin
+# Mit Dev-Dependencies
+cd apps/api && uv sync --dev
+
+# Paket hinzufügen
+cd apps/api && uv add requests
+
+# Paket zu Dev-Dependencies hinzufügen
+cd apps/api && uv add --dev pytest
+
+# Paket entfernen
+cd apps/api && uv remove requests
+
+# Virtual Environment erstellen (falls nicht vorhanden)
+cd apps/api && uv venv
+
+# App innerhalb der Umgebung ausführen
+cd apps/api && uv run uvicorn app:app --reload
+
+# App testen
+cd apps/api && uv run pytest
+
+# Lock-Datei aktualisieren
+cd apps/api && uv lock
 ```
 
----
+### Warum UV?
 
-# Start the Infrastructure
+- **Schnell**: Bis zu 10-100x schneller als pip
+- **Zuverlässig**: Reproduzierbare Builds mit `uv.lock`
+- **Einfach**: Ein einziges Tool für Virtual Environments, Dependencies und Scripts
 
-```bash
-cd infrastructure
+## Erste Schritte
 
-docker compose up -d
-```
+Eine **umfassende Einsteiger-Dokumentation** mit Erklärungen zu allen Technologien, einer Schritt-für-Schritt-Installationsanleitung und wichtigen Konzepten findest du hier:
 
-This starts the required services, including PostgreSQL.
+*   📖 **[Einsteiger-Dokumentation](docs/05-Gemeinsam/Einstieg.md)**
 
----
+Detaillierte Anweisungen zur Installation, Konfiguration und zum Starten der einzelnen Komponenten finden Sie in den jeweiligen README-Dateien:
 
-# Start the Backend
-
-```bash
-cd apps/api
-
-cp .env.example .env
-
-uv sync
-
-uv run uvicorn app:app --reload
-```
-
-The backend automatically:
-
-- connects to PostgreSQL
-- executes pending database migrations
-- connects to the MQTT broker
-- subscribes to configured topics
-- starts the REST API
-
-API documentation:
-
-```
-http://localhost:8000/api/docs
-```
-
----
-
-# Start the Frontend
-
-```bash
-cd apps/web
-
-npm install
-
-npm run dev
-```
-
-Open:
-
-```
-http://localhost:3000
-```
-
----
-
-# Development Workflow
-
-Typical workflow:
-
-1. Start Docker services.
-2. Start the backend.
-3. Start the frontend.
-4. Connect a simulator or real mioty sensor.
-5. Verify incoming MQTT messages.
-6. Observe decoded measurements.
-7. Check the web dashboard.
-
----
-
-# Environment Variables
-
-Each application contains a `.env.example`.
-
-Copy it before running the application.
-
-```bash
-cp .env.example .env
-```
-
----
-
-# Database Migrations
-
-Apply migrations:
-
-```bash
-uv run alembic upgrade head
-```
-
-Create a migration:
-
-```bash
-uv run alembic revision --autogenerate -m "Description"
-```
-
-Rollback:
-
-```bash
-uv run alembic downgrade -1
-```
-
----
-
-# Documentation
-
-Additional documentation is available in the `docs/` directory, including project organization, software development, hardware integration, operational notes, and meeting protocols.
-
----
-
-# Acknowledgements
-
-CiTBIN combines modern web technologies with low-power IoT communication to demonstrate a scalable smart-city solution for waste management.
-
-Core technologies include:
-
-- FastAPI
-- Next.js
-- PostgreSQL
-- Docker
-- MQTT
-- mioty
-- SQLModel
-- Alembic
+*   **Backend**: [apps/api/README.md](apps/api/README.md)
+*   **Frontend**: [apps/web/README.md](apps/web/README.md)
+*   **Simulator**: [apps/simulator/README.md](apps/simulator/README.md)

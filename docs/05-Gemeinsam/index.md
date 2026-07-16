@@ -6,4 +6,4 @@ Dieser Ordner enthält Dokumente und Ressourcen, die für alle Teams relevant si
 
 | Datei | Beschreibung |
 |-------|-------------|
-| [Getting Started](../GETTING_STARTED.md) | Umfassende Einsteiger-Dokumentation für das gesamte Projekt |
+| [Einstieg.md](Einstieg.md) | Umfassende Einsteiger-Dokumentation für das gesamte Projekt |
